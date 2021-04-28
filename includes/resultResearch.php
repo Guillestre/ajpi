@@ -33,12 +33,12 @@
 			print("
 				<tr>
 					<td>".$purchase['clientCode']."</td>
-					<td>".$purchase['lastname']."</td>
-					<td>".$purchase['firstname']."</td>
+					<td>".utf8_encode($purchase['lastname'])."</td>
+					<td>".utf8_encode($purchase['firstname'])."</td>
 					<td>".$purchase['date']."</td>
 					<td>".$purchase['invoiceNumber']."</td>
 					<td>".$purchase['articleCode']."</td>
-					<td>".$purchase['description']."</td>
+					<td>".utf8_encode($purchase['description'])."</td>
 					<td>".$purchase['price']."</td>
 				</tr>	
 			");
