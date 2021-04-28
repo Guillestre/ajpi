@@ -11,7 +11,7 @@
 		<!-- CONNECTION TO DATABASE ---->
 		<?php 
 			include 'includes/sqlsrvConnection.php';
-			header("Location: research.php");
+			header("Location: dashboard.php");
 		?>
 
 	</body>

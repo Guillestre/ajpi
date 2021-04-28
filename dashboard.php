@@ -8,11 +8,11 @@
 
 	<body>
 
-		<form action="/ajpi/research.php" method="post">
+		<form action="/ajpi/dashboard.php" method="post">
 
 			<div class="navigationBar">
 				<input type="text" id="patternInput" name="patternInput" class="searchBar" required>
-				<input type="submit" id="researchButton" name="researchButton" value="Lancer recherche" class="searchButton" />
+				<input type="submit" id="researchButton" name="researchButton" value="Lancer recherche"/>
 			</div>
 
 			<div class="searchGrid">
