@@ -18,7 +18,13 @@ th, td
 .searchBar {
 	width: 20%;
 	height: 20pt;
-	width: 100%pt;
+	width: 20%;
+	margin-left: 10pt;
+}
+
+.searchButton {
+	height: 20pt;
+	margin-left: 10pt;
 }
 
 .searchGrid {
@@ -42,5 +48,11 @@ th, td
 .dateInput
 {
 	margin: 5pt;
+}
+
+.navigationBar
+{
+	background-color: rgba(48, 52, 72, 0.5);
+	padding: 10pt;
 }
 
