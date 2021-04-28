@@ -9,7 +9,6 @@
 		//Initialize variables
 		$pattern = $_POST["patternInput"];
 		$nbRecord = 0;
-		//print($pattern);
 		$clause = $elementType . " like '%" . $pattern . "%' ";
 
 		//Verify if user has added start date
@@ -26,19 +25,19 @@
 	
 		//Query to fetch data matching with the searched pattern
 		$query = "select * from sales where " . $clause;
-		$record = $connection->query($query)->fetchAll();
+		$record = $database->query($query)->fetchAll();
 
 		$query = "select COUNT(*) from sales where " . $clause;
-		$nbRecord = $connection->query($query)->fetchColumn();
+		$nbRecord = $database->query($query)->fetchColumn();
 	}
 	//Otherwise, we display the most recently added data
 	else
 	{
 		//Query to fetch recent data
 		$query = "select * from sales order by date desc";
-		$record = $connection->query($query)->fetchAll();
+		$record = $database->query($query)->fetchAll();
 
 		$query = "select count(*) from sales";
-		$nbRecord = $connection->query($query)->fetchColumn();
+		$nbRecord = $database->query($query)->fetchColumn();
 	}
 ?>

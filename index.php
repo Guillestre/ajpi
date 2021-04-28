@@ -2,7 +2,7 @@
 <html>
 
 	<head>
-		<?php include 'includes/header.php';?>
+		<?php include 'ext/header.php';?>
 		<title>Accueil</title>
 	</head>
 
@@ -10,7 +10,6 @@
 
 		<!-- CONNECTION TO DATABASE ---->
 		<?php 
-			include 'includes/sqlsrvConnection.php';
 			header("Location: dashboard.php");
 		?>
 

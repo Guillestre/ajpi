@@ -2,7 +2,7 @@
 <html>
 
 	<head>
-		<?php include 'includes/header.php';?>
+		<?php include 'ext/header.php';?>
 		<title>Rechercher</title>
 	</head>
 
@@ -19,15 +19,15 @@
 
 				<!-- FILTER ------------------------------------>
 				<div class="searchGridFilter">
-					<?php include 'includes/filterResearch.php';?>
+					<?php include 'ext/filterResearch.php';?>
 				</div>
 
 				<!-- DO RESEARCH ------------------------------->
-				<?php include 'includes/doResearch.php'?>
+				<?php include 'ext/doResearch.php'?>
 
 				<!-- RESULT FROM THE RESEARCH ----------------->
 				<div class="searchGridResult">
-					<?php include 'includes/resultResearch.php';?>
+					<?php include 'ext/resultResearch.php';?>
 				</div>
 
 			</div>
