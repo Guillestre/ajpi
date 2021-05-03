@@ -3,6 +3,7 @@
 
 	<head>
 		<?php include 'ext/header.php';?>
+		<?php include 'invoiceLineFix.php' ?>
 		<title>Accueil</title>
 	</head>
 
@@ -10,7 +11,7 @@
 
 		<!-- CONNECTION TO DATABASE ---->
 		<?php 
-			header("Location: dashboard.php");
+			//header("Location: dashboard.php");
 		?>
 
 	</body>
