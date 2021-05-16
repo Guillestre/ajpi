@@ -3,33 +3,76 @@ body
     background-color: rgba(150, 150, 150, 0.3);
 }
 
-table
-{
-	width: 100%;
-	position: center;
-}
-
 th, td
 {
-	text-align: center;	
+	font-size: 15pt;
 	padding: 10px 10px;
 }
 
-.searchBar {
-	width: 20%;
-	height: 20pt;
-	width: 20%;
-	margin-left: 10pt;
+td 
+{
+	text-align: center;
 }
 
-.searchButton {
-	height: 20pt;
-	margin-left: 10pt;
+th
+{
+	text-align: center;
 }
+
+p {
+	font-size: 15pt;
+}
+
+.tdDescription
+{
+	width: 40%;
+	text-align: justify;
+}
+
+.tdDesignation
+{
+	width: 30%;
+	text-align: justify;
+}
+
+.tdName
+{
+	width: 10%;
+}
+
+.tdInvoiceCode
+{
+	width: 10%;
+}
+
+.tdClientCode
+{
+	width: 10%;
+}
+
+.inputText
+{
+	font-size: 12pt;
+	padding: 4pt;
+	margin: 4pt;
+}
+
+.inputButton
+{
+	font-size: 15pt;
+	margin-top: 30pt;
+}
+
+.filter
+{
+	font-size: 15pt;
+	margin: 5pt;
+}
+
 
 .searchGrid {
 	display: grid;
-  	grid-template-columns: 150pt auto;
+  	grid-template-columns: 200pt auto;
   	margin : 10pt;
 }
 
@@ -44,15 +87,3 @@ th, td
 	padding: 10pt;
 	border: 1px solid grey;
 }
-
-.dateInput
-{
-	margin: 5pt;
-}
-
-.navigationBar
-{
-	background-color: rgba(48, 52, 72, 0.5);
-	padding: 10pt;
-}
-

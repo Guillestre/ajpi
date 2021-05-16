@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<?php include 'ext/header.php';?>
+		<title>Rechercher</title>
+	</head>
+
+	<body>
+
+		<form action="/ajpi/dashboard.php" method="post">
+
+			<?php $currentPage = "clients" ?>
+
+			<!-- DO RESEARCH ------------------------------->
+			<?php include 'ext/doResearch.php'?>
+
+			<!-- RESULT FROM THE RESEARCH ----------------->
+			<div class="searchGridResult">
+				<h1>Client <?php print($_GET['clientCode']); ?> : </h1>
+				<?php include 'ext/resultResearch.php';?>
+				<input type="button" value="Retour" onclick="history.back()" class="inputButton">
+			</div>
+
+		</form>
+
+	</body>
+
+</html>
+

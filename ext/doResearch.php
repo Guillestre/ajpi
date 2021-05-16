@@ -1,43 +1,64 @@
 <!-- MAKING THE SEARCH ----------->
 
 <?php
-	$searchLaunched = isset($_POST['patternInput']) && !empty(trim($_POST['patternInput']));
-
-	//Check if user has launched a research
-	if($searchLaunched)
-	{
+	
 		//Initialize variables
-		$pattern = $_POST["patternInput"];
-		$nbRecord = 0;
-		$clause = $elementType . " like '%" . $pattern . "%' ";
+		$clause = "";
+
+		$existKeyword = isset($_POST["keyword"]) && !empty($_POST["keyword"]);
+		$existStartPeriod = isset($_POST['startPeriod']) && !empty($_POST['startPeriod']);
+		$existEndPeriod = isset($_POST['endPeriod']) && !empty($_POST['endPeriod']);
+		$existClientCode = isset($_GET['clientCode']) && !empty($_GET['clientCode']);
+		$existInvoiceCode = isset($_GET['invoiceCode']) && !empty($_GET['invoiceCode']);
+
+		//Verify if user has added keyword
+		if($existKeyword){
+			$keyword = $_POST["keyword"];
+			$clause = "AND " . $keywordType . " LIKE :keyword ";
+		}
 
 		//Verify if user has added start date
-		if(isset($_POST['startPeriod']) && !empty($_POST['startPeriod'])){
+		if($existStartPeriod){
 			$startPeriod = $_POST['startPeriod'];
-			$clause .= "and date >= '" . $startPeriod . "' ";
+			$clause .= "AND date >= :startPeriod ";
 		}
 
 		//Verify if user has added end date
-		if(isset($_POST['endPeriod']) && !empty($_POST['endPeriod'])){
+		if($existEndPeriod){
 			$endPeriod = $_POST['endPeriod'];
-			$clause .= "and date <= '" . $endPeriod . "' ";
+			$clause .= "AND date <= :endPeriod ";
 		}
+
+		if($currentPage == "dashboard")
+			$query = "
+			SELECT invoices.code, clientCode, name, date, totalExcludingTaxes, totalIncludingTaxes, description 
+			FROM invoices, clients WHERE 1 " . $clause . " AND invoices.clientCode = clients.code;
+			";
+
+		if($currentPage == "clients")
+			$query = "SELECT * FROM clients WHERE code = :clientCode";
+
+		if($currentPage == "invoiceline")
+			$query = "SELECT * FROM invoiceline WHERE invoiceCode = :invoiceCode";
+
+
+
+		$step=$database->prepare($query);
+
+		//Setting values parameters
+		if($existKeyword)
+			$step->bindValue(":keyword", "%{$keyword}%"); 
+		if($existStartPeriod)
+			$step->bindValue(":startPeriod", $startPeriod); 
+		if($existEndPeriod)
+			$step->bindValue(":endPeriod", $endPeriod); 
+		if($existClientCode && $currentPage == "clients")
+			$step->bindValue(":clientCode", $_GET['clientCode']); 
+		if($existInvoiceCode)
+			$step->bindValue(":invoiceCode", $_GET['invoiceCode']); 
+
+		$step->execute();
+		$result = $step->fetchAll();
+		$nbResult = $step->rowCount();
 	
-		//Query to fetch data matching with the searched pattern
-		$query = "select * from sales where " . $clause;
-		$record = $database->query($query)->fetchAll();
-
-		$query = "select COUNT(*) from sales where " . $clause;
-		$nbRecord = $database->query($query)->fetchColumn();
-	}
-	//Otherwise, we display the most recently added data
-	else
-	{
-		//Query to fetch recent data
-		$query = "select * from sales order by date desc";
-		$record = $database->query($query)->fetchAll();
-
-		$query = "select count(*) from sales";
-		$nbRecord = $database->query($query)->fetchColumn();
-	}
 ?>

@@ -1,49 +1,67 @@
 
-<h3>Rechercher par :</h3>
+<?php if($currentPage == "dashboard") { ?>
 
-<!-- SPECIFIC ELEMENT TO RESEARCH ------------------------->
+	<h2>Rechercher par :</h2>
 
-<?php 
-	$isChecked = isset($_POST['elementType']); 
+	<!-- RESEARCH BY ------------------------->
 
-	if($isChecked)
-		$elementType = $_POST['elementType'];
-?>
+	<?php 
+		$isChecked = isset($_POST['keywordType']); 
 
+		if($isChecked)
+			$keywordType = $_POST['keywordType'];
+	?>
 
-<input type="radio" name="elementType" value="clientCode" 
-<?php 
-	if(!$isChecked) 
-		echo 'checked'; 
-	else if($elementType == 'clientCode') 
-		echo 'checked';
-?>>
-<label for="elementType">Code client</label><br>
+	<div class="filter">
+		<input type="radio" name="keywordType" value="invoices.code"
+		<?php 
 
-<input type="radio" name="elementType" value="invoiceNumber"
-<?php 
-	if($isChecked && $elementType == 'invoiceNumber') 
-		echo 'checked';
-?>>
-<label for="elementType">Numéro de facture</label><br>
+			if(!$isChecked) 
+				echo 'checked'; 
+			else if($keywordType == 'invoices.code') 
+				echo 'checked';
 
-<input type="radio" name="elementType" value="articleCode"
-<?php 
-	if($isChecked && $elementType == 'articleCode') 
-		echo 'checked';
-?>>
-<label for="elementType">Code d'article</label><br>
+		?>>
+		<label for="keywordType">Numéro de facture</label><br>
+	</div>
+
+	<div class="filter">
+		<input type="radio" name="keywordType" value="clientCode" 
+		<?php 
+			if($isChecked && $keywordType == 'clientCode') 
+				echo 'checked';
+		?>>
+		<label for="keywordType">Code client</label><br>
+	</div>
+
+<?php } ?>
+
+<!-- KEYWORD ---------------------->
+
+<?php if($currentPage == "dashboard") { ?>
+
+	<div class="filter">
+		<label for="keyword">Mot clé à rechercher :</label><br>
+		<input type="text" name="keyword" class='inputText'/>
+	</div>
+
+<?php } ?>
 
 <!-- DATE ------------------------->
 
-<h3>Période :</h3>
+<?php if($currentPage == "dashboard") { ?>
 
-<div >
-	<label for="startPeriod">A partir du :</label>
-	<input type="date" name="startPeriod" class="dateInput">
-</div>
+	<h2>Période :</h2>
 
-<div>
-	<label for="endPeriod">Au :</label>
-	<input type="date"name="endPeriod" class="dateInput">
-</div>
+
+	<div class="filter">
+		<label for="startPeriod">A partir du :</label><br>
+		<input type="date" name="startPeriod" class='inputText'>
+	</div>
+
+	<div class="filter">
+		<label for="endPeriod">Au :</label><br>
+		<input type="date"name="endPeriod" class='inputText'>
+	</div>
+
+<?php } ?>

@@ -6,4 +6,7 @@
 	//Connect to mysql database
 	$mysqlConnection = new mysqlConnection();
 	$database = $mysqlConnection->getInstance();
+
+	//Start session
+	session_start();
 ?>
