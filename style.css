@@ -63,6 +63,17 @@ p {
 	margin-top: 30pt;
 }
 
+.logOffButton
+{
+	font-size: 15pt;
+	margin-bottom: 30pt;
+}
+
+.above_result_area
+{
+	display:flex; justify-content:flex-end; width:100%; padding:0;
+}
+
 .filter
 {
 	font-size: 15pt;

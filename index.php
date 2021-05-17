@@ -3,9 +3,6 @@
 
 	<head>
 		<?php 
-			include 'ext/header.php';
-			require_once __DIR__.'/vendor/autoload.php';
-		
 			set_time_limit(300);
 			/*
 			include 'script/users.php';
@@ -29,6 +26,9 @@
 			include 'script/invoices.php';
 			include 'script/invoiceLine.php';
 			*/
+			//header("Location: dashboard.php");
+			include 'ext/header.php';
+			require_once __DIR__.'/vendor/autoload.php';
 		?>
 		<title>Accueil</title>
 	</head>
@@ -43,18 +43,18 @@
 			<label for="password">Mot de passe : </label>
 			<input type="password" id="password" name="password" size="30">
 			<br/>
-			<input type="submit" name="login" value="Se connecter">
+			<input type="submit" name="logIn" value="Se connecter">
 	
 		</form>
 
 		<?php 
-			
+	
 			//Verify if user isn't already connected
 			if(isset($_SESSION['username']))
 				header("Location: dashboard.php");
 
-			//Verify if button login has been clicked
-			if(isset($_POST['login']))
+			//Verify if button logIn has been clicked
+			if(isset($_POST['logIn']))
 			{
 				//Make request to fetch this user
 				$sql= "SELECT * FROM users WHERE username = :username"; 

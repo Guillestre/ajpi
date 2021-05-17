@@ -21,7 +21,9 @@
 			title VARCHAR(255),
 			address VARCHAR(255),
 			capital VARCHAR(255),
-			city VARCHAR(255)
+			city VARCHAR(255),
+			number VARCHAR(255),
+			mail VARCHAR(255)
 
 		);
 
@@ -39,7 +41,9 @@
 		    title,
 		    address,
 		    capital,
-		    city
+		    city,
+		    number,
+		    mail
 			FROM odoo_clients_result
 			WHERE SUBSTR( code, POSITION('41' IN code) + 2, LENGTH(code)) NOT IN ( SELECT code FROM sage_clients ); 
 
@@ -57,4 +61,19 @@
 	$step=$database->prepare("ALTER TABLE clients ADD PRIMARY KEY (code);");
 	$step->execute();
 
+	//Replace empty cell by -
+	$step=$database->prepare("
+		UPDATE clients SET number = '-' WHERE TRIM(number) = '';
+	");
+	$step->execute();
+
+	$step=$database->prepare("
+		UPDATE clients SET title = '-' WHERE TRIM(title) = '';
+	");
+	$step->execute();
+
+	$step=$database->prepare("
+		UPDATE clients SET mail = '-' WHERE TRIM(mail) = '';
+	");
+	$step->execute();
 ?>

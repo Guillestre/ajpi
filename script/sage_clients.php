@@ -13,7 +13,9 @@
 			title VARCHAR(255),
 			address VARCHAR(255),
 			capital VARCHAR(255),
-			city VARCHAR(255)
+			city VARCHAR(255),
+			number VARCHAR(255),
+			mail VARCHAR(255)
 
 		);
 

@@ -8,7 +8,7 @@
 
 	<body>
 
-		<form action="/ajpi/dashboard.php" method="post">
+		<form action="dashboard.php" method="post">
 
 			<?php $currentPage = "invoiceline" ?>
 

@@ -73,6 +73,8 @@
 				<th>Adresse</th>
 				<th>Code postal</th>
 				<th>Ville</th>
+				<th>Numéro de téléphone</th>
+				<th>Mail</th>
 			</tr>
 		");
 
@@ -85,6 +87,8 @@
 					<td>".$client['address']."</td>
 					<td>".$client['capital']."</td>
 					<td>".$client['city']."</td>
+					<td>".$client['number']."</td>
+					<td>".$client['mail']."</td>
 				</tr>	
 			");
 

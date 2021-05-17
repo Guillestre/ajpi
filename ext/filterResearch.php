@@ -1,58 +1,21 @@
 
 <?php if($currentPage == "dashboard") { ?>
 
-	<h2>Rechercher par :</h2>
+	<!-- KEYWORD ------------------------->
 
-	<!-- RESEARCH BY ------------------------->
-
-	<?php 
-		$isChecked = isset($_POST['keywordType']); 
-
-		if($isChecked)
-			$keywordType = $_POST['keywordType'];
-	?>
+	<h2>Filtres :</h2>
 
 	<div class="filter">
-		<input type="radio" name="keywordType" value="invoices.code"
-		<?php 
-
-			if(!$isChecked) 
-				echo 'checked'; 
-			else if($keywordType == 'invoices.code') 
-				echo 'checked';
-
-		?>>
-		<label for="keywordType">Numéro de facture</label><br>
+		<label for="invoiceCode_filter">Facture à rechercher :</label><br>
+		<input type="text" id="invoiceCode_filter" name="invoiceCode_filter" class='inputText'/>
 	</div>
 
 	<div class="filter">
-		<input type="radio" name="keywordType" value="clientCode" 
-		<?php 
-			if($isChecked && $keywordType == 'clientCode') 
-				echo 'checked';
-		?>>
-		<label for="keywordType">Code client</label><br>
+		<label for="clientCode_filter">Code client à rechercher :</label><br>
+		<input type="text" id="clientCode_filter" name="clientCode_filter" class='inputText'/>
 	</div>
 
-<?php } ?>
-
-<!-- KEYWORD ---------------------->
-
-<?php if($currentPage == "dashboard") { ?>
-
-	<div class="filter">
-		<label for="keyword">Mot clé à rechercher :</label><br>
-		<input type="text" name="keyword" class='inputText'/>
-	</div>
-
-<?php } ?>
-
-<!-- DATE ------------------------->
-
-<?php if($currentPage == "dashboard") { ?>
-
-	<h2>Période :</h2>
-
+	<!-- DATE ------------------------->
 
 	<div class="filter">
 		<label for="startPeriod">A partir du :</label><br>
