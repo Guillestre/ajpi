@@ -166,62 +166,6 @@
 	}
 	
 	//Fixing leftovers
-	/*
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = '365ADL' 
-		WHERE invoiceCode = 'FV6520' AND TRIM(articleCode) = ''");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'CM/01020' 
-		WHERE invoiceCode = 'FV5728' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'LOC-005' 
-		WHERE invoiceCode = 'FV5900' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'FORFCR006' 
-		WHERE invoiceCode = 'FV6119' AND TRIM(articleCode) = '' AND designation = 'ESET MOBILE SECURITY 1 LICENCE 1 AN'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = '365DIVERS' 
-		WHERE invoiceCode = 'FV6315' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = '365DIVERS' 
-		WHERE invoiceCode = 'FV6351' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'CM00001' 
-		WHERE invoiceCode = 'FV6547' AND TRIM(articleCode) = '' AND designation = 'Contrat 2 postes + NAS / an'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'CM/01026' 
-		WHERE invoiceCode = 'FV6763' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'LOC-003' 
-		WHERE invoiceCode = 'FV5714' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'CM/01012' 
-		WHERE invoiceCode = 'FV6717' AND TRIM(articleCode) = '' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2019_invoiceline_result SET articleCode = 'FORFSJ0010' 
-		WHERE invoiceCode = 'FV7037' AND TRIM(articleCode) = '' AND designation = 'Majoration intervention samedi APM 25%'");
-	$step->execute();
-	*/
 	
 	$step=$database->
 	prepare("
@@ -230,6 +174,5 @@
 	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
  	");
 	$step->execute();
-	
 
 ?>

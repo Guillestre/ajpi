@@ -10,9 +10,7 @@
 			amount DOUBLE,
 			unitPrice DOUBLE,
 			discount DOUBLE,
-			totalPrice DOUBLE,
-
-			FOREIGN KEY (invoiceCode) REFERENCES sage_invoices(code)
+			totalPrice DOUBLE
 
 		)
 
@@ -62,5 +60,20 @@
 	//Delete lines where there are in designation "Sous-total"
 	$step=$database->prepare("DELETE FROM sage_invoiceline WHERE designation LIKE '%Sous-total%'");
 	$step->execute();
+
+	$step=$database->prepare("
+
+		UPDATE sage_invoiceline SET invoiceCode = REPLACE(invoiceCode, 'V', 'C');
+
+	");
+	$step->execute();
+
+	$step=$database->prepare("
+
+		ALTER TABLE sage_invoiceline ADD FOREIGN KEY (invoiceCode) REFERENCES sage_invoices(code);
+
+	");
+	$step->execute();
+
 
 ?>

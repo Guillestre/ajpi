@@ -40,7 +40,9 @@
 		if($currentPage == "dashboard"){
 			$query = "
 			SELECT invoices.code, clientCode, name, date, totalExcludingTaxes, totalIncludingTaxes, description 
-			FROM invoices, clients WHERE 1 " . $clause . " AND invoices.clientCode = clients.code;
+			FROM invoices, clients 
+			WHERE 1 " . $clause . " AND invoices.clientCode = clients.code
+			ORDER BY date DESC;
 			";
 		}
 

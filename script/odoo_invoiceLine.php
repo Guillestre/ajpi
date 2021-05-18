@@ -126,6 +126,13 @@
 	$step=$database->prepare("DELETE FROM odoo_invoiceline_result WHERE invoiceCode IN ( SELECT invoiceCode FROM sage_invoiceline )");
 	$step->execute();
 
+	$step=$database->prepare("
+
+		UPDATE odoo_invoiceline_result SET invoiceCode = REPLACE(invoiceCode, 'V', 'C');
+
+	");
+	$step->execute();
+
 	//Add foreign key
 	$step=$database->prepare("ALTER TABLE odoo_invoiceline_result ADD FOREIGN KEY (invoiceCode) REFERENCES odoo_invoices_result(code);");
 	$step->execute();

@@ -120,16 +120,6 @@
 
 	//Fixing leftovers
 
-	/*
-	$step=$database->
-	prepare("UPDATE sage2016_invoiceline_result SET articleCode = 'CM/01007' WHERE invoiceCode = 'FV4816' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-
-	$step=$database->
-	prepare("UPDATE sage2016_invoiceline_result SET articleCode = 'CMT/1061' WHERE invoiceCode = 'FV4854' AND designation = 'Quote-part montant soumis à TVA 20%'");
-	$step->execute();
-	*/
-
 	$step=$database->
 	prepare("
 		UPDATE sage2016_invoiceline_result 
@@ -137,6 +127,5 @@
 	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
  	");
 	$step->execute();
-
 
 ?>

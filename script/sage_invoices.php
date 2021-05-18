@@ -48,6 +48,20 @@
 	");
 	$step->execute();
 
+	$step=$database->prepare("
+
+		UPDATE sage_invoices SET code = REPLACE(code, 'V', 'C');
+
+	");
+	$step->execute();
+
+	$step=$database->prepare("
+
+		UPDATE sage_invoices SET code = REPLACE(code, 'V', 'C');
+
+	");
+	$step->execute();
+
 	//Add primary key
 	$step=$database->prepare("ALTER TABLE sage_invoices ADD PRIMARY KEY (code);");
 	$step->execute();

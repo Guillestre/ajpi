@@ -2,10 +2,17 @@
 <html>
 
 	<head>
-		<?php 
-			set_time_limit(300);
+		<?php
+			include 'ext/header.php';
+
+			set_time_limit(500);
 			/*
 			include 'script/users.php';
+			
+			include 'script/ebp_clients.php';
+			include 'script/ebp_invoices.php';
+			include 'script/ebp_invoiceLine.php';
+			
 			include 'script/sage2016_clients.php';
 			include 'script/sage2016_invoices.php';
 			include 'script/sage2016_invoiceLine.php';
@@ -26,8 +33,6 @@
 			include 'script/invoices.php';
 			include 'script/invoiceLine.php';
 			*/
-			//header("Location: dashboard.php");
-			include 'ext/header.php';
 			require_once __DIR__.'/vendor/autoload.php';
 		?>
 		<title>Accueil</title>
@@ -48,7 +53,7 @@
 		</form>
 
 		<?php 
-	
+			
 			//Verify if user isn't already connected
 			if(isset($_SESSION['username']))
 				header("Location: dashboard.php");

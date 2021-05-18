@@ -30,7 +30,15 @@
 	");
 	$step->execute();
 
-	//Insert clients from sage and odoo
+	//Insert clients from sage
+
+	$step=$database->prepare("
+		INSERT INTO clients
+		SELECT * FROM sage_clients;
+	");
+	$step->execute();
+
+	//Insert clients from odoo
 
 	$step=$database->prepare("
 
@@ -45,15 +53,17 @@
 		    number,
 		    mail
 			FROM odoo_clients_result
-			WHERE SUBSTR( code, POSITION('41' IN code) + 2, LENGTH(code)) NOT IN ( SELECT code FROM sage_clients ); 
+			WHERE SUBSTR( code, POSITION('41' IN code) + 2, LENGTH(code)) NOT IN ( SELECT code FROM clients ); 
 
 	");
 	$step->execute();
 
+	//Insert clients from ebp
 
 	$step=$database->prepare("
 		INSERT INTO clients
-		SELECT * FROM sage_clients;
+		SELECT * FROM ebp_clients_result
+		WHERE code NOT IN ( SELECT code FROM  clients);
 	");
 	$step->execute();
 
@@ -61,19 +71,4 @@
 	$step=$database->prepare("ALTER TABLE clients ADD PRIMARY KEY (code);");
 	$step->execute();
 
-	//Replace empty cell by -
-	$step=$database->prepare("
-		UPDATE clients SET number = '-' WHERE TRIM(number) = '';
-	");
-	$step->execute();
-
-	$step=$database->prepare("
-		UPDATE clients SET title = '-' WHERE TRIM(title) = '';
-	");
-	$step->execute();
-
-	$step=$database->prepare("
-		UPDATE clients SET mail = '-' WHERE TRIM(mail) = '';
-	");
-	$step->execute();
 ?>
