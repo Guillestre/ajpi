@@ -16,22 +16,6 @@
 	");
 	$step->execute();
 
-	//Insert odoo invoices with resume
-	$step=$database->prepare("
-		INSERT INTO invoices
-		SELECT  
-			code, 
-			SUBSTR( clientCode, POSITION('41' IN clientCode) + 2, LENGTH(clientCode)) AS clientCode,
-			date, 
-			totalExcludingTaxes, 
-			totalIncludingTaxes,
-			GROUP_CONCAT(designation SEPARATOR '<br>') AS description
-		FROM odoo_invoices_result oir, odoo_invoiceline_result oilr
-		WHERE oir.code = oilr.invoiceCode 
-		GROUP BY code
-	");
-	$step->execute();
-
 	//Insert ebp invoices with a description from ebp_invoiceline_result and ebp_invoices_result
 	$step=$database->prepare("
 		INSERT INTO invoices
@@ -98,6 +82,22 @@
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, ''
 		FROM sage_invoices
 		WHERE code NOT IN ( SELECT code FROM invoices )
+	");
+	$step->execute();
+
+	//Insert odoo invoices with resume
+	$step=$database->prepare("
+		INSERT INTO invoices
+		SELECT  
+			code, 
+			SUBSTR( clientCode, POSITION('41' IN clientCode) + 2, LENGTH(clientCode)) AS clientCode,
+			date, 
+			totalExcludingTaxes, 
+			totalIncludingTaxes,
+			GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+		FROM odoo_invoices_result oir, odoo_invoiceline_result oilr
+		WHERE oir.code = oilr.invoiceCode AND oir.code NOT IN ( SELECT code FROM invoices )
+		GROUP BY code
 	");
 	$step->execute();
 

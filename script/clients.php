@@ -3,8 +3,6 @@
 	//First delete all from sage_result
 	$step=$database->prepare("
 
-		DROP TABLE IF EXISTS description_articles;
-		DROP TABLE IF EXISTS description_invoices;
 		DROP TABLE IF EXISTS invoiceline;
 		DROP TABLE IF EXISTS invoices;
 		DROP TABLE IF EXISTS clients;
