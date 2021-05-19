@@ -5,10 +5,11 @@
 		<?php
 			include 'ext/header.php';
 			set_time_limit(500);
-			include 'script/delete_results.php';
+
+		  	//include 'script/create_raw.php';
+			//include 'script/users.php';
+
 			/*
-			include 'script/users.php';
-			
 			include 'script/ebp_clients.php';
 			include 'script/ebp_invoices.php';
 			include 'script/ebp_invoiceLine.php';
@@ -24,15 +25,15 @@
 			include 'script/sage_clients.php';
 			include 'script/sage_invoices.php';
 			include 'script/sage_invoiceLine.php';
-
+			
 			include 'script/odoo_clients.php';
 			include 'script/odoo_invoices.php';
 			include 'script/odoo_invoiceLine.php';
-	
+			*/
 			include 'script/clients.php';
 			include 'script/invoices.php';
 			include 'script/invoiceLine.php';
-			*/
+			
 
 			require_once __DIR__.'/vendor/autoload.php';
 		?>

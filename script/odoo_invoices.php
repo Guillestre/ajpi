@@ -33,7 +33,8 @@
 			totalExcludingTaxes, 
 			totalIncludingTaxes
 
-		FROM odoo_invoices;
+		FROM odoo_invoices
+		WHERE TRIM(code) != '';
 
 	");
 	$step->execute();
