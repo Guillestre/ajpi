@@ -41,6 +41,7 @@
 		");
 	$step->execute();
 
+	//Corrections
 	$step=$database->
 	prepare("UPDATE sage2016_invoiceline_result SET articleCode = 'ERREUR' 
 		WHERE invoiceCode = 'FV4227'");
@@ -71,16 +72,25 @@
 		WHERE designation LIKE '%Contrat de maintenance annuel 6/7%' AND invoiceCode = 'FV4997'");
 	$step->execute();
 
-
+	//Delete useless lines
 	$step=$database->
 	prepare("DELETE FROM sage2016_invoiceline_result WHERE TRIM(articleCode) = '' AND TRIM(designation)='' ");
 	$step->execute();
 
+	//Remove all lines with designation like '--------------------'
+	$step=$database->prepare("DELETE FROM `sage2016_invoiceline_result` WHERE designation LIKE '%-------------------%'");
+	$step->execute();
+
+	//Delete lines where there are in designation "Sous-total"
+	$step=$database->prepare("DELETE FROM sage2016_invoiceline_result WHERE designation LIKE '%Sous-total%'");
+	$step->execute();
+
+	//Set remaining empty article code with total price not equal to zero to 'DIVERS'
 	$step=$database->
 	prepare("
 		UPDATE sage2016_invoiceline_result 
 		SET articleCode = 'DIVERS' 
-	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
+	 	WHERE TRIM(articleCode) = '' AND (totalPrice != 0 OR amount != 0);
  	");
 	$step->execute();
 

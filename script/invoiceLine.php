@@ -61,7 +61,7 @@
 				#Group article codes from an invoice with a price or/and amount
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
 				FROM sage_invoiceline
-				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0) AND articleCode != 'DIVERS'
+				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
 				GROUP BY invoiceCode, articleCode
 
 				UNION
@@ -69,23 +69,13 @@
 				#Select commentaries from each articleCode
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
 				FROM sage_invoiceline
-				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0 AND articleCode != 'DIVERS'
+				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 
 			WHERE da.invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline)
 			GROUP BY da.invoiceCode, da.articleCode;
 
-	");
-	$step->execute();
-
-	//Insert DIVERS articles from sage
-
-	$step=$database->prepare("
-		INSERT INTO invoiceline (invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, description)
-		SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
-		FROM sage_invoiceline
-		WHERE articleCode = 'DIVERS' AND invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline);
 	");
 	$step->execute();
 

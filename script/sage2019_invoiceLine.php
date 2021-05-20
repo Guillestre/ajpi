@@ -123,11 +123,21 @@
 	prepare("DELETE FROM sage2019_invoiceline_result WHERE TRIM(articleCode) = '' AND TRIM(designation)='' ");
 	$step->execute();
 
+	//Remove all lines with designation like '--------------------'
+	$step=$database->prepare("DELETE FROM `sage2019_invoiceline_result` WHERE designation LIKE '%-------------------%'");
+	$step->execute();
+
+	//Delete lines where there are in designation "Sous-total"
+	$step=$database->prepare("DELETE FROM sage2019_invoiceline_result WHERE designation LIKE '%Sous-total%'");
+	$step->execute();
+
+	//Set for remaining lines with price not equal to zero and article code empty, an article code 'DIVERS'
+
 	$step=$database->
 	prepare("
-		UPDATE sage2016_invoiceline_result 
+		UPDATE sage2019_invoiceline_result 
 		SET articleCode = 'DIVERS' 
-	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
+	 	WHERE TRIM(articleCode) = '' AND (totalPrice != 0 OR amount != 0);
  	");
 	$step->execute();
 

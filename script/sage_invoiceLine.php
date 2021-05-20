@@ -53,14 +53,6 @@
 	");
 	$step->execute();
 
-	//Remove all lines with designation like '--------------------'
-	$step=$database->prepare("DELETE FROM `sage_invoiceline` WHERE designation LIKE '%-------------------%'");
-	$step->execute();
-
-	//Delete lines where there are in designation "Sous-total"
-	$step=$database->prepare("DELETE FROM sage_invoiceline WHERE designation LIKE '%Sous-total%'");
-	$step->execute();
-
 	$step=$database->prepare("
 
 		UPDATE sage_invoiceline SET invoiceCode = REPLACE(invoiceCode, 'V', 'C');

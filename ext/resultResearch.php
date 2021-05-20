@@ -30,15 +30,17 @@
 		print("<table border=\"1\">");
 
 		print("
-			<tr>
-				<th>Numéro de facture</th>
-				<th>Code client</th>
-				<th>Nom</th>
-				<th>Date de facturation</th>
-				<th>Total HT</th>
-				<th>Total TTC</th>
-				<th>Description</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>Numéro de facture</th>
+					<th>Code client</th>
+					<th>Nom</th>
+					<th>Date de facturation</th>
+					<th>Total HT</th>
+					<th>Total TTC</th>
+					<th>Description</th>
+				</tr>
+			</thead>
 		");
 
 		foreach($result as $invoice) 
@@ -73,16 +75,18 @@
 		print("<table border=\"1\">");
 
 		print("
-			<tr>
-				<th>Code Client</th>
-				<th>Nom</th>
-				<th>Civilité</th>
-				<th>Adresse</th>
-				<th>Code postal</th>
-				<th>Ville</th>
-				<th>Numéro de téléphone</th>
-				<th>Mail</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>Code Client</th>
+					<th>Nom</th>
+					<th>Civilité</th>
+					<th>Adresse</th>
+					<th>Code postal</th>
+					<th>Ville</th>
+					<th>Numéro de téléphone</th>
+					<th>Mail</th>
+				</tr>
+			</thead>
 		");
 
 		foreach($result as $client) 
@@ -109,15 +113,17 @@
 		print("<table border=\"1\">");
 
 		print("
-			<tr>
-				<th>Code article</th>
-				<th>Désignation</th>
-				<th>Quantité</th>
-				<th>Prix unitaire</th>
-				<th>Remise</th>
-				<th>Prix total</th>
-				<th>Description</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>Code article</th>
+					<th>Désignation</th>
+					<th>Quantité</th>
+					<th>Prix unitaire</th>
+					<th>Remise</th>
+					<th>Prix total</th>
+					<th>Description</th>
+				</tr>
+			</thead>
 		");
 
 		foreach($result as $line) 

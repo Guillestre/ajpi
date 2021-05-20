@@ -94,7 +94,7 @@
 			date, 
 			totalExcludingTaxes, 
 			totalIncludingTaxes,
-			GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+			'' AS description
 		FROM odoo_invoices_result oir, odoo_invoiceline_result oilr
 		WHERE oir.code = oilr.invoiceCode AND oir.code NOT IN ( SELECT code FROM invoices )
 		GROUP BY code

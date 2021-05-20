@@ -83,6 +83,7 @@
 	$step=$database->prepare("ALTER TABLE ebp_invoiceline_result MODIFY COLUMN totalPrice DOUBLE");
 	$step->execute();
 
+	//Delete all sous total
 	$step=$database->prepare("
 
 		DELETE FROM ebp_invoiceline_result WHERE TRIM(articleCode) = '' AND totalPrice != 0;
@@ -90,6 +91,7 @@
 	");
 	$step->execute();
 
+	//Delete saut de ligne
 	$step=$database->prepare("
 
 		DELETE FROM ebp_invoiceline_result WHERE TRIM(articleCode) = '' AND TRIM(designation) = '' AND totalPrice = 0;

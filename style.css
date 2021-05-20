@@ -1,48 +1,41 @@
-th, td
-{
+p {
 	font-size: 15pt;
-	padding: 10px 10px;
 }
 
-td 
+th, td
 {
+	font-size: 17pt;
+	padding: 30px 30px;
 	text-align: center;
 }
 
 th
 {
-	text-align: center;
+	background: rgba(240, 250, 230, 1);
 }
 
-p {
-	font-size: 15pt;
+table
+{
+	overflow-y: auto;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table thead th 
+{
+	position: sticky;
+	top: 0;
 }
 
 .tdDescription
 {
-	width: 40%;
 	text-align: justify;
+	width: 40%;
 }
 
 .tdDesignation
 {
-	width: 30%;
 	text-align: justify;
-}
-
-.tdName
-{
-	width: 10%;
-}
-
-.tdInvoiceCode
-{
-	width: 10%;
-}
-
-.tdClientCode
-{
-	width: 10%;
 }
 
 .inputText

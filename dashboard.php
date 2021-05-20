@@ -13,12 +13,12 @@
 		<?php 
 			//Verify if user is connected
 			if(!isset($_SESSION['username']))
-				header("Refresh: 0;url= index.php");
+				header("Location: index.php");
 
 			//Verify if logOff button has been clicked
 			if(isset($_POST['logOff'])){
 				session_destroy();
-				header("Refresh: 0;url= index.php");
+				header("Location: index.php");
 			}
 			
 			$currentPage = "dashboard" 
