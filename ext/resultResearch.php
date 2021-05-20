@@ -14,7 +14,13 @@
 				showInvoiceline($result);
 		}
 		else
-			print("<p class='message'>Aucun résultats pour cette recherche</p>");
+			print
+			("
+				</div>
+				<div class='message_box'>
+					<p class='message'>Aucun résultats pour cette recherche</p>
+				</div>
+			");
 	}
 
 
@@ -58,6 +64,7 @@
 
 
 		print("</table>");
+		print("</div>");
 	}
 
 	function showClient($result)

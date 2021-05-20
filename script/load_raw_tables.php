@@ -15,6 +15,8 @@
 		DROP TABLE odoo_invoices;
 		DROP TABLE odoo_invoiceline;
 
+		DROP TABLE ebp;
+
 	");
 	$step->execute();
 
@@ -141,14 +143,46 @@
 	");
 	$step->execute();
 
+	$step=$database->prepare("
+
+		CREATE TABLE ebp (
+
+			invoiceCode VARCHAR(50),
+			date TEXT,
+			clientCode VARCHAR(50),
+			title TEXT,
+			name TEXT,
+			address TEXT,
+			capital TEXT,
+			city TEXT,
+			number TEXT,
+			mail TEXT,
+			discount TEXT,
+			totalExcludingTaxes TEXT,
+			totalIncludingTaxes TEXT,
+			articleCode VARCHAR(255),
+			description TEXT,
+			amount TEXT,
+			unitPrice TEXT,
+			totalPrice TEXT,
+			designation TEXT
+
+		);
+
+	");
+	$step->execute();
+
 
 	//LOAD DATA
 
+	$separator = ';';
+	$username = 'guillaume';
+
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2016/sage2016_clients.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2016/sage2016_clients.csv' 
 		INTO TABLE  sage2016_clients
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -158,9 +192,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2016/sage2016_invoices.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2016/sage2016_invoices.csv' 
 		INTO TABLE  sage2016_invoices
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -170,9 +204,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2016/sage2016_invoiceline.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2016/sage2016_invoiceline.csv' 
 		INTO TABLE  sage2016_invoiceline
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -180,12 +214,11 @@
 	");
 	$step->execute();
 
-
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2019/sage2019_clients.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2019/sage2019_clients.csv' 
 		INTO TABLE  sage2019_clients
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -195,9 +228,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2019/sage2019_invoices.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2019/sage2019_invoices.csv' 
 		INTO TABLE  sage2019_invoices
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -207,9 +240,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/SAGE_2019/sage2019_invoiceline.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/SAGE_2019/sage2019_invoiceline.csv' 
 		INTO TABLE  sage2019_invoiceline
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -220,9 +253,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/ODOO/odoo_clients.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/ODOO/odoo_clients.csv' 
 		INTO TABLE  odoo_clients
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -232,9 +265,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/ODOO/odoo_invoices.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/ODOO/odoo_invoices.csv' 
 		INTO TABLE  odoo_invoices
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -244,9 +277,9 @@
 
 	$step=$database->prepare("
 
-		LOAD DATA INFILE 'C:/Users/guill/Documents/ERP/ODOO/odoo_invoiceline.csv' 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/ODOO/odoo_invoiceline.csv' 
 		INTO TABLE  odoo_invoiceline
-		FIELDS TERMINATED BY ',' 
+		FIELDS TERMINATED BY '${separator}' 
 		ENCLOSED BY '\"'
 		LINES TERMINATED BY '\r\n'
 		IGNORE 1 ROWS;
@@ -254,6 +287,16 @@
 	");
 	$step->execute();
 
+	$step=$database->prepare("
 
+		LOAD DATA INFILE 'C:/Users/${username}/Documents/ERP/EBP/ebp.csv' 
+		INTO TABLE  ebp
+		FIELDS TERMINATED BY '${separator}' 
+		ENCLOSED BY '\"'
+		LINES TERMINATED BY '\r\n'
+		IGNORE 1 ROWS;
+
+	");
+	$step->execute();
 
 ?>

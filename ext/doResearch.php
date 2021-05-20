@@ -8,6 +8,7 @@
 		$existStartPeriod = isset($_POST['startPeriod']) && !empty($_POST['startPeriod']);
 		$existEndPeriod = isset($_POST['endPeriod']) && !empty($_POST['endPeriod']);
 		$existClientCodeFilter = isset($_POST['clientCode_filter']) && !empty($_POST['clientCode_filter']);
+		$existNameFilter = isset($_POST['name_filter']) && !empty($_POST['name_filter']);
 		$existInvoiceCodeFilter = isset($_POST['invoiceCode_filter']) && !empty($_POST['invoiceCode_filter']);
 
 		$existClientCode = isset($_GET['clientCode']) && !empty($_GET['clientCode']);
@@ -23,6 +24,12 @@
 		if($existClientCodeFilter){
 			$clientCode_filter = $_POST["clientCode_filter"];
 			$clause .= "AND clientCode LIKE :clientCode_filter ";
+		}
+
+		//Verify if user has added client name filter
+		if($existNameFilter){
+			$name_filter = $_POST["name_filter"];
+			$clause .= "AND name LIKE :name_filter ";
 		}
 
 		//Verify if user has added start date
@@ -61,6 +68,8 @@
 			$step->bindValue(":invoiceCode_filter", "%{$invoiceCode_filter}%");
 		if($existClientCodeFilter)
 			$step->bindValue(":clientCode_filter", "%{$clientCode_filter}%"); 
+		if($existNameFilter)
+			$step->bindValue(":name_filter", "%{$name_filter}%"); 
 		if($existStartPeriod)
 			$step->bindValue(":startPeriod", $startPeriod); 
 		if($existEndPeriod)

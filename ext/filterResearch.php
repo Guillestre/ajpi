@@ -15,6 +15,11 @@
 		<input type="text" id="clientCode_filter" name="clientCode_filter" class='inputText'/>
 	</div>
 
+	<div class="filter">
+		<label for="name_filter">Nom client à rechercher :</label><br>
+		<input type="text" id="name_filter" name="name_filter" class='inputText'/>
+	</div>
+
 	<!-- DATE ------------------------->
 
 	<div class="filter">

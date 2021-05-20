@@ -16,7 +16,7 @@
 			<?php include 'ext/doResearch.php'?>
 
 			<!-- RESULT FROM THE RESEARCH ----------------->
-			<div class="searchGridResult">
+			<div class="box_result">
 				<h1>Facture <?php print($_GET['invoiceCode']); ?> : </h1>
 				<p>
 					Client : 

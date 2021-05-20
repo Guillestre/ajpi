@@ -30,10 +30,10 @@
 		invoiceCode,
 		articleCode,
 		designation,
-		REPLACE(REPLACE(amount, ',', ''), ' ', ''),
-		REPLACE(REPLACE(unitPrice, ',', ''), ' ', ''),
-		REPLACE(REPLACE(discount, ',', ''), ' ', ''),
-		REPLACE(REPLACE(totalPrice, ',', ''), ' ', '')
+		REPLACE(REPLACE(amount, ',', '.'), ' ', ''),
+		REPLACE(REPLACE(unitPrice, ',', '.'), ' ', ''),
+		REPLACE(REPLACE(discount, ',', '.'), ' ', ''),
+		REPLACE(REPLACE(totalPrice, ',', '.'), ' ', '')
 
 	FROM 
 		sage2016_invoiceline
@@ -74,6 +74,14 @@
 
 	$step=$database->
 	prepare("DELETE FROM sage2016_invoiceline_result WHERE TRIM(articleCode) = '' AND TRIM(designation)='' ");
+	$step->execute();
+
+	$step=$database->
+	prepare("
+		UPDATE sage2016_invoiceline_result 
+		SET articleCode = 'DIVERS' 
+	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
+ 	");
 	$step->execute();
 
 	/*
@@ -162,16 +170,5 @@
 		}
 		unset($current_articleCode);
 	}
-	
-
-	//Fixing leftovers
-
-	$step=$database->
-	prepare("
-		UPDATE sage2016_invoiceline_result 
-		SET articleCode = 'DIVERS' 
-	 	WHERE TRIM(articleCode) = '' AND totalPrice != 0;
- 	");
-	$step->execute();
 
 ?>

@@ -16,7 +16,7 @@
 			<?php include 'ext/doResearch.php'?>
 
 			<!-- RESULT FROM THE RESEARCH ----------------->
-			<div class="searchGridResult">
+			<div class="box_result">
 				<h1>Client <?php print($_GET['clientCode']); ?> : </h1>
 				<?php include 'ext/resultResearch.php';?>
 				<input type="button" value="Retour" onclick="history.back()" class="inputButton">
