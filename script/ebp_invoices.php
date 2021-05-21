@@ -17,16 +17,11 @@
 	");
 	$step->execute();
 
-	//First delete all from ebp_invoices_result
-	$step=$database->prepare("DELETE FROM ebp_invoices_result");
-	$step->execute();
-
-	//Insert invoices from ebp into ebp_invoices_result
-	$step=$database->prepare("
-		SET global group_concat_max_len=15000;
-		");
+	//Set a larger size for group concat
+	$step=$database->prepare("SET global group_concat_max_len=15000;");
 	$step->execute();
 	
+	//Insert invoices from ebp into ebp_invoices_result
 	$step=$database->prepare("
 
 		INSERT INTO `ebp_invoices_result`(`code`, `clientCode`, `date` ,`totalExcludingTaxes`, `totalIncludingTaxes`, description)
@@ -40,11 +35,14 @@
 			TRIM(GROUP_CONCAT(DISTINCT description SEPARATOR '\n'))
 
 		FROM ebp
+		#We do not insert invoices with the client code 'DEVIS', we will do it later
 		WHERE clientCode != 'DEVIS'
 		GROUP BY invoiceCode;
 
 	");
 	$step->execute();
+
+	//Insert invoices for new client code inserted before
 
 	$step=$database->prepare("
 

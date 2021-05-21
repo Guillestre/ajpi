@@ -28,11 +28,11 @@
 	");
 	$step->execute();
 
-	//Insert clients from sage
+	//Insert clients from sage 2019
 
 	$step=$database->prepare("
 		INSERT INTO clients
-		SELECT * FROM sage_clients;
+		SELECT * FROM sage2019_clients_result;
 	");
 	$step->execute();
 
@@ -53,6 +53,15 @@
 			FROM odoo_clients_result
 			WHERE SUBSTR( code, POSITION('41' IN code) + 2, LENGTH(code)) NOT IN ( SELECT code FROM clients ); 
 
+	");
+	$step->execute();
+
+	//Insert clients from sage 2016
+
+	$step=$database->prepare("
+		INSERT INTO clients
+		SELECT * FROM sage2016_clients_result
+		WHERE code NOT IN (SELECT code FROM clients);
 	");
 	$step->execute();
 

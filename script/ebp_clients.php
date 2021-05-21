@@ -43,6 +43,9 @@
 	");
 	$step->execute();
 
+	//Insert remaining clients with the same code 'DEVIS'. We differentiate then
+	// By one with DIVERS1, DIVERS2 and DEVIS
+
 	$step=$database->prepare("
 
 		INSERT INTO ebp_clients_result

@@ -16,19 +16,19 @@
 
 		//Verify if user has added invoiceCode filter
 		if($existInvoiceCodeFilter){
-			$invoiceCode_filter = $_POST["invoiceCode_filter"];
+			$invoiceCode_filter = trim($_POST["invoiceCode_filter"]);
 			$clause .= "AND invoices.code LIKE :invoiceCode_filter ";
 		}
 
 		//Verify if user has added client code filter
 		if($existClientCodeFilter){
-			$clientCode_filter = $_POST["clientCode_filter"];
+			$clientCode_filter = trim($_POST["clientCode_filter"]);
 			$clause .= "AND clientCode LIKE :clientCode_filter ";
 		}
 
 		//Verify if user has added client name filter
 		if($existNameFilter){
-			$name_filter = $_POST["name_filter"];
+			$name_filter = trim($_POST["name_filter"]);
 			$clause .= "AND name LIKE :name_filter ";
 		}
 

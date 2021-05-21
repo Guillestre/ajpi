@@ -9,7 +9,7 @@
 			date VARCHAR(50),
 			totalExcludingTaxes TEXT,
 			totalIncludingTaxes TEXT,
-			description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+			description TEXT
 
 		);
 
@@ -17,6 +17,7 @@
 	$step->execute();
 
 	//Insert ebp invoices with a description from ebp_invoiceline_result and ebp_invoices_result
+	
 	$step=$database->prepare("
 		INSERT INTO invoices
 		SELECT 
@@ -54,7 +55,7 @@
 	");
 	$step->execute();
 
-	//Insert sage invoices with resume
+	//Insert sage2016 invoices with resume
 	$step=$database->prepare("
 		INSERT INTO invoices
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br>') AS description FROM
@@ -68,7 +69,7 @@
 			sil.designation AS designation,
 			sil.articleCode AS articleCode,
 			sil.totalPrice AS totalPrice
-			FROM sage_invoices si, sage_invoiceline sil
+			FROM sage2016_invoices_result si, sage2016_invoiceline_result sil
 			WHERE si.code = sil.invoiceCode 
 		) e
 		WHERE TRIM(articleCode) = '' AND code NOT IN ( SELECT code FROM invoices )
@@ -76,14 +77,15 @@
 	");
 	$step->execute();
 
-	//Insert sage invoices with no resume
+	//Insert sage2016 invoices with no resume
 	$step=$database->prepare("
 		INSERT INTO invoices 
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, ''
-		FROM sage_invoices
+		FROM sage2016_invoices_result
 		WHERE code NOT IN ( SELECT code FROM invoices )
 	");
 	$step->execute();
+
 
 	//Insert odoo invoices with resume
 	$step=$database->prepare("
@@ -98,6 +100,37 @@
 		FROM odoo_invoices_result oir, odoo_invoiceline_result oilr
 		WHERE oir.code = oilr.invoiceCode AND oir.code NOT IN ( SELECT code FROM invoices )
 		GROUP BY code
+	");
+	$step->execute();
+
+	//Insert sage2019 invoices with resume
+	$step=$database->prepare("
+		INSERT INTO invoices
+		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br>') AS description FROM
+		(
+			SELECT  
+			si.code AS code, 
+			si.clientCode AS clientCode, 
+			si.date AS date, 
+			si.totalExcludingTaxes AS totalExcludingTaxes, 
+			si.totalIncludingTaxes AS totalIncludingTaxes, 
+			sil.designation AS designation,
+			sil.articleCode AS articleCode,
+			sil.totalPrice AS totalPrice
+			FROM sage2019_invoices_result si, sage2019_invoiceline_result sil
+			WHERE si.code = sil.invoiceCode 
+		) e
+		WHERE TRIM(articleCode) = '' AND code NOT IN ( SELECT code FROM invoices )
+		GROUP BY code;
+	");
+	$step->execute();
+
+	//Insert sage2019 invoices with no resume
+	$step=$database->prepare("
+		INSERT INTO invoices 
+		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, ''
+		FROM sage2019_invoices_result
+		WHERE code NOT IN ( SELECT code FROM invoices )
 	");
 	$step->execute();
 

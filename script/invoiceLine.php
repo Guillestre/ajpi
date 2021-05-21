@@ -9,14 +9,12 @@
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 			invoiceCode VARCHAR(50),
 			articleCode VARCHAR(255),
-			designation TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+			designation TEXT,
 			amount DOUBLE,
 			unitPrice DOUBLE,
 			discount DOUBLE,
 			totalPrice DOUBLE,
-			description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-
-			FOREIGN KEY (invoiceCode) REFERENCES invoices(code)
+			description TEXT
 				
 		);
 
@@ -51,7 +49,7 @@
 	");
 	$step->execute();
 
-	//Insert sage invoice lines
+	//Insert sage2016 invoice lines
 	$step=$database->prepare("
 
 		INSERT INTO invoiceline (invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, description)
@@ -60,7 +58,7 @@
 			(
 				#Group article codes from an invoice with a price or/and amount
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
-				FROM sage_invoiceline
+				FROM sage2016_invoiceline_result
 				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
 				GROUP BY invoiceCode, articleCode
 
@@ -68,7 +66,7 @@
 
 				#Select commentaries from each articleCode
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
-				FROM sage_invoiceline
+				FROM sage2016_invoiceline_result
 				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
 				GROUP BY invoiceCode, articleCode
 			
@@ -91,6 +89,35 @@
 	");
 	$step->execute();
 
+	//Insert sage2019 invoice lines
+
+	$step=$database->prepare("
+
+		INSERT INTO invoiceline (invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, description)
+		SELECT da.invoiceCode, da.articleCode, da.designation, da.amount, da.unitPrice, da.discount, da.totalPrice, GROUP_CONCAT(da.description SEPARATOR '') 
+			FROM
+			(
+				#Group article codes from an invoice with a price or/and amount
+				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
+				FROM sage2019_invoiceline_result
+				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
+				GROUP BY invoiceCode, articleCode
+
+				UNION
+
+				#Select commentaries from each articleCode
+				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+				FROM sage2019_invoiceline_result
+				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
+				GROUP BY invoiceCode, articleCode
+			
+			) AS da 
+			WHERE da.invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline)
+			GROUP BY da.invoiceCode, da.articleCode;
+
+	");
+	$step->execute();
+
 	//Delete all * character from article codes
 
 	$step=$database->prepare("
@@ -98,6 +125,10 @@
 		UPDATE invoiceline SET articleCode = REPLACE(articleCode, '*', '');
 
 	");
+	$step->execute();
+
+	//Add foreign key
+	$step=$database->prepare("ALTER TABLE invoiceline ADD FOREIGN KEY (invoiceCode) REFERENCES invoices(code);");
 	$step->execute();
 
 ?>

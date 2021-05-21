@@ -1,4 +1,6 @@
 <?php
+	
+	//Set time limit to let the time for scripts to execute
 	set_time_limit(500);
 
 	$delete_results = false;
@@ -7,7 +9,7 @@
 
 	$sage2016 = false;
 	$sage2019 = false;
-	$ebp = false;
+	$ebp = true;
 	$odoo = false;
 
 	$data_changed = $sage2016 || $sage2019 || $ebp || $odoo;
@@ -37,12 +39,6 @@
 		include 'script/sage2019_clients.php';
 		include 'script/sage2019_invoices.php';
 		include 'script/sage2019_invoiceLine.php';
-	}
-
-	if($sage2016 || $sage2019){
-		include 'script/sage_clients.php';
-		include 'script/sage_invoices.php';
-		include 'script/sage_invoiceLine.php';
 	}
 
 	if($odoo){

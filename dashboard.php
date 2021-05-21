@@ -26,8 +26,8 @@
 
 		<form action="dashboard.php" method="post">
 
-			<div class="log_off_area">
-					<input type="submit" name="logOff" value="Se déconnecter" class="logOffButton" />
+			<div class="logoff_area">
+					<input type="submit" name="logOff" value="Se déconnecter" class="logoff_button" />
 			</div>
 
 		</form>
@@ -35,16 +35,16 @@
 		<form action="dashboard.php" method="post">
 
 			<!-- FILTER ------------------------------------>
-			<div class="searchGridFilter">
+			<div class="dashboard_filter_area">
 				<?php include 'ext/filterResearch.php';?>
-				<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="inputButton"/>
+				<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
 			</div>
 	
 			<!-- DO RESEARCH ------------------------------->
 			<?php include 'ext/doResearch.php'?>
 
 			<!-- RESULT FROM THE RESEARCH ----------------->
-			<div class="searchGridResult">
+			<div class="dashboard_result_area">
 				<?php include 'ext/resultResearch.php';?>
 			
 

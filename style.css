@@ -4,8 +4,8 @@ p {
 
 th, td
 {
-	font-size: 17pt;
-	padding: 30px 30px;
+	font-size: 15pt;
+	padding: 10px 10px;
 	text-align: center;
 }
 
@@ -45,19 +45,27 @@ table thead th
 	margin: 4pt;
 }
 
-.inputButton
+.research_button
 {
-	font-size: 15pt;
+	font-size: 20pt;
 	margin-top: 30pt;
 }
 
-.logOffButton
+.return_button
 {
-	font-size: 15pt;
+	font-size: 20pt;
+	position: sticky;
+	bottom: 10pt;
+	margin: 10pt;
+}
+
+.logoff_button
+{
+	font-size: 20pt;
 	margin: 5pt;
 }
 
-.log_off_area
+.logoff_area
 {
 	background-color: rgba(255, 255, 50, .3);
 	border: 1px solid grey;
@@ -71,14 +79,15 @@ table thead th
 	margin: 5pt;
 }
 
-.searchGridResult{
+.dashboard_result_area{
 	background-color: rgba(255, 255, 50, .3);
 	margin: 10pt;
+	
 	position: absolute;
 	left: 210pt;
 }
 
-.searchGridFilter{
+.dashboard_filter_area{
 	background-color: rgba(255, 255, 50, .3);
 	padding: 10pt;
 	border: 1px solid grey;
