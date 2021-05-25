@@ -177,10 +177,6 @@
 		WHERE TRIM(designation) = ''");
 	$step->execute();
 
-	//Delete lines from invoices that are present into sage
-	$step=$database->prepare("DELETE FROM odoo_invoiceline_result WHERE invoiceCode IN ( SELECT invoiceCode FROM sage_invoiceline )");
-	$step->execute();
-
 	$step=$database->prepare("
 
 		UPDATE odoo_invoiceline_result SET invoiceCode = REPLACE(invoiceCode, 'V', 'C');

@@ -1,0 +1,67 @@
+p {
+	font-size: 15pt;
+}
+
+th, td
+{
+	font-size: 15pt;
+	text-align: center;
+	padding: 10pt 10pt;
+}
+
+th
+{
+	background: rgba(240, 250, 230, 1);
+}
+
+
+table
+{
+	overflow-y: auto;
+	border-collapse: collapse;
+	background-color: rgba(255, 255, 50, .3);
+}
+
+@media (max-width:1000pt){
+
+	table{
+		width: 5%;
+	}
+
+}
+
+table thead th 
+{
+	position: sticky;
+	top: 0;
+}
+
+input
+{
+	font-size: 18pt;
+	padding: 4pt;
+	margin: 4pt;
+}
+
+.td_description
+{
+	text-align: justify;
+}
+
+.td_designation
+{
+	text-align: justify;
+}
+
+.return_button
+{
+	position: sticky;
+	bottom: 10pt;
+	margin: 10pt;
+}
+
+.result_box{
+	background-color: rgba(255, 255, 50, .3);
+	padding: 10pt;
+	border: 1px solid grey;
+}

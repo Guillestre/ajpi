@@ -5,6 +5,7 @@
 		<?php 
 			include 'ext/header.php';
 		?>
+		<link rel="stylesheet" href="styles/dashboard.css">
 		<title>Rechercher</title>
 	</head>
 
@@ -15,40 +16,44 @@
 			if(!isset($_SESSION['username']))
 				header("Location: index.php");
 
-			//Verify if logOff button has been clicked
-			if(isset($_POST['logOff'])){
+			//Verify if log_off button has been clicked
+			if(isset($_POST['log_off'])){
 				session_destroy();
 				header("Location: index.php");
 			}
 			
-			$currentPage = "dashboard" 
+			$currentPage = "dashboard";
 		?>
+		
+		<div class='dashboard_left_part'>
 
-		<form action="dashboard.php" method="post">
+			<form action="dashboard.php" method="post">
 
-			<div class="logoff_area">
-					<input type="submit" name="logOff" value="Se déconnecter" class="logoff_button" />
-			</div>
+				<input type="submit" name="log_off" value="Se déconnecter" class="logoff_button" />
 
-		</form>
+			</form>
 
-		<form action="dashboard.php" method="post">
+			<div class="filter_area">
 
-			<!-- FILTER ------------------------------------>
-			<div class="dashboard_filter_area">
-				<?php include 'ext/filterResearch.php';?>
-				<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
-			</div>
-	
-			<!-- DO RESEARCH ------------------------------->
-			<?php include 'ext/doResearch.php'?>
+				<form action="dashboard.php" method="post">
 
-			<!-- RESULT FROM THE RESEARCH ----------------->
-			<div class="dashboard_result_area">
-				<?php include 'ext/resultResearch.php';?>
+					<!-- FILTER ------------------------------------>
+						<?php include 'ext/filterResearch.php';?>
+						<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
 			
+					<!-- DO RESEARCH ------------------------------->
+					<?php include 'ext/doResearch.php'?>
+					
+				</form>
 
-		</form>
+			</div>
+
+		</div>
+		
+
+		<!-- RESULT FROM THE RESEARCH ----------------->
+		<?php include 'ext/resultResearch.php';?>
+	
 
 	</body>
 

@@ -3,6 +3,7 @@
 
 	<head>
 		<?php include 'ext/header.php';?>
+		<link rel="stylesheet" href="styles/result.css">
 		<title>Rechercher</title>
 	</head>
 
@@ -16,7 +17,7 @@
 			<?php include 'ext/doResearch.php'?>
 
 			<!-- RESULT FROM THE RESEARCH ----------------->
-			<div class="box_result">
+			<div class="result_box">
 				<h1>Facture <?php print($_GET['invoiceCode']); ?> : </h1>
 				<p>
 					Client : 

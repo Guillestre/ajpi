@@ -1,0 +1,73 @@
+p {
+	font-size: 20pt;
+}
+
+th, td
+{
+	font-size: 15pt;
+	text-align: center;
+	padding: 10pt 10pt;
+}
+
+th
+{
+	background: rgba(240, 250, 230, 1);
+}
+
+
+table
+{
+	overflow-y: auto;
+	border-collapse: collapse;
+	background-color: rgba(255, 255, 50, .3);
+}
+
+table thead th 
+{
+	position: sticky;
+	top: 0;
+}
+
+label, input
+{
+	font-size: 18pt;
+	margin: 10pt;
+}
+
+.td_description
+{
+	text-align: justify;
+	width: 40%;
+}
+
+.research_button
+{
+	margin-top: 30pt;
+}
+
+.logoff_button
+{
+	margin: 10pt;
+}
+
+.filter_area{
+	background-color: rgba(255, 255, 50, .3);
+	padding: 10pt;
+	border: 1px solid grey;
+	margin: 10pt;
+}
+
+@media (min-width:1000pt){
+	.dashboard_left_part{
+		float: left;
+		position: sticky;
+		top: 0;
+	}
+}
+
+.error_message{
+  color: red;
+
+  position: absolute;
+  left: 300pt;
+}

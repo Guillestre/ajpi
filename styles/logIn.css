@@ -1,0 +1,37 @@
+.grid-container-index {
+  display: grid;
+  grid-template-columns: 160pt 250pt;
+
+}
+
+.grid-container-verify {
+  display: grid;
+  grid-template-columns: 110pt 250pt;
+}
+
+.grid-item-label {
+  text-align: right;
+  margin: 5pt;
+}
+
+.grid-item-input-text {
+  text-align: left;
+  margin: 5pt;
+}
+
+.grid-item-input-button {
+  text-align: center;
+  margin: 20pt;
+}
+
+label, input {
+  font-size: 18pt;
+}
+
+p{
+  font-size: 20pt;
+}
+
+.error_message{
+  color: red;
+}

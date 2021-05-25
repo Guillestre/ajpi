@@ -1,5 +1,4 @@
 <meta charset="utf-8">
-<link rel="stylesheet" href="style.css">
 <?php 
 	include_once "classes/mysqlConnection.php";
 

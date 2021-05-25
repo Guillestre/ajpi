@@ -16,8 +16,7 @@
 		else
 			print
 			("
-				</div>
-				<div class='message_box'>
+				<div class='error_message'>
 					<p class='message'>Aucun résultats pour cette recherche</p>
 				</div>
 			");
@@ -60,13 +59,13 @@
 					<td>".$invoice['date']."</td>
 					<td>".$invoice['totalExcludingTaxes']."</td>
 					<td>".$invoice['totalIncludingTaxes']."</td>
-					<td class='tdDescription'>".$invoice['description']."</td>
+					<td class='td_description'>".$invoice['description']."</td>
 				</tr>	
 			");
 
 
 		print("</table>");
-		print("</div>");
+		
 	}
 
 	function showClient($result)
@@ -130,12 +129,12 @@
 			print("
 				<tr>
 					<td>".$line['articleCode']."</td>
-					<td class='tdDesignation'>".$line['designation']."</td>
+					<td class='td_designation'>".$line['designation']."</td>
 					<td>".$line['amount']."</td>
 					<td>".$line['unitPrice']."</td>
 					<td>".$line['discount']."</td>
 					<td>".$line['totalPrice']."</td>
-					<td class='tdDescription'>".$line['description']."</td>
+					<td class='td_description'>".$line['description']."</td>
 				</tr>	
 			");
 
