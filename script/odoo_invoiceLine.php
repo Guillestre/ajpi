@@ -72,72 +72,9 @@
 	$step=$database->prepare("ALTER TABLE odoo_invoiceline_result MODIFY COLUMN totalPrice DOUBLE");
 	$step->execute();
 
-
-
-	//Get all invoiceCode
-	$query = "SELECT DISTINCT id, invoiceCode FROM odoo_invoiceline_result";
-	$codes = $database->query($query)->fetchAll();
-
-	$current_invoiceCode = '';
-
-	foreach($codes as $code){
-		
-		$new_invoiceCode = $code['invoiceCode'];
-
-		if(TRIM($new_invoiceCode)  == '' && TRIM($current_invoiceCode) != '')
-		{
-				$step=$database->prepare("UPDATE odoo_invoiceline_result SET invoiceCode = '" . $current_invoiceCode . "' WHERE id = " . $code['id']);
-				$step->execute();
-		}
-		else
-			$current_invoiceCode = $new_invoiceCode;
-		
-	}
-
-	/*
-	*This algo will differentiate article code if there are on several lines with different total price not equal to zero
-	*/
-
-	//Get all invoiceCode
-	$query = "SELECT DISTINCT invoiceCode FROM odoo_invoiceline_result";
-	$codes = $database->query($query)->fetchAll();
-
-	//Fetch each invoice
-	foreach($codes as $code){
-
-		//Get all articles code with total price not equal to zero
-		$query = "
-		SELECT * FROM odoo_invoiceline_result WHERE invoiceCode = '". $code['invoiceCode'] . "' AND totalPrice != '0.00' AND articleCode != ''
-		ORDER BY articleCode ASC;
-		";
-
-		$lines = $database->query($query)->fetchAll();
-		$offset = "";
-		//Fetch each article
-		foreach($lines as $line)
-		{
-			if(!isset($articleCode))
-				$articleCode = $line['articleCode'];
-			else
-			{
-				if($line['articleCode'] == $articleCode)
-				{
-					$offset .= "*";
-					$step=$database->
-					prepare("UPDATE odoo_invoiceline_result SET articleCode = :articleCode WHERE id = :id");
-					$param = $articleCode . $offset;
-					$step->bindParam(':articleCode', $param);
-					$step->bindParam(':id', $line['id']);
-					$step->execute();
-				}
-				else
-				{
-					$offset = "";
-					$articleCode = $line['articleCode'];
-				}
-			}
-		}
-	}
+	//Call the algorithm repair
+	$table_name = 'odoo_invoiceline_result';
+	include 'algorithm_repair.php';
 
 	//Remove lines with empty invoiceCode
 	$step=$database->prepare("DELETE FROM odoo_invoiceline_result WHERE TRIM(invoiceCode) = ''");

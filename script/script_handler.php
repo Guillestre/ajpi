@@ -1,4 +1,6 @@
 <?php
+
+	include 'classes/repairAlgorithm.php';
 	
 	//Set time limit to let the time for scripts to execute
 	set_time_limit(500);

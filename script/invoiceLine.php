@@ -32,7 +32,7 @@
 				#Group article codes from an invoice with a price
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
 				FROM ebp_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
+				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0 OR unitPrice != 0)
 				GROUP BY invoiceCode, articleCode
 
 				UNION
@@ -40,7 +40,7 @@
 				#Select commentaries from each articleCode
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
 				FROM ebp_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
+				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 
@@ -59,7 +59,7 @@
 				#Group article codes from an invoice with a price or/and amount
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
 				FROM sage2016_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
+				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0 OR unitPrice != 0)
 				GROUP BY invoiceCode, articleCode
 
 				UNION
@@ -67,7 +67,7 @@
 				#Select commentaries from each articleCode
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
 				FROM sage2016_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
+				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 
@@ -100,7 +100,7 @@
 				#Group article codes from an invoice with a price or/and amount
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, '' AS description
 				FROM sage2019_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0)
+				WHERE TRIM(articleCode) != '' AND (totalPrice != 0 OR amount != 0 OR unitPrice != 0)
 				GROUP BY invoiceCode, articleCode
 
 				UNION
@@ -108,7 +108,7 @@
 				#Select commentaries from each articleCode
 				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
 				FROM sage2019_invoiceline_result
-				WHERE TRIM(articleCode) != '' AND totalPrice = 0 AND amount = 0
+				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 

@@ -23,9 +23,7 @@
 		DROP TABLE IF EXISTS ebp_invoices_result;
 		DROP TABLE IF EXISTS ebp_clients_result;
 
-		DROP TABLE IF EXISTS invoiceline;
-		DROP TABLE IF EXISTS invoices;
-		DROP TABLE IF EXISTS clients;
+		
 
 	");
 	$step->execute();
