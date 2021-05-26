@@ -1,5 +1,10 @@
-p {
+label, p {
 	font-size: 15pt;
+}
+
+input {
+  font-size: 20pt;
+  margin: 5pt;
 }
 
 th, td
@@ -34,13 +39,6 @@ table thead th
 {
 	position: sticky;
 	top: 0;
-}
-
-input
-{
-	font-size: 18pt;
-	padding: 4pt;
-	margin: 4pt;
 }
 
 .td_description

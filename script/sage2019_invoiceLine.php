@@ -133,11 +133,6 @@
 	$table_name = 'sage2019_invoiceline_result';
 	include 'algorithm_repair.php';
 
-	$step=$database->prepare("
-		UPDATE sage2019_invoiceline_result SET invoiceCode = REPLACE(invoiceCode, 'V', 'C');
-	");
-	$step->execute();
-
 	//Add foreign key
 	$step=$database->prepare("ALTER TABLE sage2019_invoiceline_result ADD FOREIGN KEY (invoiceCode) REFERENCES sage2019_invoices_result(code);");
 	$step->execute();

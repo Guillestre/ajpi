@@ -71,7 +71,8 @@
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 
-			WHERE da.invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline)
+			WHERE SUBSTR( da.invoiceCode, POSITION('F' IN da.invoiceCode) + 2, LENGTH(da.invoiceCode)) 
+			NOT IN (SELECT SUBSTR( invoiceCode, POSITION('F' IN invoiceCode) + 2, LENGTH(invoiceCode)) FROM invoiceline)
 			GROUP BY da.invoiceCode, da.articleCode;
 
 	");
@@ -84,7 +85,8 @@
 		INSERT INTO invoiceline (invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, description)
 		SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, description
 		FROM odoo_invoiceline_result
-		WHERE invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline);
+		WHERE SUBSTR( invoiceCode, POSITION('F' IN invoiceCode) + 2, LENGTH(invoiceCode)) 
+		NOT IN (SELECT SUBSTR( invoiceCode, POSITION('F' IN invoiceCode) + 2, LENGTH(invoiceCode)) FROM invoiceline);
 
 	");
 	$step->execute();
@@ -112,7 +114,8 @@
 				GROUP BY invoiceCode, articleCode
 			
 			) AS da 
-			WHERE da.invoiceCode NOT IN (SELECT invoiceCode FROM invoiceline)
+			WHERE SUBSTR( da.invoiceCode, POSITION('F' IN da.invoiceCode) + 2, LENGTH(da.invoiceCode)) 
+			NOT IN (SELECT SUBSTR( invoiceCode, POSITION('F' IN invoiceCode) + 2, LENGTH(invoiceCode)) FROM invoiceline)
 			GROUP BY da.invoiceCode, da.articleCode;
 
 	");

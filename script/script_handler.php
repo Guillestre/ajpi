@@ -1,28 +1,29 @@
 <?php
 
-	include 'classes/repairAlgorithm.php';
+	include 'classes/repair_algorithm.php';
 	
-	//Set time limit to let the time for scripts to execute
+	//Set time limit
 	set_time_limit(500);
 
-	$delete_results = false;
+	$deleteResults = false;
 	$users = false;
-	$load_raw_tables = false;
+	$loadRawTables = false;
 
 	$sage2016 = false;
 	$sage2019 = false;
 	$ebp = false;
 	$odoo = false;
 
-	$data_changed = $sage2016 || $sage2019 || $ebp || $odoo;
+	//verify if we change data
+	$dataChanged = $sage2016 || $sage2019 || $ebp || $odoo;
 
 	if($users)
 		include 'script/users.php';
 
-	if($delete_results)
+	if($deleteResults)
 		include 'script/delete_results.php';
 
-	if($load_raw_tables)
+	if($loadRawTables)
 			include 'script/load_raw_tables.php';
 
 	if($ebp){
@@ -49,7 +50,7 @@
 		include 'script/odoo_invoiceLine.php';
 	}
 
-	if($data_changed){
+	if($dataChanged){
 		include 'script/clients.php';
 		include 'script/invoices.php';
 		include 'script/invoiceLine.php';

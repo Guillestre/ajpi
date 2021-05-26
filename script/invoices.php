@@ -51,7 +51,8 @@
 		INSERT INTO invoices 
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, description
 		FROM ebp_invoices_result
-		WHERE code NOT IN ( SELECT code FROM invoices );
+		WHERE code 
+		NOT IN ( SELECT code FROM invoices );
 	");
 	$step->execute();
 
@@ -72,7 +73,9 @@
 			FROM sage2016_invoices_result si, sage2016_invoiceline_result sil
 			WHERE si.code = sil.invoiceCode 
 		) e
-		WHERE TRIM(articleCode) = '' AND code NOT IN ( SELECT code FROM invoices )
+		WHERE TRIM(articleCode) = '' AND 
+		SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) 
+		NOT IN ( SELECT SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) FROM invoices )
 		GROUP BY code;
 	");
 	$step->execute();
@@ -82,12 +85,13 @@
 		INSERT INTO invoices 
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, ''
 		FROM sage2016_invoices_result
-		WHERE code NOT IN ( SELECT code FROM invoices )
+		WHERE SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) 
+		NOT IN ( SELECT SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) FROM invoices )
 	");
 	$step->execute();
 
 
-	//Insert odoo invoices with resume
+	//Insert odoo invoices
 	$step=$database->prepare("
 		INSERT INTO invoices
 		SELECT  
@@ -97,9 +101,9 @@
 			totalExcludingTaxes, 
 			totalIncludingTaxes,
 			'' AS description
-		FROM odoo_invoices_result oir, odoo_invoiceline_result oilr
-		WHERE oir.code = oilr.invoiceCode AND oir.code NOT IN ( SELECT code FROM invoices )
-		GROUP BY code
+		FROM odoo_invoices_result
+		WHERE SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code))  
+		NOT IN ( SELECT SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) FROM invoices )
 	");
 	$step->execute();
 
@@ -120,7 +124,8 @@
 			FROM sage2019_invoices_result si, sage2019_invoiceline_result sil
 			WHERE si.code = sil.invoiceCode 
 		) e
-		WHERE TRIM(articleCode) = '' AND code NOT IN ( SELECT code FROM invoices )
+		WHERE TRIM(articleCode) = '' AND SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) 
+		NOT IN ( SELECT SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) FROM invoices )
 		GROUP BY code;
 	");
 	$step->execute();
@@ -130,7 +135,8 @@
 		INSERT INTO invoices 
 		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, ''
 		FROM sage2019_invoices_result
-		WHERE code NOT IN ( SELECT code FROM invoices )
+		WHERE SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) 
+		NOT IN ( SELECT SUBSTR( code, POSITION('F' IN code) + 2, LENGTH(code)) FROM invoices )
 	");
 	$step->execute();
 

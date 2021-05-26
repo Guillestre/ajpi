@@ -1,12 +1,15 @@
-.grid-container-index {
-  display: grid;
-  grid-template-columns: 160pt 250pt;
-
+label, p {
+  font-size: 15pt;
 }
 
-.grid-container-verify {
+input {
+  font-size: 15pt;
+}
+
+.grid-container-index {
   display: grid;
-  grid-template-columns: 110pt 250pt;
+  grid-template-columns: 140pt 100pt;
+
 }
 
 .grid-item-label {
@@ -24,14 +27,23 @@
   margin: 20pt;
 }
 
-label, input {
-  font-size: 18pt;
+.error_message{
+  color: #D8000C;
+  background-color: rgba(220, 172, 159, 0.6);
+  text-align: center;
+  margin-right: 900pt;
+
+  background-image: url('../images/error.jpg');
+  background-repeat: no-repeat;
+  background-size: 50pt;
 }
+
+.signInBox{
+  background: rgba(157, 172, 156);
+  padding: 5pt;
+}
+
 
 p{
-  font-size: 20pt;
-}
-
-.error_message{
-  color: red;
+  padding: 5pt;
 }

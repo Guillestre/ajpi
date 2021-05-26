@@ -1,5 +1,10 @@
-p {
-	font-size: 20pt;
+label, p {
+	font-size: 15pt;
+}
+
+input {
+  font-size: 15pt;
+  margin: 5pt;
 }
 
 th, td
@@ -17,8 +22,6 @@ th
 
 table
 {
-	overflow-y: auto;
-	border-collapse: collapse;
 	background-color: rgba(255, 255, 50, .3);
 }
 
@@ -26,12 +29,6 @@ table thead th
 {
 	position: sticky;
 	top: 0;
-}
-
-label, input
-{
-	font-size: 18pt;
-	margin: 10pt;
 }
 
 .td_description

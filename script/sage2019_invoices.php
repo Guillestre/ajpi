@@ -34,13 +34,6 @@
 	");
 	$step->execute();
 
-	$step=$database->prepare("
-
-		UPDATE sage2019_invoices_result SET code = REPLACE(code, 'V', 'C');
-
-	");
-	$step->execute();
-
 	//Add primary key
 	$step=$database->prepare("ALTER TABLE sage2019_invoices_result ADD PRIMARY KEY (code);");
 	$step->execute();
