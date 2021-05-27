@@ -7,7 +7,7 @@ th, td
 {
 	font-size: 15pt;
 	text-align: center;
-	padding: 10pt 10pt;
+	padding: 5pt 5pt;
 }
 
 th
@@ -30,7 +30,6 @@ table thead th
 .tdDescription
 {
 	text-align: justify;
-	width: 40%;
 }
 
 .researchButton
@@ -49,106 +48,130 @@ table thead th
 	margin: 10pt;
 }
 
-@media (min-width:1100pt){
-
-	th, td
-	{
-		font-size: 15pt;
-		text-align: center;
-		padding: 10pt 10pt;
-	}
-
-	.dashboardLeftPart{
-		float: left;
-		position: sticky;
-		top: 10pt;
-	}
-
-	.infoMessageBox{
-		position: relative;
-		top: 50pt;
-	}
-}
-
-.infoMessageBox{
+.infoMessageBox
+{
 	font-size: 18pt;
 }
 
+.infoMessageBox{
+	position: relative;
+	top: 50pt;
+}
 
-@media (min-width:1100pt){
+@media (min-width:1000pt) and (max-width:1100pt) {
 
 	th, td
 	{
-		font-size: 15pt;
+		font-size: 14pt;
 		text-align: center;
-		padding: 5pt 5pt;
+		padding: 5pt 0pt;
+	}
+
+	label,input {
+		font-size: 14pt;
+		margin: 5pt;
 	}
 
 }
 
-@media (max-width:1100pt) and (min-width:950pt){
+@media (min-width:850pt) and (max-width:1000pt) {
 
 	th, td
 	{
-		font-size: 15pt;
+		font-size: 12pt;
 		text-align: center;
-		padding: 5pt 5pt;
+		padding: 5pt 0pt;
 	}
 
-	table{
-		width: 70%;
+	label,input {
+		font-size: 12pt;
+		margin: 5pt;
 	}
-	
+
 }
 
-@media (max-width:950pt) and (min-width:800pt){
+
+@media (min-width:600pt) and (max-width:850pt) {
 
 	th, td
 	{
-		font-size: 15pt;
+		font-size: 12pt;
 		text-align: center;
-		padding: 5pt 5pt;
+		padding: 5pt 0pt;
 	}
 
-	table{
-		width: 60%;
+	label,input {
+		font-size: 12pt;
+		margin: 5pt;
 	}
-	
+
 	.tdDescription, .thDescription{
 		display: none;
 	}
 
 }
 
-@media (max-width:800pt) and (min-width:700pt){
+@media (min-width:460pt) and (max-width:600pt) {
 
 	th, td
 	{
-		font-size: 12pt;
+		font-size: 8pt;
 		text-align: center;
-		padding: 5pt 5pt;
+		padding: 5pt 0pt;
 	}
 
-	table{
-		width: 50%;
+	label,input {
+		font-size: 9pt;
+		margin: 5pt;
+	}
+
+	.tdDescription, .thDescription{
+		display: none;
+	}
+
+	.filterArea{
+		padding: 0pt;
+		border: 1px solid grey;
+		margin-bottom: 10pt;
 	}
 
 }
 
-@media (max-width:800pt){
+@media (min-width:460pt) {
 
 	.dashboardLeftPart
 	{
 		float: left;
+		position: sticky;
+		top: 10pt;
 	}
 
 }
 
-@media (min-width:800pt){
-	.dashboardLeftPart
-{
-	float: left;
-	position: sticky;
-	top: 10pt;
+@media (max-width:460pt) {
+
+	th, td
+	{
+		font-size: 10pt;
+		text-align: center;
+		padding: 5pt 0pt;
+	}
+
+	label,input {
+		font-size: 13pt;
+		margin: 5pt;
+	}
+
+	.tdDescription, .thDescription{
+		display: none;
+	}
+
+	.infoMessageBox{
+		position: relative;
+		top: 10pt;
+	}
+
+
 }
-}
+
+
