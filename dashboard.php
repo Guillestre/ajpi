@@ -25,7 +25,7 @@
 			$currentPage = "dashboard";
 		?>
 		
-		<div class='dashboard_left_part'>
+		<div class='dashboardLeftPart'>
 
 			<form action="dashboard.php" method="post">
 
@@ -33,13 +33,13 @@
 
 			</form>
 
-			<div class="filter_area">
+			<div class="filterArea">
 
 				<form action="dashboard.php" method="post">
 
 					<!-- FILTER ------------------------------------>
-						<?php include 'ext/filterResearch.php';?>
-						<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
+					<?php include 'ext/filterResearch.php';?>
+					<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
 			
 					<!-- DO RESEARCH ------------------------------->
 					<?php include 'ext/doResearch.php'?>
@@ -49,7 +49,6 @@
 			</div>
 
 		</div>
-		
 
 		<!-- RESULT FROM THE RESEARCH ----------------->
 		<?php include 'ext/resultResearch.php';?>

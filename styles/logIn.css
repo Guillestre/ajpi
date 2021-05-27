@@ -1,19 +1,3 @@
-label, input {
-  font-size: 15pt;
-}
-
-.grid-container-index {
-  display: grid;
-  grid-template-columns: 140pt 100pt;
-
-}
-
-.grid-container-forms {
-  display: grid;
-  grid-template-columns: 600pt 600pt;
-
-}
-
 .grid-item-label {
   text-align: right;
   margin: 5pt;
@@ -25,26 +9,72 @@ label, input {
 }
 
 .grid-item-input-button {
-  text-align: center;
-  margin: 20pt;
-}
-
-.errorMessageBox{
-  color: #D8000C;
-  background-color: rgba(220, 172, 159, 0.6);
-  text-align: center;
-  margin-right: 1000pt;
-  margin-left: 50pt;
-  padding: 5pt;
-  font-size: 15pt;
+  text-align: right;
 }
 
 .signInBox{
   background: rgba(200, 222, 206);
   padding: 10pt;
+  border: 1pt solid;
 }
 
 .signUpBox{
   background: rgba(150, 202, 200);
   padding: 10pt;
+  border: 1pt solid;
+}
+
+@media (min-width:900pt){
+
+  .grid-container-index {
+    display: grid;
+    grid-template-columns: 170pt 200pt;
+  }
+
+  label, input {
+    font-size: 15pt;
+  }
+
+  .grid-container-forms {
+    display: grid;
+    grid-template-columns: 500pt 500pt;
+  }
+
+  .errorMessageBox{
+    text-align: center;
+    font-size: 15pt;
+    margin: 10pt;
+  }
+
+  .errorMessage{
+    color: red;
+    background-color: rgba(234, 122, 122, 0.2);
+    padding: 4pt;
+    border : 1pt dotted;
+  }
+}
+
+@media (max-width:900pt){
+
+  .grid-container-index {
+    display: grid;
+    grid-template-columns: 145pt 200pt;
+  }
+
+  label, input {
+    font-size: 13pt;
+  }
+
+  .errorMessageBox{
+    text-align: left;
+    font-size: 12pt;
+    margin: 10pt;
+  }
+
+  .errorMessage{
+    color: red;
+    background-color: rgba(234, 122, 122, 0.2);
+    padding: 4pt;
+    border : 1pt dotted;
+  }
 }

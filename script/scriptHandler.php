@@ -1,6 +1,6 @@
 <?php
 
-	include 'classes/repair_algorithm.php';
+	include 'src/correctionAlgorithm.php';
 	
 	//Set time limit
 	set_time_limit(500);

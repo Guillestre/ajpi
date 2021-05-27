@@ -14,12 +14,7 @@
 				showInvoiceline($result);
 		}
 		else
-			print
-			("
-				<div class='error_message'>
-					<p class='message'>Aucun résultats pour cette recherche</p>
-				</div>
-			");
+			messageHandler::sendInfoMessage("Aucun résultats pour cette recherche");
 	}
 
 
@@ -37,7 +32,7 @@
 					<th>Date de facturation</th>
 					<th>Total HT</th>
 					<th>Total TTC</th>
-					<th>Description</th>
+					<th class='thDescription'>Description</th>
 				</tr>
 			</thead>
 		");
@@ -59,7 +54,7 @@
 					<td>".$invoice['date']."</td>
 					<td>".$invoice['totalExcludingTaxes']."</td>
 					<td>".$invoice['totalIncludingTaxes']."</td>
-					<td class='td_description'>".$invoice['description']."</td>
+					<td class='tdDescription'>".$invoice['description']."</td>
 				</tr>	
 			");
 
@@ -129,12 +124,12 @@
 			print("
 				<tr>
 					<td>".$line['articleCode']."</td>
-					<td class='td_designation'>".$line['designation']."</td>
+					<td class='tdDesignation'>".$line['designation']."</td>
 					<td>".$line['amount']."</td>
 					<td>".$line['unitPrice']."</td>
 					<td>".$line['discount']."</td>
 					<td>".$line['totalPrice']."</td>
-					<td class='td_description'>".$line['description']."</td>
+					<td class='tdDescription'>".$line['description']."</td>
 				</tr>	
 			");
 

@@ -1,10 +1,6 @@
-label, p {
-	font-size: 15pt;
-}
-
-input {
-  font-size: 15pt;
-  margin: 5pt;
+label,input {
+	font-size: 18pt;
+	margin: 5pt;
 }
 
 th, td
@@ -20,7 +16,7 @@ th
 }
 
 
-table
+table, .filterArea
 {
 	background-color: rgba(255, 255, 50, .3);
 }
@@ -28,43 +24,131 @@ table
 table thead th 
 {
 	position: sticky;
-	top: 0;
+	top: 0pt;
 }
 
-.td_description
+.tdDescription
 {
 	text-align: justify;
 	width: 40%;
 }
 
-.research_button
+.researchButton
 {
 	margin-top: 30pt;
 }
 
-.logoff_button
+.logoffButton
 {
 	margin: 10pt;
 }
 
-.filter_area{
-	background-color: rgba(255, 255, 50, .3);
+.filterArea{
 	padding: 10pt;
 	border: 1px solid grey;
 	margin: 10pt;
 }
 
 @media (min-width:1100pt){
-	.dashboard_left_part{
+
+	th, td
+	{
+		font-size: 15pt;
+		text-align: center;
+		padding: 10pt 10pt;
+	}
+
+	.dashboardLeftPart{
 		float: left;
 		position: sticky;
-		top: 0;
+		top: 10pt;
+	}
+
+	.infoMessageBox{
+		position: relative;
+		top: 50pt;
 	}
 }
 
-.error_message{
-  color: red;
+.infoMessageBox{
+	font-size: 18pt;
+}
 
-  position: absolute;
-  left: 300pt;
+
+@media (min-width:1100pt){
+
+	th, td
+	{
+		font-size: 15pt;
+		text-align: center;
+		padding: 5pt 5pt;
+	}
+
+}
+
+@media (max-width:1100pt) and (min-width:950pt){
+
+	th, td
+	{
+		font-size: 15pt;
+		text-align: center;
+		padding: 5pt 5pt;
+	}
+
+	table{
+		width: 70%;
+	}
+	
+}
+
+@media (max-width:950pt) and (min-width:800pt){
+
+	th, td
+	{
+		font-size: 15pt;
+		text-align: center;
+		padding: 5pt 5pt;
+	}
+
+	table{
+		width: 60%;
+	}
+	
+	.tdDescription, .thDescription{
+		display: none;
+	}
+
+}
+
+@media (max-width:800pt) and (min-width:700pt){
+
+	th, td
+	{
+		font-size: 12pt;
+		text-align: center;
+		padding: 5pt 5pt;
+	}
+
+	table{
+		width: 50%;
+	}
+
+}
+
+@media (max-width:800pt){
+
+	.dashboardLeftPart
+	{
+		float: left;
+	}
+
+}
+
+@media (min-width:800pt){
+	.dashboardLeftPart
+{
+	float: left;
+	position: sticky;
+	top: 10pt;
+}
 }

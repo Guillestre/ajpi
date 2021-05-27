@@ -1,6 +1,6 @@
 <?php
 
-	class repairAlgorithm
+	class correctionAlgorithm
 	{
 
 		private $database;
