@@ -1,14 +1,16 @@
-label, p {
-  font-size: 15pt;
-}
-
-input {
+label, input {
   font-size: 15pt;
 }
 
 .grid-container-index {
   display: grid;
   grid-template-columns: 140pt 100pt;
+
+}
+
+.grid-container-forms {
+  display: grid;
+  grid-template-columns: 600pt 600pt;
 
 }
 
@@ -27,23 +29,22 @@ input {
   margin: 20pt;
 }
 
-.error_message{
+.errorMessageBox{
   color: #D8000C;
   background-color: rgba(220, 172, 159, 0.6);
   text-align: center;
-  margin-right: 900pt;
-
-  background-image: url('../images/error.jpg');
-  background-repeat: no-repeat;
-  background-size: 50pt;
+  margin-right: 1000pt;
+  margin-left: 50pt;
+  padding: 5pt;
+  font-size: 15pt;
 }
 
 .signInBox{
-  background: rgba(157, 172, 156);
-  padding: 5pt;
+  background: rgba(200, 222, 206);
+  padding: 10pt;
 }
 
-
-p{
-  padding: 5pt;
+.signUpBox{
+  background: rgba(150, 202, 200);
+  padding: 10pt;
 }
