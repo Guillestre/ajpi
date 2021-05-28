@@ -27,13 +27,6 @@ table
 	background-color: rgba(255, 255, 50, .3);
 }
 
-@media (max-width:1000pt){
-
-	table{
-		width: 5%;
-	}
-
-}
 
 table thead th 
 {
@@ -62,4 +55,47 @@ table thead th
 	background-color: rgba(255, 255, 50, .3);
 	padding: 10pt;
 	border: 1px solid grey;
+}
+
+@media (min-width:600pt) and (max-width:800pt) {
+
+	th, td
+	{
+		font-size: 12pt;
+		text-align: center;
+		padding: 5pt 0pt;
+	}
+
+	
+
+}
+
+@media (min-width:460pt) and (max-width:600pt) {
+
+	th, td
+	{
+		font-size: 10pt;
+		text-align: center;
+		padding: 5pt 0pt;
+	}
+
+	.tdDescription, .thDescription{
+		display: none;
+	}
+
+}
+
+@media (max-width:460pt) {
+
+	th, td
+	{
+		font-size: 10pt;
+		text-align: center;
+		padding: 5pt 0pt;
+	}
+
+	.tdDescription, .thDescription{
+		display: none;
+	}
+
 }

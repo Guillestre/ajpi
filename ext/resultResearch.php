@@ -115,7 +115,7 @@
 					<th>Prix unitaire</th>
 					<th>Remise</th>
 					<th>Prix total</th>
-					<th>Description</th>
+					<th class='thDescription'>Description</th>
 				</tr>
 			</thead>
 		");

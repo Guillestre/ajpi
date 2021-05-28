@@ -74,24 +74,24 @@ table thead th
 
 }
 
-@media (min-width:850pt) and (max-width:1000pt) {
+@media (min-width:800pt) and (max-width:1000pt) {
 
 	th, td
 	{
-		font-size: 12pt;
+		font-size: 11pt;
 		text-align: center;
 		padding: 5pt 0pt;
 	}
 
 	label,input {
-		font-size: 12pt;
+		font-size: 11pt;
 		margin: 5pt;
 	}
 
 }
 
 
-@media (min-width:600pt) and (max-width:850pt) {
+@media (min-width:600pt) and (max-width:800pt) {
 
 	th, td
 	{
