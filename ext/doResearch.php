@@ -46,10 +46,10 @@
 
 		if($currentPage == "dashboard"){
 			$query = "
-			SELECT invoices.code, clientCode, name, date, totalExcludingTaxes, totalIncludingTaxes, description 
+			SELECT invoices.code, clientCode, name, DATE_FORMAT(date, '%d/%m/%Y') AS date, totalExcludingTaxes, totalIncludingTaxes, description 
 			FROM invoices, clients 
 			WHERE 1 " . $clause . " AND invoices.clientCode = clients.code
-			ORDER BY date DESC;
+			ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, LENGTH(invoices.code)), UNSIGNED INTEGER) DESC;
 			";
 		}
 

@@ -32,32 +32,47 @@
 					<th>Date de facturation</th>
 					<th>Total HT</th>
 					<th>Total TTC</th>
-					<th class='thDescription'>Description</th>
+					
 				</tr>
 			</thead>
 		");
 
-		foreach($result as $invoice) 
+		foreach($result as $invoice){
+
+			$encodeName = urlencode($invoice['name']);
+			$encodeClientCode = urlencode($invoice['clientCode']);
+			$encodeCode = urlencode($invoice['code']);
+			$encodeDate = urlencode($invoice['date']);
+			$encodeHT = urlencode($invoice['totalExcludingTaxes']);
+			$encodeTTC = urlencode($invoice['totalIncludingTaxes']);
+			$encodeDescription = urlencode($invoice['description']);
+
+			$refInvoiceline = 
+			"
+			invoiceline.php?
+			invoiceCode={$encodeCode}&
+			clientCode={$encodeClientCode}&
+			name=${encodeName}&
+			date=${encodeDate}&
+			HT=${encodeHT}&
+			TTC=${encodeTTC}&
+			description=${encodeDescription}
+			";
+
 			print("
 				<tr>
-					<td class='tdInvoiceCode'>
-						<a href='invoiceline.php?
-						invoiceCode={$invoice['code']}&
-						clientCode={$invoice['clientCode']}&
-						name=" . urlencode($invoice['name']) . "'
-						>"
-							.$invoice['code'].
-						"</a>
+					<td>
+						<a href='${refInvoiceline}'>" .$invoice['code'] . "</a>
 					</td>
-					<td class='tdClientCode'><a href='clients.php?clientCode={$invoice['clientCode']}'>".$invoice['clientCode']."</a></td>
-					<td class='tdName'>".$invoice['name']."</td>
+					<td><a href='clients.php?clientCode={$invoice['clientCode']}'>".$invoice['clientCode']."</a></td>
+					<td>".$invoice['name']."</td>
 					<td>".$invoice['date']."</td>
 					<td>".$invoice['totalExcludingTaxes']."</td>
 					<td>".$invoice['totalIncludingTaxes']."</td>
-					<td class='tdDescription'>".$invoice['description']."</td>
+					
 				</tr>	
 			");
-
+		}
 
 		print("</table>");
 		
@@ -124,7 +139,7 @@
 			print("
 				<tr>
 					<td>".$line['articleCode']."</td>
-					<td class='tdDesignation'>".$line['designation']."</td>
+					<td>".$line['designation']."</td>
 					<td>".$line['amount']."</td>
 					<td>".$line['unitPrice']."</td>
 					<td>".$line['discount']."</td>

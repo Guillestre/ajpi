@@ -1,8 +1,19 @@
 th, td
 {
-	font-size: 15pt;
+	font-size: 13pt;
 	text-align: center;
 	padding: 5pt 5pt;
+}
+
+h1
+{
+	font-size: 17pt;
+	margin: 10pt;
+}
+
+label, p, input {
+	font-size: 15pt;
+	margin : 10pt;
 }
 
 th
@@ -10,11 +21,9 @@ th
 	background: rgba(240, 250, 230, 1);
 }
 
-table, .infoArea, .grid-container-buttons, #descriptionBox
+table, .filterArea
 {
 	background-color: rgba(255, 255, 50, .3);
-	border: 1px solid grey;
-	margin: 5pt;
 }
 
 table thead th 
@@ -23,51 +32,22 @@ table thead th
 	top: 0pt;
 }
 
-h1, h2, label, p, input, #descriptionBox
-{
-	margin: 8pt;
-}
-
-h1
-{
-	font-size: 25pt;
-}
-
-label, p, input, #descriptionBox {
-	font-size: 16pt;
-}
-
 .tdDescription
 {
-	text-align: left;
+	text-align: justify;
+}
+
+.filterArea{
+	padding: 10pt;
+	border: 1px solid grey;
+	margin: 10pt;
 }
 
 .infoMessageBox
 {
+	font-size: 18pt;
 	position: relative;
 	top: 50pt;
-	left: 50pt;
-}
-
-#infoMessage
-{
-	font-size: 20pt;
-}
-
-#descriptionBox
-{
-	background-color: rgba(200, 200, 200, .3);
-	text-align: justify;
-	
-	display: grid;
-	grid-template-columns: 270pt;
-
-	padding: 5pt;
-}
-
-.grid-container-buttons {
-    display: grid;
-    grid-template-columns: 150pt 150pt;
 }
 
 @media (min-width:800pt) and (max-width:1000pt) {
@@ -159,7 +139,7 @@ label, p, input, #descriptionBox {
 
 @media (min-width:500pt) {
 
-	.LeftPart
+	.dashboardLeftPart
 	{
 		float: left;
 		position: sticky;
@@ -172,7 +152,7 @@ label, p, input, #descriptionBox {
 
 	th, td
 	{
-		font-size: 9pt;
+		font-size: 8pt;
 		text-align: center;
 		padding: 5pt 0pt;
 	}

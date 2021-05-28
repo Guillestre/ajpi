@@ -13,9 +13,9 @@
 
 		public static function sendInfoMessage($message)
 		{
-			print("<div class='infoMessageBox'><span class='infoMessage'>");
+			print("<div class='infoMessageBox'><p id='infoMessage'>");
 			print($message);
-			print("</div><span/>");
+			print("</p></div>");
 		}
 
 	}

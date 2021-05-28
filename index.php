@@ -26,7 +26,7 @@
 				header("Location: dashboard.php");
 
 			include "ext/signIn.php";
-			include "ext/signUp.php";
+			
 		?>
 		</div>
 

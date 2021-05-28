@@ -28,7 +28,7 @@
 
   .grid-container-index {
     display: grid;
-    grid-template-columns: 170pt 200pt;
+    grid-template-columns: 170pt 250pt;
   }
 
   label, input {

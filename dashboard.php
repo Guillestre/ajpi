@@ -17,7 +17,7 @@
 				header("Location: index.php");
 
 			//Verify if log_off button has been clicked
-			if(isset($_POST['log_off'])){
+			if(isset($_POST['logOff'])){
 				session_destroy();
 				header("Location: index.php");
 			}
@@ -25,21 +25,25 @@
 			$currentPage = "dashboard";
 		?>
 		
-		<div class='dashboardLeftPart'>
+		<div class='LeftPart'>
 
 			<form action="dashboard.php" method="post">
 
-				<input type="submit" name="log_off" value="Se déconnecter" class="logoff_button" />
+				<div class="grid-container-buttons">
+					<input type="submit" name="logOff" value="Se déconnecter"/>
+					<input type="button" value="Créer un compte">
+					<input type="button" value="Afficher QR code">
+				</div>
 
 			</form>
 
-			<div class="filterArea">
+			<div class="infoArea">
 
 				<form action="dashboard.php" method="post">
 
 					<!-- FILTER ------------------------------------>
 					<?php include 'ext/filterResearch.php';?>
-					<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche" class="research_button"/>
+					<input type="submit" id="submitButton" name="submitButton" value="Lancer recherche"/>
 			
 					<!-- DO RESEARCH ------------------------------->
 					<?php include 'ext/doResearch.php'?>

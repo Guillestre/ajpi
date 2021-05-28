@@ -1,6 +1,6 @@
 		<div class="signInBox">
 
-			<h2>Se connecter : </h2>
+			<h2>Connexion : </h2>
 
 			<form action="index.php" method="post">
 				
