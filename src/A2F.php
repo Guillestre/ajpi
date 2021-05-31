@@ -1,5 +1,10 @@
 <?php
 
+	/*
+	 *Class that handle two factor authentication with TOTP method
+	 */
+
+	//Include vendor file
 	include './vendor/autoload.php';
 
 	//We use TOTP

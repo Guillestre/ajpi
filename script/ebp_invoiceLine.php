@@ -120,7 +120,7 @@
 
 	//Call the algorithm repair
 	$table_name = 'ebp_invoiceline_result';
-	include 'algorithm_repair.php';
+	include 'commonRepairs.php';
 	
 	
 ?>

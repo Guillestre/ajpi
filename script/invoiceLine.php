@@ -124,9 +124,14 @@
 	//Delete all * character from article codes
 
 	$step=$database->prepare("
-
 		UPDATE invoiceline SET articleCode = REPLACE(articleCode, '*', '');
+	");
+	$step->execute();
 
+	//Delete all '(' character from client name 
+
+	$step=$database->prepare("
+		UPDATE clients SET name = REPLACE(name, '(', '');
 	");
 	$step->execute();
 

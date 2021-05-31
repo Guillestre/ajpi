@@ -3,12 +3,14 @@
 	include 'src/correctionAlgorithm.php';
 	
 	//Set time limit
-	set_time_limit(500);
+	set_time_limit(5000);
 
 	$deleteResults = false;
-	$users = false;
+	$createUsersTables = false;
 	$loadRawTables = false;
 
+	//Choose which database to bring repairs
+	//(Create result tables into ajpi_dev database)
 	$sage2016 = false;
 	$sage2019 = false;
 	$ebp = false;
@@ -17,8 +19,8 @@
 	//verify if we change data
 	$dataChanged = $sage2016 || $sage2019 || $ebp || $odoo;
 
-	if($users)
-		include 'script/users.php';
+	if($createUsersTables)
+		include 'script/users_tables.php';
 
 	if($deleteResults)
 		include 'script/delete_results.php';
@@ -53,7 +55,7 @@
 	if($dataChanged){
 		include 'script/clients.php';
 		include 'script/invoices.php';
-		include 'script/invoiceLine.php';
+		include 'script/invoiceline.php';
 	}
 
 ?>

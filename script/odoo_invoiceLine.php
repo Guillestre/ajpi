@@ -74,7 +74,7 @@
 
 	//Call the algorithm repair
 	$table_name = 'odoo_invoiceline_result';
-	include 'algorithm_repair.php';
+	include 'commonRepairs.php';
 
 	//Remove lines with empty invoiceCode
 	$step=$database->prepare("DELETE FROM odoo_invoiceline_result WHERE TRIM(invoiceCode) = ''");

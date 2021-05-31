@@ -1,5 +1,11 @@
 <?php
 
+	/*
+	 *Class that bring correction to the database
+	 * algo_1 and alogo_2 are used to correct EBP and SAGE
+	 * algo_3 is used to correct ODOO
+	 */
+
 	class correctionAlgorithm
 	{
 

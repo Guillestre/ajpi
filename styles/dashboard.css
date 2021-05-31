@@ -1,3 +1,11 @@
+/* MAIN PART ***************************************************/
+
+.navBar{
+	position: sticky;
+	top: 0;
+	border: 1pt solid;
+}
+
 th, td
 {
 	font-size: 15pt;
@@ -10,9 +18,13 @@ th
 	background: rgba(240, 250, 230, 1);
 }
 
-table, .infoArea, .grid-container-buttons, #descriptionBox
+table, .infoArea
 {
-	background-color: rgba(255, 255, 50, .3);
+	background-color: rgb(200, 220, 200, 0.5);
+}
+
+table, .infoArea, #descriptionBox
+{
 	border: 1px solid grey;
 	margin: 5pt;
 }
@@ -20,10 +32,10 @@ table, .infoArea, .grid-container-buttons, #descriptionBox
 table thead th 
 {
 	position: sticky;
-	top: 0pt;
+	top: 42.5pt;
 }
 
-h1, h2, label, p, input, #descriptionBox
+h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox
 {
 	margin: 8pt;
 }
@@ -33,20 +45,18 @@ h1
 	font-size: 25pt;
 }
 
-label, p, input, #descriptionBox {
-	font-size: 16pt;
+label, p, input, button, .grid-item-text, #descriptionBox {
+	font-size: 18pt;
+}
+
+select
+{
+	font-size: 14pt;
 }
 
 .tdDescription
 {
 	text-align: left;
-}
-
-.infoMessageBox
-{
-	position: relative;
-	top: 50pt;
-	left: 50pt;
 }
 
 #infoMessage
@@ -56,7 +66,7 @@ label, p, input, #descriptionBox {
 
 #descriptionBox
 {
-	background-color: rgba(200, 200, 200, .3);
+	background-color: rgba(200, 200, 200, .2);
 	text-align: justify;
 	
 	display: grid;
@@ -67,95 +77,68 @@ label, p, input, #descriptionBox {
 
 .grid-container-buttons {
     display: grid;
-    grid-template-columns: 150pt 150pt;
+    grid-template-columns: 240pt 240pt 240pt;
+    background-color: rgb(200, 220, 200);
 }
+
+/* USER FORM PART ***************************************************/
+
+.userFormBox{
+	border: 1pt dashed;
+	background-color: rgba(200, 222, 206);
+}
+
+.grid-item-label {
+  text-align: right;
+}
+
+.grid-container-userForm {
+    display: grid;
+    grid-template-columns: 250pt 400pt;
+}
+
+.grid-container-forms
+{
+	display: grid;
+    grid-template-columns: 700pt 700pt;
+}
+
+#errorMessageBox{
+    text-align: center;
+    font-size: 15pt;
+    margin: 10pt;
+}
+
+#errorMessage{
+	color: red;
+	background-color: rgba(234, 122, 122, 0.2);
+	padding: 4pt;
+	border : 1pt dotted;
+}
+
+/* ADAPTATION PART ***************************************************/
 
 @media (min-width:800pt) and (max-width:1000pt) {
 
 	th, td
 	{
-		font-size: 11pt;
-		text-align: center;
-		padding: 5pt 0pt;
-	}
-
-	label, p, input {
-		font-size: 11pt;
-	}
-
-	h1
-	{
-		font-size: 15pt;
-		margin: 10pt;
-	}
-
-}
-
-@media (min-width:600pt) and (max-width:800pt) {
-
-	th, td
-	{
-		font-size: 12pt;
-		text-align: center;
-		padding: 5pt 0pt;
-	}
-
-	label, p, input {
-		font-size: 12pt;
-		margin: 5pt;
-	}
-
-	h1
-	{
 		font-size: 14pt;
-		margin: 10pt;
-	}
-
-	.tdDescription, .thDescription{
-		display: none;
-	}
-
-	.filterArea{
-		padding: 0pt;
-		border: 1px solid grey;
-		margin: 5pt;
-		margin-bottom: 10pt;
-	}
-
-}
-
-@media (min-width:500pt) and (max-width:600pt) {
-
-	th, td
-	{
-		font-size: 10pt;
 		text-align: center;
-		padding: 5pt 0pt;
+		padding: 5pt 5pt;
 	}
 
-	label, p, input {
-		font-size: 11pt;
-		margin: 5pt;
+	label, p, input, button {
+		font-size: 16pt;
 	}
 
 	h1
 	{
-		font-size: 11pt;
+		font-size: 20pt;
 		margin: 10pt;
 	}
 
-	.tdDescription, .thDescription{
-		display: none;
-	}
-
-	.filterArea{
-		padding: 0pt;
-		border: 1px solid grey;
-		margin: 5pt;
-		margin-bottom: 10pt;
-	}
-
 }
+
 
 @media (min-width:500pt) {
 
@@ -163,38 +146,7 @@ label, p, input, #descriptionBox {
 	{
 		float: left;
 		position: sticky;
-		top: 0pt;
-	}
-
-}
-
-@media (max-width:500pt) {
-
-	th, td
-	{
-		font-size: 9pt;
-		text-align: center;
-		padding: 5pt 0pt;
-	}
-
-	label, p, input {
-		font-size: 15pt;
-		margin: 5pt;
-	}
-
-	h1
-	{
-		font-size: 18pt;
-		margin: 10pt;
-	}
-
-	.tdDescription, .thDescription{
-		display: none;
-	}
-
-	.infoMessageBox{
-		position: relative;
-		top: 10pt;
+		top : 40pt;
 	}
 
 }

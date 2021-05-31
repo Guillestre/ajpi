@@ -1,10 +1,10 @@
-		<div class="signInBox">
+		<div class="userFormBox">
 
 			<h2>Connexion : </h2>
 
 			<form action="index.php" method="post">
 				
-				<div class="grid-container-index">
+				<div class="grid-container-userForm">
 
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
@@ -38,13 +38,12 @@
 
 						//Verify if signIn button has been clicked
 						if(isset($_POST['signIn']))
-							User::signIn($_POST['username'], $_POST['password'], $_POST['otp']);
-
+							$user->signIn($_POST['otp']);
 
 					?>
 
 				</div>
 
-			</form>
+			</form>			
 
 		</div>

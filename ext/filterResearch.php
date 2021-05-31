@@ -1,5 +1,5 @@
 
-<?php if($currentPage == "dashboard") { ?>
+<?php if($currentPage == "dashboard.php") { ?>
 
 	<h1>Filtres</h1>
 

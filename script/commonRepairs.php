@@ -9,7 +9,7 @@
 		");
 	$step->execute();
 
-	$repairAlgorithm = new repairAlgorithm($table_name, $database);
+	$repairAlgorithm = new correctionAlgorithm($table_name, $database);
 
 	if($table_name != "odoo_invoiceline_result"){
 		$repairAlgorithm->algo_1($table_name, $database);

@@ -1,6 +1,29 @@
 <?php
 
-	//First delete all from sage_result
+	//Drop userClient table if exist
+	$step=$database->prepare("
+		DROP TABLE IF EXISTS userClient;
+	");
+	$step->execute();
+
+	//Drop userSecret table if exist
+	$step=$database->prepare("
+		DROP TABLE IF EXISTS userSecret;
+	");
+	$step->execute();
+
+	//Drop secrets table if exist
+	$step=$database->prepare("
+		DROP TABLE IF EXISTS secrets;
+	");
+	$step->execute();
+
+	//Drop users table if exist
+	$step=$database->prepare("
+		DROP TABLE IF EXISTS users;
+	");
+	$step->execute();
+
 	$step=$database->prepare("
 
 		DROP TABLE IF EXISTS invoiceline;

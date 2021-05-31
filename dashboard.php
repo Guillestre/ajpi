@@ -11,31 +11,9 @@
 
 	<body>
 
-		<?php 
-			//Verify if user is connected
-			if(!isset($_SESSION['username']))
-				header("Location: index.php");
+		<?php include 'ext/menu.php';?>
 
-			//Verify if log_off button has been clicked
-			if(isset($_POST['logOff'])){
-				session_destroy();
-				header("Location: index.php");
-			}
-			
-			$currentPage = "dashboard";
-		?>
-		
 		<div class='LeftPart'>
-
-			<form action="dashboard.php" method="post">
-
-				<div class="grid-container-buttons">
-					<input type="submit" name="logOff" value="Se déconnecter"/>
-					<input type="button" value="Créer un compte">
-					<input type="button" value="Afficher QR code">
-				</div>
-
-			</form>
 
 			<div class="infoArea">
 

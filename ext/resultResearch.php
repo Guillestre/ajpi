@@ -6,11 +6,11 @@
 		//We verify if there is at least one result
 		if($nbResult > 0){
 
-			if($currentPage == "dashboard")
+			if($currentPage == "dashboard.php")
 				showInvoices($result);
-			if($currentPage == "clients")
+			if($currentPage == "clients.php")
 				showClient($result);
-			if($currentPage == "invoiceline")
+			if($currentPage == "invoiceline.php")
 				showInvoiceline($result);
 		}
 		else
@@ -98,17 +98,16 @@
 			</thead>
 		");
 
-		foreach($result as $client) 
 			print("
 				<tr>
-					<td>".$client['code']."</td>
-					<td>".$client['name']."</td>
-					<td>".$client['title']."</td>
-					<td>".$client['address']."</td>
-					<td>".$client['capital']."</td>
-					<td>".$client['city']."</td>
-					<td>".$client['number']."</td>
-					<td>".$client['mail']."</td>
+					<td>".$result['code']."</td>
+					<td>".$result['name']."</td>
+					<td>".$result['title']."</td>
+					<td>".$result['address']."</td>
+					<td>".$result['capital']."</td>
+					<td>".$result['city']."</td>
+					<td>".$result['number']."</td>
+					<td>".$result['mail']."</td>
 				</tr>	
 			");
 

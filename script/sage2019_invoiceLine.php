@@ -131,7 +131,7 @@
 
 	//Call the algorithm repair
 	$table_name = 'sage2019_invoiceline_result';
-	include 'algorithm_repair.php';
+	include 'commonRepairs.php';
 
 	//Add foreign key
 	$step=$database->prepare("ALTER TABLE sage2019_invoiceline_result ADD FOREIGN KEY (invoiceCode) REFERENCES sage2019_invoices_result(code);");

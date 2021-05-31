@@ -1,5 +1,7 @@
 <?php
 
+	/* Class that create an connection to AJPI database */
+
 	abstract class mysqlConnection
 	{
 
@@ -14,27 +16,24 @@
 		final public static function getInstance()
 		{
 			if(!isset($database)){
+
+				//Parameters
 				$serverName = "localhost";
 				$username = "root";
 				$password = "root";
-				$databaseName = "ajpi";
+				$databaseName = "ajpi_dev";
 				$charset = "utf8mb4";
 
-				try{
-					$dsn = "mysql:host=".$serverName . ";dbname=" . $databaseName . ";charset=" . $charset; 
-					$database = new PDO($dsn, $username, $password);
-					$database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					return $database;
-				} catch (PDOException $e) {
-					echo "Connection failed: " . $e->getMessage();
-				}
-				print("database initialized");
-			}
-			else
-			{
-				print("database already initialized");
-			}
+				$dsn = 
+				"mysql:host=". $serverName . 
+				";dbname=" . $databaseName . 
+				";charset=" . $charset; 
 
+				$database = new PDO($dsn, $username, $password);
+				$database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				return $database;
+
+			}
 		}
 
 	}
