@@ -1,22 +1,35 @@
 <?php
 
-	//If nbResult is set
-	if(isset($nbResult))
+	switch($currentPage)
 	{
-		//We verify if there is at least one result
-		if($nbResult > 0){
+		case "dashboard.php" :
 
-			if($currentPage == "dashboard.php")
+			$emptyResult = $nbResult == 0;
+
+			if(!$emptyResult)
 				showInvoices($result);
-			if($currentPage == "clients.php")
-				showClient($result);
-			if($currentPage == "invoiceline.php")
-				showInvoiceline($result);
-		}
-		else
-			messageHandler::sendInfoMessage("Aucun résultats pour cette recherche");
+			
+		break;
+
+		case "clients.php" :
+
+			$emptyResult = $clientNbResult == 0;
+
+			if(!$emptyResult)
+				showClient($clientResult);
+		break;
+
+		case "invoiceline.php" :
+		
+			$emptyResult = $invoicelineNbResult == 0;
+
+			if(!$emptyResult)
+				showInvoiceline($invoicelineResult);
+		break;
 	}
 
+	if($emptyResult)
+		messageHandler::sendInfoMessage("Aucun résultats pour cette recherche");
 
 	function showInvoices($result)
 	{
@@ -47,17 +60,7 @@
 			$encodeTTC = urlencode($invoice['totalIncludingTaxes']);
 			$encodeDescription = urlencode($invoice['description']);
 
-			$refInvoiceline = 
-			"
-			invoiceline.php?
-			invoiceCode={$encodeCode}&
-			clientCode={$encodeClientCode}&
-			name=${encodeName}&
-			date=${encodeDate}&
-			HT=${encodeHT}&
-			TTC=${encodeTTC}&
-			description=${encodeDescription}
-			";
+			$refInvoiceline = "invoiceline.php?invoiceCode={$encodeCode}";
 
 			print("
 				<tr>

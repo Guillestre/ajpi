@@ -6,7 +6,7 @@
 	set_time_limit(5000);
 
 	$deleteResults = false;
-	$createUsersTables = false;
+	$createUserTables = false;
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs
@@ -19,7 +19,7 @@
 	//verify if we change data
 	$dataChanged = $sage2016 || $sage2019 || $ebp || $odoo;
 
-	if($createUsersTables)
+	if($createUserTables)
 		include 'script/users_tables.php';
 
 	if($deleteResults)

@@ -53,9 +53,10 @@
 	$step=$database->prepare("
 
 		CREATE TABLE userClient (
-			userId INT PRIMARY KEY NOT NULL,
+			userId INT NOT NULL,
 			clientCode VARCHAR(50) NOT NULL,
 
+			PRIMARY KEY (userId, clientCode),
 			FOREIGN KEY (userId) REFERENCES users(id),
 			FOREIGN KEY (clientCode) REFERENCES clients(code)
 		);
@@ -67,9 +68,10 @@
 	$step=$database->prepare("
 
 		CREATE TABLE userSecret (
-			userId INT PRIMARY KEY NOT NULL,
+			userId INT NOT NULL,
 			secretId INT NOT NULL,
 
+			PRIMARY KEY (userId, secretId),
 			FOREIGN KEY (userId) REFERENCES users(id),
 			FOREIGN KEY (secretId) REFERENCES secrets(id)
 		);

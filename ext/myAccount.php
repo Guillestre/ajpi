@@ -6,6 +6,7 @@
 				
 				<div class="grid-container-userForm">
 
+					<?php include "ext/redirection.php"; ?>
 					
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
@@ -26,13 +27,6 @@
 					<button type="submit" name="deleteMyAccount">
 						Supprimer mon compte
 					</button>
-
-					<?php
-						//Verify if deleteUser button has been clicked
-						if(isset($_POST['deleteMyAccount']))
-							$user->deleteMyAccount($_SESSION['id']);	
-					?>
-					
 
 				</div>
 

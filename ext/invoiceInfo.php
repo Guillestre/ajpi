@@ -1,9 +1,9 @@
 <?php
-	$invoiceCode = $_GET['invoiceCode'];
-	$date = $_GET['date'];
-	$TTC = $_GET['TTC'];
-	$HT = $_GET['HT'];
-	$description = $_GET['description'];
+	$invoiceCode = $invoiceResult['code'];
+	$date = $invoiceResult['date'];
+	$TTC = $invoiceResult['totalIncludingTaxes'];
+	$HT = $invoiceResult['totalExcludingTaxes'];
+	$description = $invoiceResult['description'];
 ?>
 
 <h1>Facture <?php print($invoiceCode); ?></h1>
@@ -11,10 +11,12 @@
 <p>
 	Client :
 	<?php 
+
+		$clientCode = $invoiceResult['clientCode'];
+		$name = $clientResult['name'];
+
 		$url = 
-		"<a href='clients.php?clientCode={$_GET['clientCode']}'>" .
-		$_GET['name'] .
-		"</a>";
+		"<a href='clients.php?clientCode=${clientCode}'>" . $name . "</a>";
 		print($url);
 	?>
 </p>
@@ -25,7 +27,7 @@
 <p>Montant HT : <?php print($HT);?> €</p>
 
 
-<?php if(trim($_GET['description']) != ""){ ?>
+<?php if(trim($description) != ""){ ?>
 
 	<h2>Description : </h2>
 
@@ -47,7 +49,7 @@
             //Notice the parentheses I added:
             while(($file = readdir($handle)) !== FALSE)
             {
-            	$pattern = "~[^0-9]*${number}[^0-9]*$~";
+            	$pattern = "/([\D])${number}([\D])/";
 				if(preg_match($pattern, $file) == 1)
 			   		$url = "AJPI_invoices/" . $file;
             }

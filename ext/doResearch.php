@@ -11,9 +11,6 @@
 		$existNameFilter = isset($_POST['name_filter']) && !empty($_POST['name_filter']);
 		$existInvoiceCodeFilter = isset($_POST['invoiceCode_filter']) && !empty($_POST['invoiceCode_filter']);
 
-		$existClientCode = isset($_GET['clientCode']) && !empty($_GET['clientCode']);
-		$existInvoiceCode = isset($_GET['invoiceCode']) && !empty($_GET['invoiceCode']);
-
 		//Verify and adapt if user is a client
 		//Client can just see his own invoices
 		if(!$isAdmin){
@@ -51,6 +48,8 @@
 			$clause .= "AND date <= :endPeriod ";
 		}
 
+		/* CREATE QUERIES **********************************************/
+
 		switch($currentPage)
 		{
 			case "dashboard.php" : 
@@ -71,8 +70,8 @@
 			break;
 
 			case "clients.php" :
-				$query = "
-				SELECT * 
+				$userQuery = "
+				SELECT status, username, label
 				FROM clients, users, userClient, secrets, userSecret
 				WHERE 
 				code = :clientCode AND
@@ -80,12 +79,24 @@
 				userClient.userId = users.id AND
 				users.id = userSecret.userId AND 
 				userSecret.secretId = secrets.id";
-				$step=$database->prepare($query);
+
+				$clientQuery = "SELECT * FROM clients WHERE code = :clientCode";
+
+				$userStep=$database->prepare($userQuery);
+				$clientStep=$database->prepare($clientQuery);
 			break;
 
 			case "invoiceline.php" :
-				$query = "SELECT * FROM invoiceline WHERE invoiceCode = :invoiceCode";
-				$step=$database->prepare($query);
+
+				$invoicelineQuery = "SELECT * FROM invoiceline WHERE invoiceCode = :invoiceCode";
+				$invoicelineStep=$database->prepare($invoicelineQuery);
+
+				$invoiceQuery = "SELECT * FROM invoices WHERE code = :code";
+				$invoiceStep=$database->prepare($invoiceQuery);
+
+				$clientQuery = "SELECT * FROM clients WHERE code = :clientCode";
+				$clientStep=$database->prepare($clientQuery);
+
 			break;
 
 			case "userHandler.php" :
@@ -107,14 +118,12 @@
 
 		}
 
-		//Setting values parameters
+		/* SET FILTERS **********************************************/
 
 		if($existInvoiceCodeFilter)
 			$step->bindValue(":invoiceCode_filter", "%{$invoiceCode_filter}%");
 		if($existClientCodeFilter)
 			$step->bindValue(":clientCode_filter", "%{$clientCode_filter}%"); 
-		if(!$isAdmin && $currentPage == "dashboard.php")
-			$step->bindValue(":clientCodeOwner_filter", $_SESSION['clientCode']);
 		if($existNameFilter)
 			$step->bindValue(":name_filter", "%{$name_filter}%"); 
 		if($existStartPeriod)
@@ -122,30 +131,70 @@
 		if($existEndPeriod)
 			$step->bindValue(":endPeriod", $endPeriod); 
 
-		if($existClientCode && $currentPage == "clients.php")
-			$step->bindValue(":clientCode", $_GET['clientCode']); 
-		if($existInvoiceCode)
-			$step->bindValue(":invoiceCode", $_GET['invoiceCode']);  
+		/* EXECUTE QUERIES **********************************************/
+		
+		switch($currentPage)
+		{
+			case "userHandler.php" :
+				$clientsStep->execute();
+				$clientsResult = $clientsStep->fetchAll();
 
-		//Execute queries
+				$secretsStep->execute();
+				$secretsResult = $secretsStep->fetchAll();
 
-		$mainPages = array("dashboard.php", "clients.php", "invoiceline.php");
-		if(in_array($currentPage, $mainPages)){
-			$step->execute();
-			if($currentPage != "clients.php")
+				$recordedUsersStep->execute();
+				$recordedUsersResult = $recordedUsersStep->fetchAll();
+			break;
+
+			case "clients.php" :
+
+				//Client info
+				$clientStep->bindValue(":clientCode", $_GET['clientCode']); 
+				$userStep->bindValue(":clientCode", $_GET['clientCode']); 
+				$clientStep->execute();
+				$clientResult = $clientStep->fetch(PDO::FETCH_ASSOC);
+				$clientNbResult = $clientStep->rowCount();
+
+				//User info
+				$userStep->execute();
+				$userResult = $userStep->fetch(PDO::FETCH_ASSOC);
+				$userNbResult = $userStep->rowCount();
+				
+			break;
+
+			case "invoiceline.php" :
+
+				//Invoice info
+				$invoiceStep->bindValue(":code", $_GET['invoiceCode']); 
+				$invoiceStep->execute();
+				$invoiceResult = $invoiceStep->fetch(PDO::FETCH_ASSOC);
+				$invoiceNbResult = $invoiceStep->rowCount();
+
+				//Invoiceline info
+				$invoicelineStep->bindValue(":invoiceCode", $_GET['invoiceCode']); 
+				$invoicelineStep->execute();
+				$invoicelineResult = $invoicelineStep->fetchAll();
+				$invoicelineNbResult = $invoicelineStep->rowCount();
+
+				//Client info
+				$clientStep->bindValue(":clientCode", $invoiceResult['clientCode']);
+				$clientStep->execute();
+				$clientResult = $clientStep->fetch(PDO::FETCH_ASSOC);
+				$clientNbResult = $clientStep->rowCount();
+
+			break;
+
+			case "dashboard.php" :
+
+				if(!$isAdmin)
+					$step->bindValue(":clientCodeOwner_filter", $_SESSION['clientCode']);
+
+				$step->execute();
 				$result = $step->fetchAll();
-			else
-				$result = $step->fetch(PDO::FETCH_ASSOC);
-			$nbResult = $step->rowCount();
-		} else if ($currentPage == "userHandler.php") {
-			$clientsStep->execute();
-			$clientsResult = $clientsStep->fetchAll();
+				$nbResult = $step->rowCount();
 
-			$secretsStep->execute();
-			$secretsResult = $secretsStep->fetchAll();
-
-			$recordedUsersStep->execute();
-			$recordedUsersResult = $recordedUsersStep->fetchAll();
+			break;
 		}
+
 	
 ?>

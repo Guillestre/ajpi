@@ -9,6 +9,8 @@
 </head>
 <body>
 
+	<?php include 'ext/menu.php';?>
+
 	<h1>Gérer utilisateurs</h1>
 
 	<!-- DO RESEARCH ------------------------------->
@@ -21,8 +23,12 @@
 		<?php include "ext/myAccount.php"; ?>
 	</div>
 
-	<button type="button" onclick="history.back();">
+	<button type="button" onclick="history.back()">
 		Retour
+	</button>
+
+	<button type="submit" onclick="location.href='dashboard.php'">
+		Revenir sur les factures
 	</button>
 
 </body>

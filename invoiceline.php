@@ -11,6 +11,9 @@
 
 		<?php include 'ext/menu.php';?>
 
+		<!-- DO RESEARCH ------------------------------->
+		<?php include 'ext/doResearch.php'?>
+
 		<div class='LeftPart'>
 
 			<div class="infoArea">
@@ -24,9 +27,6 @@
 			
 
 		</div>
-
-		<!-- DO RESEARCH ------------------------------->
-		<?php include 'ext/doResearch.php'?>
 
 		<!-- RESULT FROM THE RESEARCH PART RIGHT ----------------->
 		<?php include 'ext/resultResearch.php';?>

@@ -6,6 +6,7 @@
 				
 				<div class="grid-container-userForm">
 
+					<?php include "ext/redirection.php"; ?>
 					
 					<div class="grid-item-label">
 						<label for="userDescription">Choisir utilisateur : </label>
@@ -39,11 +40,9 @@
 						Supprimer utilisateur
 					</button>
 
-					<?php
-						//Verify if deleteUser button has been clicked
-						if(isset($_POST['deleteUser']))
-							$user->deleteUser($_POST['userDescription']);	
-					?>
+					<?php if(isset($_GET['button']) && $_GET['button'] == "deleteUser"){
+						include "ext/message.php"; 
+					}?>
 
 				</div>
 

@@ -6,6 +6,8 @@
 				
 				<div class="grid-container-userForm">
 
+					<?php include "ext/redirection.php"; ?>
+
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
 					</div>
@@ -45,21 +47,9 @@
 						Ajouter administrateur
 					</button>
 
-					<?php
-						
-						//Verify if addAccount button has been clicked
-						if(isset($_POST['addAdmin'])){
-							$user->addUser(
-								$_POST['username'], 
-								$_POST['password'], 
-								'Admin',
-								'', 
-								$_POST['label']
-							);
-						}
-						
-							
-					?>
+					<?php if(isset($_GET['button']) && $_GET['button'] == "addAdmin"){
+						include "ext/message.php"; 
+					}?>
 
 				</div>
 

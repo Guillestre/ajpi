@@ -1,5 +1,5 @@
 <div class="navBar">
-	<form action="<?php $currentPage ?>" method="post">
+	<form action="<?php echo $currentPage; ?>" method="post">
 
 		<div class="grid-container-buttons">
 
@@ -7,12 +7,12 @@
 				Se déconnecter
 			</button>
 
-			<?php if($isAdmin){ ?>
+			<?php if($isAdmin && $currentPage != "userHandler.php"){ ?>
 				<button type="submit" name="handleUser">
 					Gérer comptes
 				</button>
 			<?php } ?>
-
+			
 			<button type="submit">
 				Afficher mon QR code
 			</button>

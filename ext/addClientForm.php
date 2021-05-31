@@ -6,6 +6,8 @@
 				
 				<div class="grid-container-userForm">
 
+					<?php include "ext/redirection.php";?>
+
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
 					</div>
@@ -65,21 +67,9 @@
 						Ajouter client
 					</button>
 
-					<?php
-						
-						//Verify if addAccount button has been clicked
-						if(isset($_POST['addClient'])){
-							$user->addUser(
-								$_POST['username'], 
-								$_POST['password'], 
-								'client',
-								$_POST['client'], 
-								$_POST['label']
-							);
-						}
-						
-							
-					?>
+					<?php if(isset($_GET['button']) && $_GET['button'] == "addClient"){
+						include "ext/message.php"; 
+					}?>
 
 				</div>
 

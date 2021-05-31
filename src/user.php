@@ -89,16 +89,14 @@
 					if($status == "client")
 						$_SESSION['clientCode'] = $clientCode;
 
-					//And redirect to the dashboard
-					header("Location: dashboard.php");
+					return NULL;
 				}	
 				else
-					messageHandler::sendErrorMessage($errorMessageOTP);
+					return "errorMessage=${errorMessageOTP}";
 			
 			}
 			else
-				messageHandler::sendErrorMessage($errorMessageAccount);
-	
+				return "errorMessage=${errorMessageAccount}";
 		}
 
 		//Add a new user into database
@@ -207,12 +205,13 @@
 					$step->bindValue(":clientCode", $clientCode); 
 					$step->bindValue(":userId", $userId); 
 					$step->execute();
+
 				}
 
-				messageHandler::sendInfoMessage($messageUserAdded);
+				return "infoMessage=${messageUserAdded}";
 
 			} else
-				messageHandler::sendErrorMessage($errorMessageUserExist);
+				return "errorMessage=${errorMessageUserExist}";
 
 		}
 
@@ -224,7 +223,7 @@
 			$database = mysqlConnection::getInstance();
 
 			$messageUserDeleted = "Utilisateur supprimé";
-			$errorMessage = "Erreur : l'utilisateur n'a pu être supprimé";
+			$errorMessage = "Impossible. Il n'y a aucun utilisateur à supprimer";
 
 			$end = strpos($userDescription,"(") - 1;
 			$username = substr($userDescription, 0, $end);
@@ -264,10 +263,9 @@
 				$step->bindValue(":id", $row['id']); 
 				$step->execute();
 
-				//Alert user
-				messageHandler::sendInfoMessage($messageUserDeleted);
+				return "infoMessage=${messageUserDeleted}";
 			} else
-				messageHandler::sendErrorMessage($errorMessage);
+				return "errorMessage=${errorMessage}";
 			
 		}
 
@@ -277,6 +275,8 @@
 			
 			//Get database instance
 			$database = mysqlConnection::getInstance();
+
+			$myAccountDeleted = "Votre compte a bien été supprimé";
 
 			//Delete him from userClient
 			$sql= "
@@ -301,17 +301,12 @@
 
 			session_destroy();
 
-			messageHandler::sendInfoMessage("Votre compte a été supprimé");
+			return "infoMessage=${myAccountDeleted}";
 			
 		}
 
 
 	}
-
-
-
-
-
 
 
 

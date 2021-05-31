@@ -34,13 +34,8 @@
 						<input type="submit" name="signIn" value="Se connecter">
 					</div>
 
-					<?php
-
-						//Verify if signIn button has been clicked
-						if(isset($_POST['signIn']))
-							$user->signIn($_POST['otp']);
-
-					?>
+					<?php include "ext/redirection.php"; ?>
+					<?php include "ext/message.php"; ?>
 
 				</div>
 
