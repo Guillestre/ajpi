@@ -1,6 +1,6 @@
 <?php
 
-	include 'src/correctionAlgorithm.php';
+	include 'src/CorrectionAlgorithm.php';
 	
 	//Set time limit
 	set_time_limit(5000);

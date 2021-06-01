@@ -12,6 +12,12 @@
 					Gérer comptes
 				</button>
 			<?php } ?>
+
+			<?php if($currentPage == "userHandler.php"){ ?>
+				<button type="submit" name="dashboard">
+					Revenir sur les factures
+				</button>
+			<?php } ?>
 			
 			<button type="submit">
 				Afficher mon QR code

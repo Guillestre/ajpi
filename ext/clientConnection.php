@@ -1,6 +1,6 @@
 		<div class="userFormBox">
 
-			<h2>Connexion : </h2>
+			<h2>Connexion en tant que client: </h2>
 
 			<form action="index.php" method="post">
 				
@@ -23,7 +23,7 @@
 					</div>
 
 					<div class="grid-item-label">
-						<label for="password">Code secret : </label>
+						<label for="otp">Code secret : </label>
 					</div>
 
 					<div class="grid-item-input-text">
@@ -31,11 +31,19 @@
 					</div>
 
 					<div class="grid-item-input-button">
-						<input type="submit" name="signIn" value="Se connecter">
+						<input type="submit" name="clientConnection" value="Se connecter">
 					</div>
 
-					<?php include "ext/redirection.php"; ?>
-					<?php include "ext/message.php"; ?>
+					<?php 
+						include "ext/redirection.php"; 
+
+						$connectClient = 
+						isset($_GET['connect']) && 
+						$_GET['connect'] == "connectClient";
+
+						if($connectClient)
+							include "ext/message.php"; 
+					?>
 
 				</div>
 

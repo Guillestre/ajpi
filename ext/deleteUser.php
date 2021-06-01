@@ -5,8 +5,6 @@
 			<form action="userHandler.php" method="post">
 				
 				<div class="grid-container-userForm">
-
-					<?php include "ext/redirection.php"; ?>
 					
 					<div class="grid-item-label">
 						<label for="userDescription">Choisir utilisateur : </label>

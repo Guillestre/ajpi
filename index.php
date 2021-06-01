@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 
+
+	
 	<head>
 
 		<?php	
@@ -19,11 +21,18 @@
 		<h1>AJPI Records</h1>
 
 		<div class="grid-container-forms">
-			<?php include "ext/signIn.php"; ?>
+			<?php include "ext/clientConnection.php"; ?>
+			<?php include "ext/adminConnection.php"; ?>
 		</div>
 
+		<?php
+			$userDeleted = 
+			isset($_GET['button']) && 
+			$_GET['button'] == "deleteMyAccount";
 
+			if($userDeleted)
+				include "ext/message.php"; 
+		?>
 
 	</body>
-
 </html>

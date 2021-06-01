@@ -16,9 +16,9 @@
 		$isAdmin = $_SESSION['status'] == "admin";
 
 	//Include src files
-	include "src/mysqlConnection.php";
-	include "src/messageHandler.php";
-	include "src/user.php";
+	include "src/MysqlConnection.php";
+	include "src/MessageHandler.php";
+	include "src/UserHandler.php";
 	include "src/A2F.php";
 
 	//Connect to mysqlConnection database
@@ -42,5 +42,9 @@
 	//Verify if addAccount button has been clicked
 	if(isset($_POST['handleUser']))
 		header("Location: userHandler.php");
+
+	//Verify if dashboard button has been clicked
+	if(isset($_POST['dashboard']))
+		header("Location: dashboard.php");
 
 ?>

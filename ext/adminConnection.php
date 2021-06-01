@@ -1,8 +1,8 @@
 		<div class="userFormBox">
 
-			<h2>Ajouter un administrateur : </h2>
-			
-			<form action="userHandler.php" method="post">
+			<h2>Connexion en tant qu'administrateur: </h2>
+
+			<form action="index.php" method="post">
 				
 				<div class="grid-container-userForm">
 
@@ -23,34 +23,31 @@
 					</div>
 
 					<div class="grid-item-label">
-						<label for="label">Clé (A2F) : </label>
+						<label for="password">Code secret : </label>
 					</div>
 
 					<div class="grid-item-input-text">
-					 	<select id="label" name="label">
-							<?php
-
-								foreach($secretsResult as $secret){
-									$label = $secret['label'];
-									print("<option value='${label}'>");
-									print("${label}");
-									print("</option>");
-								}
-
-							?>
-						</select>
+						<input type="password" id="otp" name="otp" maxlength="6" size="6" required>
 					</div>
 
-					<button type="submit" name="addAdmin">
-						Ajouter administrateur
-					</button>
+					<div class="grid-item-input-button">
+						<input type="submit" name="adminConnection" 
+						value="Se connecter">
+					</div>
 
-					<?php if(isset($_GET['button']) && $_GET['button'] == "addAdmin"){
-						include "ext/message.php"; 
-					}?>
+					<?php 
+						include "ext/redirection.php"; 
+
+						$connectAdmin = 
+						isset($_GET['connect']) && 
+						$_GET['connect'] == "connectAdmin";
+
+						if($connectAdmin)
+							include "ext/message.php"; 
+					?>
 
 				</div>
 
-			</form>
+			</form>			
 
 		</div>

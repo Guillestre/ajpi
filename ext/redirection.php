@@ -4,12 +4,34 @@
 
 		case 'index.php':
 
-			//Connection part
-			if(isset($_POST['signIn'])){
-				$param = $user->signIn($_POST['otp']);
+			if(isset($_POST['adminConnection'])){
 
-				if(isset($param))
-					header("Location: index.php?${param}");
+				$otp = $_POST['otp'];
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+
+				$param = userHandler::connectAdmin($username, $password, $otp);
+
+				if(isset($param)){
+					$parameters = "${param}&connect=connectAdmin";
+					header("Location: index.php?${parameters}");
+				}
+				else
+					header("Location: dashboard.php");
+			}
+
+			if(isset($_POST['clientConnection'])){
+
+				$otp = $_POST['otp'];
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+
+				$param = userHandler::connectClient($username, $password, $otp);
+
+				if(isset($param)){
+					$parameters = "${param}&connect=connectClient";
+					header("Location: index.php?${parameters}");
+				}
 				else
 					header("Location: dashboard.php");
 			}
@@ -22,10 +44,9 @@
 
 			//Verify if addAccount button has been clicked
 			if(isset($_POST['addClient'])){
-				$param = $user->addUser(
+				$param = UserHandler::addClientUser(
 					$_POST['username'], 
 					$_POST['password'], 
-					'client',
 					$_POST['client'], 
 					$_POST['label']
 				);
@@ -37,11 +58,9 @@
 
 			//Verify if addAdmin button has been clicked
 			if(isset($_POST['addAdmin'])){
-				$param = $user->addUser(
+				$param = UserHandler::addAdminUser(
 					$_POST['username'], 
 					$_POST['password'], 
-					'admin',
-					'', 
 					$_POST['label']
 				);
 
@@ -52,7 +71,7 @@
 
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteUser'])){
-				$param = $user->deleteUser($_POST['userDescription']);	
+				$param = UserHandler::deleteUser($_POST['userDescription']);	
 				header("Location: userHandler.php?${param}&button=deleteUser");
 			}
 
@@ -60,7 +79,7 @@
 
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteMyAccount'])){
-				$param = $user->deleteMyAccount($_SESSION['id']);	
+				$param = UserHandler::deleteMyAccount($_SESSION['id']);	
 				header("Location: index.php?${param}&button=deleteMyAccount");
 			}
 

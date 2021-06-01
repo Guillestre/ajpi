@@ -2,13 +2,13 @@
 
 	//Drop userClient table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS userClient;
+		DROP TABLE IF EXISTS adminsecrets;
 	");
 	$step->execute();
 
 	//Drop userSecret table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS userSecret;
+		DROP TABLE IF EXISTS clientsecrets;
 	");
 	$step->execute();
 
@@ -18,20 +18,39 @@
 	");
 	$step->execute();
 
-	//Drop users table if exist
+	//Drop clientUsers table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS users;
+		DROP TABLE IF EXISTS clientUsers;
 	");
 	$step->execute();
 
-	//Create users table
+	//Drop adminUsers table if exist
+	$step=$database->prepare("
+		DROP TABLE IF EXISTS adminUsers;
+	");
+	$step->execute();
+
+	//Create admins users table
 	$step=$database->prepare("
 
-		CREATE TABLE users (
+		CREATE TABLE adminUsers (
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 			username VARCHAR(255) UNIQUE,
+			password VARCHAR(255)
+		);
+
+	");
+	$step->execute();
+
+	//Create clients users table
+	$step=$database->prepare("
+
+		CREATE TABLE clientUsers (
+			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+			clientCode VARCHAR(50) NOT NULL UNIQUE,
+			username VARCHAR(255) UNIQUE,
 			password VARCHAR(255),
-			status VARCHAR(50)
+			FOREIGN KEY (clientCode) REFERENCES clients(code)
 		);
 
 	");
@@ -42,37 +61,39 @@
 
 		CREATE TABLE secrets (
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-			secret VARCHAR(500) UNIQUE,
-			label VARCHAR(255)
+			secret VARCHAR(500) NOT NULL UNIQUE,
+			label VARCHAR(255) NOT NULL UNIQUE
 		);
 
 	");
 	$step->execute();
 
-	//Create userClient table
+	//Create clientsecrets table
 	$step=$database->prepare("
 
-		CREATE TABLE userClient (
-			userId INT NOT NULL,
-			clientCode VARCHAR(50) NOT NULL,
+		CREATE TABLE clientSecrets (
 
-			PRIMARY KEY (userId, clientCode),
-			FOREIGN KEY (userId) REFERENCES users(id),
-			FOREIGN KEY (clientCode) REFERENCES clients(code)
-		);
-
-	");
-	$step->execute();
-
-	//Create userClient table
-	$step=$database->prepare("
-
-		CREATE TABLE userSecret (
-			userId INT NOT NULL,
+			clientId INT NOT NULL,
 			secretId INT NOT NULL,
 
-			PRIMARY KEY (userId, secretId),
-			FOREIGN KEY (userId) REFERENCES users(id),
+			PRIMARY KEY (clientId, secretId),
+			FOREIGN KEY (clientId) REFERENCES clientUsers(id),
+			FOREIGN KEY (secretId) REFERENCES secrets(id)
+		);
+
+	");
+	$step->execute();
+
+	//Create adminsecrets table
+	$step=$database->prepare("
+
+		CREATE TABLE adminSecrets (
+
+			adminId INT NOT NULL,
+			secretId INT NOT NULL,
+
+			PRIMARY KEY (adminId, secretId),
+			FOREIGN KEY (adminId) REFERENCES adminUsers(id),
 			FOREIGN KEY (secretId) REFERENCES secrets(id)
 		);
 
@@ -80,17 +101,17 @@
 	$step->execute();
 
 
-	//Insert default user
+	//Insert default admin
 	$username = 'ajpi';
 	$password = sha1('ajpi');
 
 	$step=$database->prepare("
-		INSERT INTO users (username, password, status) 
-		VALUES ('${username}', '${password}', 'admin');
+		INSERT INTO adminUsers (username, password) 
+		VALUES ('${username}', '${password}');
 	");
 	$step->execute();
 
-	//Insert default key
+	//Insert default secret
 	$id = 1;
 	$secret = 'EIBZKCD6IFOZETPNLC7RYRNQL6NNFOBPDS37TFMFG4I6OMO6HIIXMH5G33V3Q47DSWX7ZNRULQPS3MMU7MERFLN2RVOEYJAYD24UXAY';
 	$label = 'AJPI';
@@ -101,10 +122,9 @@
 	");
 	$step->execute();
 
-	//Insert default userSecret
+	//Insert default adminsecret
 	$step=$database->prepare("
-		INSERT INTO userSecret (userId, secretId) 
-		VALUES (1, 1);
+		INSERT INTO adminSecrets (adminId, secretId) VALUES (1, 1);
 	");
 	$step->execute();
 

@@ -31,7 +31,7 @@
 
 	<h2>Description : </h2>
 
-	<div id="descriptionBox">
+	<div id="boxDescriptionInvoice">
 		<?php print("" . $description . ""); ?>
 	</div>
 

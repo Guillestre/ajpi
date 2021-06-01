@@ -71,14 +71,12 @@
 
 			case "clients.php" :
 				$userQuery = "
-				SELECT status, username, label
-				FROM clients, users, userClient, secrets, userSecret
+				SELECT username, label
+				FROM clients, clientUsers, secrets, clientSecrets
 				WHERE 
 				code = :clientCode AND
-				clients.code = userClient.clientCode AND
-				userClient.userId = users.id AND
-				users.id = userSecret.userId AND 
-				userSecret.secretId = secrets.id";
+				clients.code = clientUsers.clientCode AND 
+				clientSecrets.secretId = secrets.id";
 
 				$clientQuery = "SELECT * FROM clients WHERE code = :clientCode";
 
@@ -103,12 +101,14 @@
 				$clientsQuery = "SELECT name, code FROM clients ORDER BY name ASC";
 				$secretsQuery = "SELECT label FROM secrets";
 				$recordedUsersQuery = "
-					SELECT username, code, status FROM users, userClient, clients
-					WHERE users.id = userClient.userId 
-					AND userClient.clientCode = clients.code
+					SELECT username, code, 'client' AS status 
+					FROM clientUsers, clients
+					WHERE clientUsers.clientCode = clients.code
+
 					UNION
-					SELECT username, '' AS code, status FROM users
-					WHERE status = 'admin'
+
+					SELECT username, '' AS code, 'admin' AS status 
+					FROM adminUsers;
 				";
 
 				$clientsStep=$database->prepare($clientsQuery);
@@ -185,7 +185,7 @@
 			break;
 
 			case "dashboard.php" :
-
+			
 				if(!$isAdmin)
 					$step->bindValue(":clientCodeOwner_filter", $_SESSION['clientCode']);
 

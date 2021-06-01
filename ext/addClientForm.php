@@ -6,8 +6,6 @@
 				
 				<div class="grid-container-userForm">
 
-					<?php include "ext/redirection.php";?>
-
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
 					</div>
@@ -25,11 +23,40 @@
 					</div>
 
 					<div class="grid-item-label">
+						<label for="status">Status : </label>
+					</div>
+
+					<div>
+						<label for="status">Client : </label>
+						<input type="radio" id="clientStatus" name="status" checked  value="clientStatus" onclick="displayClientHandler()">
+						<label for="status">Admin : </label>
+						<input type="radio" id="adminStatus" name="status"  value="adminStatus" onclick="displayClientHandler()">
+					</div>
+
+
+					<script>
+						function displayClientHandler() {
+						  var clientStatus = document.getElementById("clientStatus");
+						  var adminStatus = document.getElementById("adminStatus");
+						  var clientLabel = document.getElementById("clientLabel");
+						  var clientInput = document.getElementById("clientInput");
+						  if (clientStatus.checked == true){
+						    clientLabel.style.display = "block";
+						    clientInput.style.display = "block";
+						  } else {
+						     clientLabel.style.display = "none";
+						     clientInput.style.display = "none";
+						  }
+						}
+					</script>
+
+					
+					<div class="grid-item-label" id="clientLabel">
 						<label for="client">Nom Client : </label>
 					</div>
 
-					<div class="grid-item-input-text">
-					 	<select id="client" name="client" >
+					<div class="grid-item-input-text" id="clientInput">
+					 	<select name="client">
 							<?php
 
 								foreach($clientsResult as $client){
@@ -43,6 +70,8 @@
 							?>
 						</select>
 					</div>
+
+					
 
 					<div class="grid-item-label">
 						<label for="label">Clé (A2F) : </label>
@@ -75,5 +104,5 @@
 
 			</form>
 
-
 		</div>
+

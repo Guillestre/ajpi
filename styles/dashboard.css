@@ -45,7 +45,12 @@ h1
 	font-size: 25pt;
 }
 
-label, p, input, button, .grid-item-text, #descriptionBox {
+h2
+{
+	font-size: 20pt;
+}
+
+label, p, input, button, .grid-item-text {
 	font-size: 18pt;
 }
 
@@ -64,15 +69,26 @@ select
 	font-size: 20pt;
 }
 
-#descriptionBox
+#boxDescriptionInvoice, #boxDescriptionMyAccount
 {
-	background-color: rgba(200, 200, 200, .2);
 	text-align: justify;
+	border: 1pt dotted;
 	
-	display: grid;
-	grid-template-columns: 270pt;
+	font-size: 15pt;
 
+	display: grid;
+	grid-template-columns: 300pt;
+
+	margin: 5pt;
 	padding: 5pt;
+}
+
+#boxDescriptionInvoice {
+	background-color: rgba(200, 200, 200, .2);
+}
+
+#boxDescriptionMyAccount {
+	background-color: rgba(200, 200, 200, .5);
 }
 
 .grid-container-buttons {
@@ -146,7 +162,7 @@ select
 	{
 		float: left;
 		position: sticky;
-		top : 40pt;
+		top : 42.5pt;
 	}
 
 }
