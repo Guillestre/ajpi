@@ -1,6 +1,6 @@
-		<div class="userFormBox">
+		
 
-			<h2>Ajouter un client : </h2>
+			<h2>Ajouter un utilisateur : </h2>
 			
 			<form action="userHandler.php" method="post">
 				
@@ -27,29 +27,14 @@
 					</div>
 
 					<div>
-						<label for="status">Client : </label>
+
 						<input type="radio" id="clientStatus" name="status" checked  value="clientStatus" onclick="displayClientHandler()">
-						<label for="status">Admin : </label>
+						<label for="status">Client</label>
+
 						<input type="radio" id="adminStatus" name="status"  value="adminStatus" onclick="displayClientHandler()">
+						<label for="status">Admin</label>
+						
 					</div>
-
-
-					<script>
-						function displayClientHandler() {
-						  var clientStatus = document.getElementById("clientStatus");
-						  var adminStatus = document.getElementById("adminStatus");
-						  var clientLabel = document.getElementById("clientLabel");
-						  var clientInput = document.getElementById("clientInput");
-						  if (clientStatus.checked == true){
-						    clientLabel.style.display = "block";
-						    clientInput.style.display = "block";
-						  } else {
-						     clientLabel.style.display = "none";
-						     clientInput.style.display = "none";
-						  }
-						}
-					</script>
-
 					
 					<div class="grid-item-label" id="clientLabel">
 						<label for="client">Nom Client : </label>
@@ -91,18 +76,47 @@
 							?>
 						</select>
 					</div>
+
+					<div>
+						<button type="submit" name="addUser">
+							Ajouter utilisateur
+						</button>
+					</div>
+
+					<?php
+
+						$messageAddUser = 
+						(isset($_GET['button']) && $_GET['button'] == "addClient") || 
+						(isset($_GET['button']) && $_GET['button'] == "addAdmin");
+
+						if(isset($_GET['errorMessage']) && $messageAddUser)
+							messageHandler::sendErrorMessage($_GET['errorMessage']);
+
+					?>
 					
-					<button type="submit" name="addClient">
-						Ajouter client
-					</button>
-
-					<?php if(isset($_GET['button']) && $_GET['button'] == "addClient"){
-						include "ext/message.php"; 
-					}?>
-
 				</div>
 
 			</form>
 
-		</div>
+			<?php
+				if(isset($_GET['infoMessage']) && $messageAddUser)
+					messageHandler::sendInfoMessage($_GET['infoMessage']);
+			?>
 
+	
+
+		<script>
+			function displayClientHandler() {
+			  var clientStatus = document.getElementById("clientStatus");
+			  var adminStatus = document.getElementById("adminStatus");
+			  var clientLabel = document.getElementById("clientLabel");
+			  var clientInput = document.getElementById("clientInput");
+			  if (clientStatus.checked == true){
+			    clientLabel.style.display = "block";
+			    clientInput.style.display = "block";
+			  } else {
+			     clientLabel.style.display = "none";
+			     clientInput.style.display = "none";
+			  }
+			}
+		</script>

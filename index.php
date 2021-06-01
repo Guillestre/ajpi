@@ -26,11 +26,11 @@
 		</div>
 
 		<?php
-			$userDeleted = 
+			$messageDeleteUser = 
 			isset($_GET['button']) && 
 			$_GET['button'] == "deleteMyAccount";
 
-			if($userDeleted)
+			if($messageDeleteUser)
 				include "ext/message.php"; 
 		?>
 

@@ -35,7 +35,7 @@ table thead th
 	top: 42.5pt;
 }
 
-h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox
+h1, h2, label, p, input, button, a, .grid-item-text, .grid-item-label, select, #descriptionBox
 {
 	margin: 8pt;
 }
@@ -50,8 +50,8 @@ h2
 	font-size: 20pt;
 }
 
-label, p, input, button, .grid-item-text {
-	font-size: 18pt;
+label, p, input, button, a, .grid-item-text {
+	font-size: 15pt;
 }
 
 select
@@ -100,7 +100,6 @@ select
 /* USER FORM PART ***************************************************/
 
 .userFormBox{
-	border: 1pt dashed;
 	background-color: rgba(200, 222, 206);
 }
 
@@ -110,13 +109,13 @@ select
 
 .grid-container-userForm {
     display: grid;
-    grid-template-columns: 250pt 400pt;
+    grid-template-columns: auto auto;  
 }
 
 .grid-container-forms
 {
 	display: grid;
-    grid-template-columns: 700pt 700pt;
+    grid-template-columns: auto auto;
 }
 
 #errorMessageBox{

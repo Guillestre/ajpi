@@ -40,31 +40,30 @@
 		
 		case 'userHandler.php':
 		
-			/* CLIENT PART */
+			/* ADD USER PART */
 
-			//Verify if addAccount button has been clicked
-			if(isset($_POST['addClient'])){
-				$param = UserHandler::addClientUser(
-					$_POST['username'], 
-					$_POST['password'], 
-					$_POST['client'], 
-					$_POST['label']
-				);
+			//Verify if addUser button has been clicked
+			if(isset($_POST['addUser'])){
+				$status = $_POST['status'];
 
-				header("Location: userHandler.php?${param}&button=addClient");
-			}
+				if($status == 'clientStatus'){
+					$param = UserHandler::addClientUser(
+						$_POST['username'], 
+						$_POST['password'], 
+						$_POST['client'], 
+						$_POST['label']
+					);
+					header("Location: userHandler.php?${param}&button=addClient");
+				}
 
-			/* ADMIN PART */
-
-			//Verify if addAdmin button has been clicked
-			if(isset($_POST['addAdmin'])){
-				$param = UserHandler::addAdminUser(
-					$_POST['username'], 
-					$_POST['password'], 
-					$_POST['label']
-				);
-
-				header("Location: userHandler.php?${param}&button=addAdmin");
+				if($status == 'adminStatus'){
+					$param = UserHandler::addAdminUser(
+						$_POST['username'], 
+						$_POST['password'], 
+						$_POST['label']
+					);
+					header("Location: userHandler.php?${param}&button=addAdmin");
+				}
 			}
 
 			/* DELETE USER PART */
@@ -79,8 +78,19 @@
 
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteMyAccount'])){
-				$param = UserHandler::deleteMyAccount($_SESSION['id']);	
-				header("Location: index.php?${param}&button=deleteMyAccount");
+				$param = UserHandler::deleteMyAccount($_SESSION['id']);
+
+				if(strpos($param, "errorMessage") === false)
+					header("Location: index.php?${param}&button=deleteMyAccount");
+				else
+					header("Location: userHandler.php?${param}&button=deleteMyAccount");
+			}
+
+			/* MODIFY MY ACCOUNT PART */
+
+			if(isset($_POST['modifyMyAccount'])){
+				$param = UserHandler::modifyMyAccount($_SESSION['id'], $_POST['newUsername'], $_POST['newPassword'], $_POST['newLabel']);	
+				header("Location: userHandler.php?${param}&button=modifyMyAccount");
 			}
 
 			break;

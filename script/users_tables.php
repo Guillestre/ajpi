@@ -2,13 +2,13 @@
 
 	//Drop userClient table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS adminsecrets;
+		DROP TABLE IF EXISTS adminSecrets;
 	");
 	$step->execute();
 
 	//Drop userSecret table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS clientsecrets;
+		DROP TABLE IF EXISTS clientSecrets;
 	");
 	$step->execute();
 

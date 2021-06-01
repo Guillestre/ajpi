@@ -131,8 +131,8 @@
 			//Get database instance
 			$database = mysqlConnection::getInstance();
 
-			$errorMessageUserExist = "Ce nom d'utilisateur existe déjà";
-			$messageUserAdded = "Utilisateur ajouté";
+			$errorMessageUserExist = "Ce nom d'utilisateur client existe déjà";
+			$messageUserAdded = "Utilisateur client ajouté";
 
 			//Make request to know if entered username is already used
 			$sql= "
@@ -167,15 +167,25 @@
 			//Retrieve number of record
 			$nbResult = $step->rowCount();
 			$clientCodeToken = $nbResult != 0;
+			
 
 			if($clientCodeToken){
 				$row = $step->fetch(PDO::FETCH_ASSOC);
-				$clientName = $row['name'];
 				$username = $row['username'];
+				$clientName = $row['name'];
 				$errorClientCodeToken = "Le client ${clientName} est déjà lié au compte utilisateur ${username}";
 				return "errorMessage=${errorClientCodeToken}";
 			}
 
+			//Make request to get name from the chosen client
+			$sql= " SELECT * FROM clients WHERE code = :clientCode";
+
+			$step = $database->prepare($sql);
+			$step->bindValue(":clientCode", $clientCode); 
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+			$clientName = $row['name'];
 
 			/* 1) INSERT USER INTO CLIENTUSERS TABLE */
 
@@ -225,7 +235,7 @@
 			$step->bindValue(":secretId", $secretId); 
 			$step->execute();
 
-			$messageUserAdded = "L'utilisateur ${username} a été ajouté";
+			$messageUserAdded = "Le compte utilisateur client ${username} a été ajouté pour le client ${clientName}";
 			return "infoMessage=${messageUserAdded}";
 
 		}
@@ -238,7 +248,7 @@
 			//Get database instance
 			$database = mysqlConnection::getInstance();
 
-			$errorMessageUserExist = "Ce nom d'utilisateur existe déjà";
+			$errorMessageUserExist = "Ce nom d'utilisateur admin existe déjà";
 
 			//Make request to know if entered username is already used
 			$sql= "
@@ -302,7 +312,7 @@
 			$step->bindValue(":secretId", $secretId); 
 			$step->execute();
 
-			$messageUserAdded = "L'utilisateur ${username} a été ajouté";
+			$messageUserAdded = "L'utilisateur admin ${username} a été ajouté";
 			return "infoMessage=${messageUserAdded}";
 
 		}
@@ -314,13 +324,17 @@
 			//Get database instance
 			$database = mysqlConnection::getInstance();
 
-			$errorMessage = "Impossible. Il n'y a aucun utilisateur à supprimer";
+			if(!isset($userDescription)){
+				$errorMessage = "Impossible. Il n'y a aucun utilisateur à supprimer";
+				return "errorMessage=${errorMessage}";
+			}
 
 			$end = strpos($userDescription,"(") - 1;
 			$username = substr($userDescription, 0, $end);
 
 			if(strpos($userDescription, 'admin'))
 			{
+
 				// DELETE ADMIN USER
 
 				//Make request to fetch if this user
@@ -382,14 +396,27 @@
 			}
 		}
 
-		//Delete user according to his id
+		//Delete connected user account according to his id
 		public function deleteMyAccount($id)
 		{
-			
 			//Get database instance
 			$database = mysqlConnection::getInstance();
 
+			//Prepare messages
 			$myAccountDeleted = "Votre compte a bien été supprimé";
+			$errorMessage = "Impossible, vous êtes le seul administrateur";
+
+			//Verify if after delete this admin, there will be always at least one admin left
+			$sql= "SELECT * FROM adminUsers"; 
+			$step = $database->prepare($sql);
+			$step->execute();
+
+			$nbResultAdmin = $step->rowCount();
+
+
+			if($nbResultAdmin == 1)
+				return "errorMessage=${errorMessage}";
+
 
 			//Delete him from userSecret
 			$sql= "
@@ -408,9 +435,97 @@
 			session_destroy();
 
 			return "infoMessage=${myAccountDeleted}";
-			
 		}
 
+
+		//Modify connected user account
+		public function modifyMyAccount($id, $newUsername, $newPassword, $newLabel)
+		{
+			//Get database instance
+			$database = mysqlConnection::getInstance();
+
+			//Prepare messages
+			$infoMessage = "";
+			$errorMessage = "Vous devez remplir au moins un champs";
+
+			//Get current data
+			$currentUsername = $_SESSION['username'];
+			$currentPassword = $_SESSION['password'];
+			$currentLabel = $_SESSION['label'];
+
+			//Verify id there is a least one field filled
+			$emptyFields = 
+			(!isset($newUsername) || trim($newUsername) == "") &&
+			(!isset($newPassword) || trim($newPassword) == "") &&
+			(!isset($newLabel) || trim($newLabel) == "");
+
+			if($emptyFields)
+				return "errorMessage=${errorMessage}";
+
+			/* NEW USERNAME */
+
+			if(trim($newUsername) != "")
+			{
+				$sql= "UPDATE adminUsers SET username = :username WHERE id = :id"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":username", $newUsername);
+				$step->bindValue(":id", $id);
+				$step->execute();
+
+				$_SESSION['username'] = $newUsername;
+			}
+
+			/* NEW PASSWORD */
+
+			if(trim($newPassword) != "")
+			{
+				$sql= "UPDATE adminUsers SET password = :password WHERE id = :id"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":password", sha1($newPassword));
+				$step->bindValue(":id", $id);
+				$step->execute();
+
+				$_SESSION['password'] = $newPassword;
+			}
+
+			/* NEW LABEL */
+
+			if(trim($newLabel) != "")
+			{
+				//Get secretId
+				$sql= "
+				SELECT id FROM secrets WHERE label = :label"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":label", $currentLabel); 
+				$step->execute();
+
+				$row = $step->fetch(PDO::FETCH_ASSOC);
+				$secretId = $row['id'];
+
+				//Get adminId
+				$sql= "
+				SELECT id FROM adminUsers WHERE username = :username"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":username", $currentUsername); 
+				$step->execute();
+
+				$row = $step->fetch(PDO::FETCH_ASSOC);
+				$adminId = $row['id'];
+
+				//Update adminSecrets
+				$sql= "UPDATE adminSecrets SET secretId = :secretId WHERE adminId = :adminId"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":adminId", $adminId);
+				$step->bindValue(":secretId", $secretId);
+				$step->execute();
+
+				$_SESSION['label'] = $newLabel;
+			}
+
+
+
+			return "infoMessage=${infoMessage}";
+		}
 
 	}
 ?>
