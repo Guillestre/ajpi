@@ -115,7 +115,12 @@
 
 			/* MODIFY MY ACCOUNT PART */
 
-		
+			if(isset($_POST['modifyMyAccount'])){
+				$username = $_SESSION['username'];
+				$url = "Location: modifyAccount.php?username=${username}";
+				header($url);
+			}
+
 			break;
 	}
 

@@ -98,6 +98,7 @@
 			break;
 
 			case "userHandler.php" :
+
 				$clientsQuery = "SELECT name, code FROM clients ORDER BY name ASC";
 				$secretsQuery = "SELECT label FROM secrets";
 				$recordedUsersQuery = "
@@ -114,6 +115,14 @@
 				$clientsStep=$database->prepare($clientsQuery);
 				$secretsStep=$database->prepare($secretsQuery);
 				$recordedUsersStep=$database->prepare($recordedUsersQuery);
+
+			break;
+
+			case "modifyAccount.php" :
+
+				$secretsQuery = "SELECT label FROM secrets";
+				$secretsStep=$database->prepare($secretsQuery);
+				
 			break;
 
 		}
@@ -144,6 +153,11 @@
 
 				$recordedUsersStep->execute();
 				$recordedUsersResult = $recordedUsersStep->fetchAll();
+			break;
+
+			case "modifyAccount.php" :
+				$secretsStep->execute();
+				$secretsResult = $secretsStep->fetchAll();
 			break;
 
 			case "clients.php" :

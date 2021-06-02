@@ -44,13 +44,11 @@
 			</button>
 		</div>
 
-		<?php
-			if($messageDeleteUser)
-				include "ext/message.php";
-		?>
-
 	</div>
 
-	
+	<?php
+		if($messageDeleteUser)
+			include "ext/message.php";
+	?>
 
 </form>

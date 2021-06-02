@@ -29,7 +29,7 @@
 		header("Location: index.php");
 	
 	//Verify if user isn't already connected
-	$keywords = array("dashboard.php", "clients.php", "invoiceline.php", "userHandler.php");
+	$keywords = array("dashboard.php", "clients.php", "invoiceline.php", "userHandler.php", "modifyAccount.php");
 	if(isset($_SESSION['username']) && !in_array($currentPage, $keywords))
 		header("Location: dashboard.php");
 

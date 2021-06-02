@@ -4,6 +4,14 @@
 
 	class UserHandler
 	{
+
+		private $database = NULL;
+
+		function __construct() {
+			//Get database instance
+			$this->database = mysqlConnection::getInstance();
+		}
+
 		public function connectUser($username, $password, $otp, $status)
 		{
 
@@ -22,8 +30,7 @@
 				$CLIENTCODE_PARAM = "clientCode,";
 			}
 
-			//Get database instance
-			$database = mysqlConnection::getInstance();
+			
 
 			$errorMessageAccount = "Ce compte n'existe pas";
 			$errorMessageOTP = "Le code secret n'est pas correct";
@@ -38,7 +45,7 @@
 			${USERSECRETS_TABLE}.secretId = secrets.id AND
 			username = :username AND password = :password"; 
 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":username", $username); 
 			$step->bindValue(":password", sha1($password)); 
 			$step->execute();
@@ -88,10 +95,6 @@
 		public function addClientUser
 		($username, $password, $client, $label)
 		{
-			
-			//Get database instance
-			$database = mysqlConnection::getInstance();
-
 			//Extract client code
 			$start = strpos($client,"(") + 1;
 			$end = strpos($client,")");
@@ -102,7 +105,7 @@
 			SELECT * FROM clientUsers, clients
 			WHERE clientCode = :clientCode AND
 			clientUsers.clientCode = clients.code"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":clientCode", $clientCode); 
 			$step->execute();
 
@@ -132,9 +135,6 @@
 		//Add a new user into database
 		private function addUser($username, $password, $label, $clientCode)
 		{
-			//Get database instance
-			$database = mysqlConnection::getInstance();
-
 			$isClient = isset($clientCode);
 
 			if(!$isClient)
@@ -157,7 +157,7 @@
 			$sql= "
 			SELECT * FROM ${USERSTATUS_TABLE}
 			WHERE username = :username"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":username", $username); 
 			$step->execute();
 
@@ -176,7 +176,7 @@
 				//Make request to get name from the chosen client
 				$sql= " SELECT * FROM clients WHERE code = :clientCode";
 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":clientCode", $clientCode); 
 				$step->execute();
 
@@ -189,7 +189,7 @@
 				VALUES ( :clientCode, :username, :password);
 				"; 
 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":username", $username); 
 				$step->bindValue(":password", sha1($password)); 
 				$step->bindValue(":clientCode", $clientCode); 
@@ -201,7 +201,7 @@
 				VALUES (:username, :password);
 				"; 
 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":username", $username); 
 				$step->bindValue(":password", sha1($password)); 
 				$step->execute();
@@ -212,7 +212,7 @@
 			//Get userId
 			$sql= "
 			SELECT id FROM secrets WHERE label = :label"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":label", $label); 
 			$step->execute();
 
@@ -222,7 +222,7 @@
 			//Get userId
 			$sql= "
 			SELECT id FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":username", $username); 
 			$step->execute();
 
@@ -237,7 +237,7 @@
 			VALUES ( :userId, :secretId);
 			"; 
 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":userId", $userId); 
 			$step->bindValue(":secretId", $secretId); 
 			$step->execute();
@@ -254,9 +254,6 @@
 		//Delete an selected user according to his description
 		public function deleteSelectedUser($userDescription)
 		{
-			//Get database instance
-			$database = mysqlConnection::getInstance();
-
 			if(!isset($userDescription)){
 				$errorMessage = 
 				"Impossible. Il n'y a aucun utilisateur à supprimer";
@@ -281,7 +278,7 @@
 			//Make request to fetch his id
 			$sql= "
 			SELECT * FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":username", $username); 
 			$step->execute();
 
@@ -293,9 +290,6 @@
 
 		//Delete user according to his id an status
 		public function deleteUser($id, $username, $status){
-			//Get database instance
-			$database = mysqlConnection::getInstance();
-
 			if($status == "admin")
 			{
 				$USERSECRETS_TABLE = "adminSecrets";
@@ -305,7 +299,7 @@
 				//Verify if after delete there will still be at least one admin
 				$sql= "
 				SELECT * FROM ${USERSTATUS_TABLE}"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->execute();
 
 				//Retrieve number of record
@@ -327,20 +321,23 @@
 			$sql= "
 			DELETE FROM ${USERSECRETS_TABLE} 
 			WHERE ${USERSECRETS_COLUMN} = :id"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":id", $id); 
 			$step->execute();
 
 			//Delete him from clientUser
 			$sql= "
 			DELETE FROM ${USERSTATUS_TABLE} WHERE id = :id"; 
-			$step = $database->prepare($sql);
+			$step = $this->database->prepare($sql);
 			$step->bindValue(":id", $id); 
 			$step->execute();
 
-			session_destroy();
+			if($_SESSION['username'] == $username){
+				session_destroy();
+				$infoMessage = "Votre compte a été supprimé";
+			} else
+				$infoMessage = "L'utilisateur ${username} a été supprimé";
 
-			$infoMessage = "L'utilisateur ${username} a été supprimé";
 			return "infoMessage=" . urlencode($infoMessage);
 		}
 
@@ -348,9 +345,6 @@
 		//Modify connected user account
 		public function modifyMyAccount($id, $newUsername, $newPassword, $newLabel)
 		{
-			//Get database instance
-			$database = mysqlConnection::getInstance();
-
 			//Prepare messages
 			$infoMessage = "";
 			$errorMessage = "Vous devez remplir au moins un champs";
@@ -374,7 +368,7 @@
 			if(trim($newUsername) != "")
 			{
 				$sql= "UPDATE adminUsers SET username = :username WHERE id = :id"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":username", $newUsername);
 				$step->bindValue(":id", $id);
 				$step->execute();
@@ -387,7 +381,7 @@
 			if(trim($newPassword) != "")
 			{
 				$sql= "UPDATE adminUsers SET password = :password WHERE id = :id"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":password", sha1($newPassword));
 				$step->bindValue(":id", $id);
 				$step->execute();
@@ -402,7 +396,7 @@
 				//Get secretId
 				$sql= "
 				SELECT id FROM secrets WHERE label = :label"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":label", $currentLabel); 
 				$step->execute();
 
@@ -412,7 +406,7 @@
 				//Get adminId
 				$sql= "
 				SELECT id FROM adminUsers WHERE username = :username"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":username", $currentUsername); 
 				$step->execute();
 
@@ -421,7 +415,7 @@
 
 				//Update adminSecrets
 				$sql= "UPDATE adminSecrets SET secretId = :secretId WHERE adminId = :adminId"; 
-				$step = $database->prepare($sql);
+				$step = $this->database->prepare($sql);
 				$step->bindValue(":adminId", $adminId);
 				$step->bindValue(":secretId", $secretId);
 				$step->execute();

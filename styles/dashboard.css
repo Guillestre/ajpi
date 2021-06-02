@@ -35,7 +35,10 @@ table thead th
 	top: 42.5pt;
 }
 
-h1, h2, label, p, input, button, a, .grid-item-text, .grid-item-label, select, #descriptionBox
+h1, h2, label, p, input, button, a, 
+.grid-item-text, 
+.grid-item-label, select, #descriptionBox,
+#infoMessage, #errorMessageBox
 {
 	margin: 8pt;
 }
@@ -50,7 +53,7 @@ h2
 	font-size: 20pt;
 }
 
-label, p, input, button, a, .grid-item-text {
+label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox {
 	font-size: 15pt;
 }
 
@@ -62,11 +65,6 @@ select
 .tdDescription
 {
 	text-align: left;
-}
-
-#infoMessage
-{
-	font-size: 20pt;
 }
 
 #boxDescriptionInvoice, #boxDescriptionMyAccount
@@ -112,20 +110,13 @@ select
 
 .grid-container-userForm {
     display: grid;
-    grid-template-columns: auto auto; 
-    float: left; 
+    grid-template-columns: 200pt auto; 
 }
 
 .grid-container-forms
 {
 	display: grid;
     grid-template-columns: auto auto;
-}
-
-#errorMessageBox{
-    text-align: center;
-    font-size: 15pt;
-    margin: 10pt;
 }
 
 #errorMessage{

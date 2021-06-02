@@ -25,11 +25,11 @@
 					Supprimer mon compte
 				</button>
 			</div>
-
+			
 			<div>
-				<a href="ext/changeUsername.php">Changer son nom d'utilisateur</a>
-				<a href="ext/changePassword.php">Changer son mot de passe</a>	
-				<a href="ext/changeLabel.php">Changer sa clé</a>	
+				<button type="submit" name="modifyMyAccount">
+					Modifier mon compte
+				</button>
 			</div>
 
 			<div></div>
