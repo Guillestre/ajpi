@@ -1,5 +1,9 @@
 /* MAIN PART ***************************************************/
 
+body{
+	background-color: rgba(200, 222, 206, 0.3);
+}
+
 .navBar{
 	position: sticky;
 	top: 0;

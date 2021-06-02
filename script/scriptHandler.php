@@ -6,7 +6,7 @@
 	set_time_limit(5000);
 
 	$deleteResults = false;
-	$createUserTables = false;
+	$createUserTables = true;
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs

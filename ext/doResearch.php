@@ -109,7 +109,7 @@
 					UNION
 
 					SELECT username, '' AS code, 'admin' AS status 
-					FROM adminUsers;
+					FROM adminUsers WHERE username != :username;
 				";
 
 				$clientsStep=$database->prepare($clientsQuery);
@@ -151,8 +151,10 @@
 				$secretsStep->execute();
 				$secretsResult = $secretsStep->fetchAll();
 
+				$recordedUsersStep->bindValue(":username", $_SESSION['username']);
 				$recordedUsersStep->execute();
 				$recordedUsersResult = $recordedUsersStep->fetchAll();
+				$recordedUsersNbResult = $recordedUsersStep->rowCount();
 			break;
 
 			case "modifyAccount.php" :

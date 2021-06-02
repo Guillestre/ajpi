@@ -1,54 +1,31 @@
 <?php
-
-	$userHandler = new UserHandler();
-
 	switch ($currentPage) {
 
 		case 'index.php':
 
-			if(isset($_POST['adminConnection'])){
+			if(isset($_POST['connection'])){
 
 				$otp = $_POST['otp'];
 				$username = $_POST['username'];
 				$password = $_POST['password'];
+				$status = $_GET['status'];
+
+				$userHandler = new UserHandler($status);
 
 				$param = $userHandler->connectUser(
 					$username, 
 					$password, 
 					$otp, 
-					'admin'
+					$status
 				);
 
 				if(isset($param)){
-					$parameters = "${param}&connect=connectAdmin";
+					$parameters = "${param}&status=${status}";
 					header("Location: index.php?${parameters}");
 				}
 				else
 					header("Location: dashboard.php");
 			}
-
-			if(isset($_POST['clientConnection'])){
-
-				$otp = $_POST['otp'];
-				$username = $_POST['username'];
-				$password = $_POST['password'];
-
-				$param = $userHandler->connectUser(
-					$username, 
-					$password, 
-					$otp, 
-					'client'
-				);
-
-				if(isset($param)){
-					$parameters = "${param}&connect=connectClient";
-					header("Location: index.php?${parameters}");
-				}
-				else
-					header("Location: dashboard.php");
-			}
-
-			break;
 		
 		case 'userHandler.php':
 		
@@ -113,11 +90,78 @@
 				}
 			}
 
-			/* MODIFY MY ACCOUNT PART */
-
 			if(isset($_POST['modifyMyAccount'])){
-				$username = $_SESSION['username'];
-				$url = "Location: modifyAccount.php?username=${username}";
+				$id = urlencode($_SESSION['id']);
+				$url = "Location: modifyAccount.php?id=${id}&status=admin";
+				header($url);
+			}
+
+			if(isset($_POST['modifyUser'])){
+				$userDescription = $_POST['userDescription'];
+
+				//Get username from the selected user
+				$end = strpos($userDescription,"(") - 1;
+				$username = substr($userDescription, 0, $end);
+
+				//Get status from the selected user
+				if(strpos($userDescription, 'admin')){
+					$status = "admin";
+					$USERSTATUS_TABLE = "adminUsers";
+				}
+				else
+				{
+					$status = "client";
+					$USERSTATUS_TABLE = "clientUsers";
+				}
+
+				//Make request to fetch his id
+				$sql= "
+				SELECT * FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
+				$step = $database->prepare($sql);
+				$step->bindValue(":username", $username); 
+				$step->execute();
+
+				$row = $step->fetch(PDO::FETCH_ASSOC);
+				$id = $row['id'];
+
+				$url = "Location: modifyAccount.php?id=${id}&status=${status}";
+				header($url);
+			}
+
+			break;
+
+		case 'modifyAccount.php':
+
+			if(isset($_POST['modifyUsername'])){
+				$id = $_GET['id'];
+				$status = $_GET['status'];
+				$newUsername = $_POST['newUsername'];
+
+				$param = $userHandler->setUsername($id, $newUsername, $status);
+
+				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyUsername";
+				header($url);
+			}
+
+			if(isset($_POST['modifyPassword'])){
+				$id = $_GET['id'];
+				$status = $_GET['status'];
+				$newPassword = $_POST['newPassword'];
+
+				$param = $userHandler->setPassword($id, $newPassword, $status);
+
+				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyPassword";
+				header($url);
+			}
+
+			if(isset($_POST['modifyLabel'])){
+				$id = $_GET['id'];
+				$status = $_GET['status'];
+				$newLabel = $_POST['newLabel'];
+
+				$param = $userHandler->setLabel($id, $newLabel, $status);
+
+				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyLabel";
 				header($url);
 			}
 

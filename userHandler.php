@@ -27,6 +27,10 @@
 			<div class="userFormBox">
 				<?php include "ext/addUser.php"; ?>
 			</div>
+
+			<div class="userFormBox">
+				<?php include "ext/modifyUser.php"; ?>
+			</div>
 	</div>
 
 </body>

@@ -2,7 +2,7 @@
 
 			<h2>Connexion en tant qu'administrateur: </h2>
 
-			<form action="index.php" method="post">
+			<form action="index.php?status=admin" method="post">
 				
 				<div class="grid-container-userForm">
 
@@ -31,17 +31,16 @@
 					</div>
 
 					<div class="grid-item-input-button">
-						<input type="submit" name="adminConnection" 
+						<input type="submit" name="connection" 
 						value="Se connecter">
 					</div>
 
 					<?php 
-						$connectAdmin = 
-						isset($_GET['connect']) && 
-						$_GET['connect'] == "connectAdmin";
+						$adminConnection = 
+						isset($_GET['status']) && $_GET['status'] == "admin";
 
-						if($connectAdmin)
-							include "ext/message.php"; 
+						if($adminConnection && isset($_GET['errorMessage']))
+							messageHandler::sendErrorMessage($_GET['errorMessage']);
 					?>
 
 				</div>

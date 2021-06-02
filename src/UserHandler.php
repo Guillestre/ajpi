@@ -6,43 +6,40 @@
 	{
 
 		private $database = NULL;
+		private $status;
 
-		function __construct() {
+		private $USERSTATUS_TABLE;
+		private $CLIENTCODE_PARAM;
+
+		function __construct($status) {
 			//Get database instance
 			$this->database = mysqlConnection::getInstance();
+			$this->status = $status;
+
+			//Set type tables
+			if($status == "admin")
+			{
+				$this->USERSTATUS_TABLE = "adminUsers";
+				$this->CLIENTCODE_PARAM = "";
+			} else {
+				$this->USERSTATUS_TABLE = "clientUsers";
+				$this->CLIENTCODE_PARAM = "clientCode,";
+			}
 		}
 
-		public function connectUser($username, $password, $otp, $status)
+		public function connectUser($username, $password, $otp)
 		{
 
-			$isAdmin = $status == "admin";
-
-			if($isAdmin)
-			{
-				$USERSECRETS_TABLE = "adminSecrets";
-				$USERSTATUS_TABLE = "adminUsers";
-				$USERSECRETS_COLUMN = "adminId";
-				$CLIENTCODE_PARAM = "";
-			} else {
-				$USERSECRETS_TABLE = "clientSecrets";
-				$USERSTATUS_TABLE = "clientUsers";
-				$USERSECRETS_COLUMN = "clientId";
-				$CLIENTCODE_PARAM = "clientCode,";
-			}
-
-			
+			$isAdmin = $this->status == "admin";
 
 			$errorMessageAccount = "Ce compte n'existe pas";
 			$errorMessageOTP = "Le code secret n'est pas correct";
 
 			//Make request to fetch this user
 			$sql= "
-			SELECT username, password, label, secret, ${CLIENTCODE_PARAM} 
-			${USERSTATUS_TABLE}.id AS id 
-			FROM ${USERSTATUS_TABLE}, secrets, ${USERSECRETS_TABLE}
-			WHERE 
-			${USERSTATUS_TABLE}.id = ${USERSECRETS_TABLE}.${USERSECRETS_COLUMN} AND
-			${USERSECRETS_TABLE}.secretId = secrets.id AND
+			SELECT username, password, label, secret 
+			FROM {$this->USERSTATUS_TABLE}, secrets
+			WHERE {$this->USERSTATUS_TABLE}.secretId = secrets.id AND
 			username = :username AND password = :password"; 
 
 			$step = $this->database->prepare($sql);
@@ -60,7 +57,6 @@
 
 				$label = $row['label'];
 				$secret = $row['secret'];
-				$id = $row['id'];
 				if(!$isAdmin)
 					$clientCode = $row['clientCode'];
 
@@ -75,8 +71,7 @@
 					$_SESSION['password'] = $password;
 					$_SESSION['secret'] = $secret;
 					$_SESSION['label'] = $label;
-					$_SESSION['id'] = $id;
-					$_SESSION['status'] = $status;
+					$_SESSION['status'] = $this->status;
 
 					if(!$isAdmin)
 						$_SESSION['clientCode'] = $clientCode;
@@ -341,92 +336,189 @@
 			return "infoMessage=" . urlencode($infoMessage);
 		}
 
-
-		//Modify connected user account
-		public function modifyMyAccount($id, $newUsername, $newPassword, $newLabel)
+		public function setUsername($id, $newUsername, $status)
 		{
+
+			$newUsername = trim($newUsername);
+
+			if($newUsername == ""){
+				$errorMessage = "Vous ne pouvez pas mettre que des espaces";
+				return "errorMessage=${errorMessage}";
+			}
+
+			$isAdmin = $status == "admin";
+
+			//Adapt table check according to status
+			if($isAdmin)
+			{
+				$USERSECRETS_TABLE = "adminSecrets";
+				$USERSTATUS_TABLE = "adminUsers";
+				$USERSECRETS_COLUMN = "adminId";
+			} else {
+				$USERSECRETS_TABLE = "clientSecrets";
+				$USERSTATUS_TABLE = "clientUsers";
+				$USERSECRETS_COLUMN = "clientId";
+			}
+
+			//Get previous username
+			$sql= "
+			SELECT * FROM ${USERSTATUS_TABLE} WHERE id = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":id", $id);
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+
+			$oldUsername = $row['username'];
+
 			//Prepare messages
-			$infoMessage = "";
-			$errorMessage = "Vous devez remplir au moins un champs";
+			if($isAdmin)
+				$infoMessage = "Votre nouveau nom d'utilisateur est ${newUsername}";
+			else
+				$infoMessage = "Le nouveau nom d'utilisateur de ${oldUsername} est ${newUsername}";
 
-			//Get current data
-			$currentUsername = $_SESSION['username'];
-			$currentPassword = $_SESSION['password'];
-			$currentLabel = $_SESSION['label'];
+			$errorMessage = "Impossible. Ce nom d'utilisateur est déjà pris";
 
-			//Verify id there is a least one field filled
-			$emptyFields = 
-			(!isset($newUsername) || trim($newUsername) == "") &&
-			(!isset($newPassword) || trim($newPassword) == "") &&
-			(!isset($newLabel) || trim($newLabel) == "");
+			//Verify if this new username isn't already token
+			$sql= "
+			SELECT * FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":username", $newUsername);
+			$step->execute();
 
-			if($emptyFields)
+			//Retrieve number of record
+			$nbResult = $step->rowCount();
+
+			if($nbResult != 0)
 				return "errorMessage=${errorMessage}";
 
-			/* NEW USERNAME */
+			//Update username
+			$sql= "UPDATE ${USERSTATUS_TABLE} 
+			SET username = :username WHERE id = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":username", $newUsername);
+			$step->bindValue(":id", $id);
+			$step->execute();
 
-			if(trim($newUsername) != "")
-			{
-				$sql= "UPDATE adminUsers SET username = :username WHERE id = :id"; 
-				$step = $this->database->prepare($sql);
-				$step->bindValue(":username", $newUsername);
-				$step->bindValue(":id", $id);
-				$step->execute();
-
+			if($isAdmin)
 				$_SESSION['username'] = $newUsername;
-			}
-
-			/* NEW PASSWORD */
-
-			if(trim($newPassword) != "")
-			{
-				$sql= "UPDATE adminUsers SET password = :password WHERE id = :id"; 
-				$step = $this->database->prepare($sql);
-				$step->bindValue(":password", sha1($newPassword));
-				$step->bindValue(":id", $id);
-				$step->execute();
-
-				$_SESSION['password'] = $newPassword;
-			}
-
-			/* NEW LABEL */
-
-			if(trim($newLabel) != "")
-			{
-				//Get secretId
-				$sql= "
-				SELECT id FROM secrets WHERE label = :label"; 
-				$step = $this->database->prepare($sql);
-				$step->bindValue(":label", $currentLabel); 
-				$step->execute();
-
-				$row = $step->fetch(PDO::FETCH_ASSOC);
-				$secretId = $row['id'];
-
-				//Get adminId
-				$sql= "
-				SELECT id FROM adminUsers WHERE username = :username"; 
-				$step = $this->database->prepare($sql);
-				$step->bindValue(":username", $currentUsername); 
-				$step->execute();
-
-				$row = $step->fetch(PDO::FETCH_ASSOC);
-				$adminId = $row['id'];
-
-				//Update adminSecrets
-				$sql= "UPDATE adminSecrets SET secretId = :secretId WHERE adminId = :adminId"; 
-				$step = $this->database->prepare($sql);
-				$step->bindValue(":adminId", $adminId);
-				$step->bindValue(":secretId", $secretId);
-				$step->execute();
-
-				$_SESSION['label'] = $newLabel;
-			}
-
-
 
 			return "infoMessage=${infoMessage}";
 		}
+
+		public function setPassword($id, $newPassword, $status)
+		{
+
+			$newPassword = trim($newPassword);
+
+			if($newPassword == ""){
+				$errorMessage = "Vous ne pouvez pas mettre que des espaces";
+				return "errorMessage=${errorMessage}";
+			}
+
+			$isAdmin = $status == "admin";
+
+			//Adapt table check according to status
+			if($isAdmin)
+			{
+				$USERSECRETS_TABLE = "adminSecrets";
+				$USERSTATUS_TABLE = "adminUsers";
+				$USERSECRETS_COLUMN = "adminId";
+			} else {
+				$USERSECRETS_TABLE = "clientSecrets";
+				$USERSTATUS_TABLE = "clientUsers";
+				$USERSECRETS_COLUMN = "clientId";
+			}
+
+			//Get username from the concerned user
+			$sql= "
+			SELECT * FROM ${USERSTATUS_TABLE} WHERE id = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":id", $id);
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+
+			$username = $row['username'];
+
+			//Prepare messages
+			if($isAdmin)
+				$infoMessage = "Votre mot de passe a été modifié";
+			else
+				$infoMessage = "Le mot de passe de ${username} a été modifié";
+
+			//Update password
+			$sql= "UPDATE ${USERSTATUS_TABLE} 
+			SET password = :password WHERE id = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":password", sha1($newPassword));
+			$step->bindValue(":id", $id);
+			$step->execute();
+
+			if($isAdmin)
+				$_SESSION['password'] = $newPassword;
+
+			return "infoMessage=${infoMessage}";
+		}
+
+		public function setLabel($id, $newLabel, $status)
+		{
+			$isAdmin = $status == "admin";
+
+			//Adapt table check according to status
+			if($isAdmin)
+			{
+				$USERSECRETS_TABLE = "adminSecrets";
+				$USERSTATUS_TABLE = "adminUsers";
+				$USERSECRETS_COLUMN = "adminId";
+			} else {
+				$USERSECRETS_TABLE = "clientSecrets";
+				$USERSTATUS_TABLE = "clientUsers";
+				$USERSECRETS_COLUMN = "clientId";
+			}
+
+			//Get username from the concerned user
+			$sql= "
+			SELECT * FROM ${USERSTATUS_TABLE} WHERE id = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":id", $id);
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+
+			$username = $row['username'];
+
+			//Prepare messages
+			if($isAdmin)
+				$infoMessage = "Votre nouvelle clé est maintenant ${newLabel}";
+			else
+				$infoMessage = "La nouvelle clé pour ${username} est mainteant ${newLabel}";
+
+			//Get id from the label
+			$sql= "
+			SELECT id FROM secrets WHERE label = :label"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":label", $newLabel); 
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+			$secretId = $row['id'];
+
+			//Update label
+			$sql= "UPDATE ${USERSECRETS_TABLE} 
+			SET secretId = :secretId WHERE ${USERSECRETS_COLUMN} = :id"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":secretId", $secretId);
+			$step->bindValue(":id", $id);
+			$step->execute();
+
+			if($isAdmin)
+				$_SESSION['label'] = $newLabel;
+
+			return "infoMessage=${infoMessage}";
+		}
+
+
 
 	}
 ?>

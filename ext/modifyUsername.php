@@ -1,6 +1,17 @@
 <h2>Modifier nom d'utilisateur : </h2>
 
-<form action="userHandler.php" method="post">
+
+<?php
+	$messageModifyUsername =
+	isset($_GET['button']) && $_GET['button'] == "modifyUsername";
+
+	$id = $_GET['id'];
+	$status = $_GET['status'];
+	$param = "id=${id}&status=${status}";
+?>
+
+<form action="modifyAccount.php?<?php echo $param; ?>" method="post">
+
 	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
@@ -12,10 +23,16 @@
 		</div>
 
 		<div>
-			<button type="submit" name="modifyNewUsername">
+			<button type="submit" name="modifyUsername">
 				Modifier
 			</button>
 		</div>
 
+		<?php
+			if($messageModifyUsername)
+				include "ext/message.php";
+		?>
+
 	</div>
+
 </form>

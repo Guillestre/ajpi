@@ -1,7 +1,15 @@
 <h2>Modifier clé : </h2>
 
-<form action="userHandler.php" method="post">
+<?php
+	$messageModifyLabel =
+	isset($_GET['button']) && $_GET['button'] == "modifyLabel";
 
+	$id = $_GET['id'];
+	$status = $_GET['status'];
+	$param = "id=${id}&status=${status}";
+?>
+
+<form action="modifyAccount.php?<?php echo $param; ?>" method="post">
 	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
@@ -24,10 +32,15 @@
 		</div>
 
 		<div>
-			<button type="submit" name="modifyNewLabel">
+			<button type="submit" name="modifyLabel">
 				Modifier
 			</button>
 		</div>
+
+		<?php
+			if($messageModifyLabel)
+				include "ext/message.php";
+		?>
 
 	</div>
 	
