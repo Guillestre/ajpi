@@ -20,6 +20,9 @@
 
 		<h1>AJPI Records</h1>
 
+		<!-- PROCESS FORM --->
+		<?php include "ext/processForm.php"; ?>
+
 		<div class="grid-container-forms">
 			<?php include "ext/clientConnection.php"; ?>
 			<?php include "ext/adminConnection.php"; ?>

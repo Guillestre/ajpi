@@ -35,8 +35,6 @@
 					</div>
 
 					<?php 
-						include "ext/redirection.php"; 
-
 						$connectClient = 
 						isset($_GET['connect']) && 
 						$_GET['connect'] == "connectClient";

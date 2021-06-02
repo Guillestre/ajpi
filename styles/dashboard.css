@@ -101,6 +101,9 @@ select
 
 .userFormBox{
 	background-color: rgba(200, 222, 206);
+	border: solid 1pt;
+	margin: 5pt;
+	padding : 5pt;
 }
 
 .grid-item-label {
@@ -109,7 +112,8 @@ select
 
 .grid-container-userForm {
     display: grid;
-    grid-template-columns: auto auto;  
+    grid-template-columns: auto auto; 
+    float: left; 
 }
 
 .grid-container-forms

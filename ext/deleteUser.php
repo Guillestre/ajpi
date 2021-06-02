@@ -1,3 +1,8 @@
+<?php
+	$messageDeleteUser = 
+	(isset($_GET['button']) && $_GET['button'] == "deleteUser");
+?>
+
 <h2>Supprimer un utilisateur : </h2>
 
 <form action="userHandler.php" method="post">
@@ -40,9 +45,6 @@
 		</div>
 
 		<?php
-			$messageDeleteUser = 
-			(isset($_GET['button']) && $_GET['button'] == "deleteUser");
-
 			if($messageDeleteUser)
 				include "ext/message.php";
 		?>

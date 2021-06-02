@@ -36,8 +36,6 @@
 					</div>
 
 					<?php 
-						include "ext/redirection.php"; 
-
 						$connectAdmin = 
 						isset($_GET['connect']) && 
 						$_GET['connect'] == "connectAdmin";

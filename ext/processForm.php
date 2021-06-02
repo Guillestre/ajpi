@@ -1,5 +1,7 @@
 <?php
 
+	$userHandler = new UserHandler();
+
 	switch ($currentPage) {
 
 		case 'index.php':
@@ -10,7 +12,12 @@
 				$username = $_POST['username'];
 				$password = $_POST['password'];
 
-				$param = userHandler::connectAdmin($username, $password, $otp);
+				$param = $userHandler->connectUser(
+					$username, 
+					$password, 
+					$otp, 
+					'admin'
+				);
 
 				if(isset($param)){
 					$parameters = "${param}&connect=connectAdmin";
@@ -26,7 +33,12 @@
 				$username = $_POST['username'];
 				$password = $_POST['password'];
 
-				$param = userHandler::connectClient($username, $password, $otp);
+				$param = $userHandler->connectUser(
+					$username, 
+					$password, 
+					$otp, 
+					'client'
+				);
 
 				if(isset($param)){
 					$parameters = "${param}&connect=connectClient";
@@ -47,17 +59,19 @@
 				$status = $_POST['status'];
 
 				if($status == 'clientStatus'){
-					$param = UserHandler::addClientUser(
+					$param = $userHandler->addClientUser(
 						$_POST['username'], 
 						$_POST['password'], 
 						$_POST['client'], 
 						$_POST['label']
 					);
+					print($param);
 					header("Location: userHandler.php?${param}&button=addClient");
 				}
 
 				if($status == 'adminStatus'){
-					$param = UserHandler::addAdminUser(
+					print($param);
+					$param = $userHandler->addAdminUser(
 						$_POST['username'], 
 						$_POST['password'], 
 						$_POST['label']
@@ -70,29 +84,38 @@
 
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteUser'])){
-				$param = UserHandler::deleteUser($_POST['userDescription']);	
+				$param = 
+				$userHandler->deleteSelectedUser($_POST['userDescription']);	
 				header("Location: userHandler.php?${param}&button=deleteUser");
 			}
 
-			/* DELETE MY ACCOUNT PART */
+			/* DELETE CONNECTED USER ACCOUNT PART */
 
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteMyAccount'])){
-				$param = UserHandler::deleteMyAccount($_SESSION['id']);
+				$param = 
+				$userHandler->deleteUser(
+					$_SESSION['id'], 
+					$_SESSION['username'], 
+					$_SESSION['status']
+				);
 
-				if(strpos($param, "errorMessage") === false)
-					header("Location: index.php?${param}&button=deleteMyAccount");
+				if(strpos($param, "errorMessage") === false){
+					$url = 
+					"Location: index.php?${param}&button=deleteMyAccount";
+					header($url);
+				}
 				else
-					header("Location: userHandler.php?${param}&button=deleteMyAccount");
+				{
+					$url = 
+					"Location: userHandler.php?${param}&button=deleteMyAccount";
+					header($url);
+				}
 			}
 
 			/* MODIFY MY ACCOUNT PART */
 
-			if(isset($_POST['modifyMyAccount'])){
-				$param = UserHandler::modifyMyAccount($_SESSION['id'], $_POST['newUsername'], $_POST['newPassword'], $_POST['newLabel']);	
-				header("Location: userHandler.php?${param}&button=modifyMyAccount");
-			}
-
+		
 			break;
 	}
 

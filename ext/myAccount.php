@@ -27,6 +27,14 @@
 			</div>
 
 			<div>
+				<a href="ext/changeUsername.php">Changer son nom d'utilisateur</a>
+				<a href="ext/changePassword.php">Changer son mot de passe</a>	
+				<a href="ext/changeLabel.php">Changer sa clé</a>	
+			</div>
+
+			<div></div>
+
+			<div>
 				<?php
 					$messageDeleteUser = 
 					isset($_GET['button']) && 
@@ -41,9 +49,7 @@
 
 	</form>	
 
-	<a href="ext/changeUsername.php">Changer son nom d'utilisateur</a>	
-	<a href="ext/changePassword.php">Changer son mot de passe</a>	
-	<a href="ext/changeLabel.php">Changer sa clé</a>			
+			
 
 	
 
