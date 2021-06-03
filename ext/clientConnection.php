@@ -2,7 +2,7 @@
 
 			<h2>Connexion en tant que client: </h2>
 
-			<form action="index.php" method="post">
+			<form action="index.php?status=client" method="post">
 				
 				<div class="grid-container-userForm">
 

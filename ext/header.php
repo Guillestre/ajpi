@@ -18,7 +18,7 @@
 	//Include src files
 	include "src/MysqlConnection.php";
 	include "src/MessageHandler.php";
-	include "src/UserHandler.php";
+	include "src/UserPDO.php";
 	include "src/A2F.php";
 
 	//Connect to mysqlConnection database

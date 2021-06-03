@@ -34,7 +34,7 @@
 			//Verify if addUser button has been clicked
 			if(isset($_POST['addUser'])){
 				$status = $_POST['status'];
-
+				$userHandler = new UserHandler($status);
 				if($status == 'clientStatus'){
 					$param = $userHandler->addClientUser(
 						$_POST['username'], 
@@ -47,7 +47,7 @@
 				}
 
 				if($status == 'adminStatus'){
-					print($param);
+					
 					$param = $userHandler->addAdminUser(
 						$_POST['username'], 
 						$_POST['password'], 

@@ -149,17 +149,7 @@
 
 			/* VERIFY IF ENTERED USERNAME IS ALREADY TOKEN */
 
-			$sql= "
-			SELECT * FROM ${USERSTATUS_TABLE}
-			WHERE username = :username"; 
-			$step = $this->database->prepare($sql);
-			$step->bindValue(":username", $username); 
-			$step->execute();
-
-			//Retrieve number of record
-			$nbResult = $step->rowCount();
-
-			$accountExist = $nbResult != 0;
+			$accountExist = $this->availableUsername($username);
 
 			if($accountExist && $isClient)
 				return "errorMessage=${errorMessageClient}";
@@ -518,7 +508,20 @@
 			return "infoMessage=${infoMessage}";
 		}
 
+		private function availableUsername($username)
+		{
+			$sql= "
+			SELECT * FROM {$this->USERSTATUS_TABLE}
+			WHERE username = :username"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":username", $username); 
+			$step->execute();
 
+			//Retrieve number of record
+			$nbResult = $step->rowCount();
+			$accountExist = $nbResult != 0;
+			return $accountExist;
+		}
 
 	}
 ?>

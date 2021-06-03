@@ -72,11 +72,11 @@
 			case "clients.php" :
 				$userQuery = "
 				SELECT username, label
-				FROM clients, clientUsers, secrets, clientSecrets
+				FROM clients, clientUsers, secrets
 				WHERE 
 				code = :clientCode AND
 				clients.code = clientUsers.clientCode AND 
-				clientSecrets.secretId = secrets.id";
+				clientUsers.secretId = secrets.id";
 
 				$clientQuery = "SELECT * FROM clients WHERE code = :clientCode";
 
