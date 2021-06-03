@@ -1,4 +1,75 @@
 <?php
+
+	/* FILE THAT EXECUTE RECEIVED DATA FROM FORMS */
+
+	//Include vendor
+	include './vendor/autoload.php';
+	
+	//Include src files
+	include "src/classes/SPDO.php";
+	include "src/util/MessageHandler.php";
+	include "src/classes/User.php";
+	include "src/classes/Admin.php";
+	include "src/classes/Client.php";
+	include "src/classes/Invoice.php";
+	include "src/classes/Line.php";
+	include "src/interfaces/UserDao.php";
+	include "src/interfaces/SecretDao.php";
+	include "src/dao/UserMySQLDao.php";
+	include "src/dao/SecretMySQLDao.php";
+
+	//Get param from forms
+	$action = htmlspecialchars($_GET['action']);
+
+	//We use TOTP
+	use OTPHP\TOTP;
+
+	//Start session
+	session_start();
+
+	//Set DAO
+	$userDao = new UserMySQLDao();
+	$secretDao = new SecretMySQLDao();
+
+	switch($action)
+	{
+		case "connectAdmin" : case "connectClient" :
+
+			//Set status
+			if($action == "connectAdmin")
+				$status = "Admin";
+			else
+				$status = "Client";
+
+			//Get POST values
+			$username = $_POST['username'];
+			$password = $_POST['password'];
+			$otp = $_POST['otp'];
+
+			//Set user
+			if($userDao->exist($username, $status))
+			{
+				$user = $userDao->getUser($username, $status);
+				$code = $secretDao->getCode($user->getSecretId());
+				$label = $secretDao->getLabel($user->getSecretId());
+			    $totp = TOTP::create($code);
+			    if($totp->verify($otp)){
+					$_SESSION['user'] = $user;
+					$url = "Location: dashboard.php";
+				} else {
+					$errorMessage = urlencode("Le code secret est incorrect");
+					$url = "Location: index.php?errorConnect${status}=${errorMessage}";
+				}
+			} else {
+				$errorMessage = urlencode("Cet utilisateur n'existe pas");
+				$url = "Location: index.php?errorConnect${status}=${errorMessage}";
+			}
+
+			header($url);
+			break;
+
+	}
+	/*
 	switch ($currentPage) {
 
 		case 'index.php':
@@ -30,7 +101,7 @@
 		case 'userHandler.php':
 		
 			/* ADD USER PART */
-
+			/*
 			//Verify if addUser button has been clicked
 			if(isset($_POST['addUser'])){
 				$status = $_POST['status'];
@@ -58,7 +129,7 @@
 			}
 
 			/* DELETE USER PART */
-
+			/*
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteUser'])){
 				$param = 
@@ -67,7 +138,7 @@
 			}
 
 			/* DELETE CONNECTED USER ACCOUNT PART */
-
+			/*
 			//Verify if deleteUser button has been clicked
 			if(isset($_POST['deleteMyAccount'])){
 				$param = 
@@ -167,5 +238,6 @@
 
 			break;
 	}
+	*/
 
 ?>

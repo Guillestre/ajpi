@@ -2,7 +2,7 @@
 
 			<h2>Connexion en tant qu'administrateur: </h2>
 
-			<form action="index.php?status=admin" method="post">
+			<form action="processForm.php?action=connectAdmin" method="post">
 				
 				<div class="grid-container-userForm">
 
@@ -35,12 +35,11 @@
 						value="Se connecter">
 					</div>
 
-					<?php 
-						$adminConnection = 
-						isset($_GET['status']) && $_GET['status'] == "admin";
-
-						if($adminConnection && isset($_GET['errorMessage']))
-							messageHandler::sendErrorMessage($_GET['errorMessage']);
+					<?php
+						if(isset($_GET['errorConnectAdmin'])){
+							$message = htmlspecialchars($_GET['errorConnectAdmin']);
+							messageHandler::sendErrorMessage($message);
+						}
 					?>
 
 				</div>

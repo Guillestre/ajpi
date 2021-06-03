@@ -2,7 +2,7 @@
 
 			<h2>Connexion en tant que client: </h2>
 
-			<form action="index.php?status=client" method="post">
+			<form action="processForm.php?action=connectClient" method="post">
 				
 				<div class="grid-container-userForm">
 
@@ -34,13 +34,11 @@
 						<input type="submit" name="clientConnection" value="Se connecter">
 					</div>
 
-					<?php 
-						$connectClient = 
-						isset($_GET['connect']) && 
-						$_GET['connect'] == "connectClient";
-
-						if($connectClient)
-							include "ext/message.php"; 
+					<?php
+						if(isset($_GET['errorConnectClient'])){
+							$message = htmlspecialchars($_GET['errorConnectClient']);
+							messageHandler::sendErrorMessage($message);
+						}
 					?>
 
 				</div>

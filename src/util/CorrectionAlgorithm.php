@@ -6,7 +6,7 @@
 	 * algo_3 is used to correct ODOO
 	 */
 
-	class correctionAlgorithm
+	class CorrectionAlgorithm
 	{
 
 		private $database;

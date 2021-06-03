@@ -1,12 +1,12 @@
 <?php
 
-	include 'src/CorrectionAlgorithm.php';
+	include 'src/util/CorrectionAlgorithm.php';
 	
 	//Set time limit
 	set_time_limit(5000);
 
 	$deleteResults = false;
-	$createUserTables = true;
+	$createUserTables = false;
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs

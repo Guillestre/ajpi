@@ -1,15 +1,9 @@
 <?php
 
-	/* Class that handle user actions */
+	/* CLASS THAT RETRIEVE DATA OF USERS FROM MYSQL DATABASE */
 
-	class UserHandler
+	class UserMySQLDao
 	{
-
-		private $database = NULL;
-		private $status;
-
-		private $USERSTATUS_TABLE;
-		private $CLIENTCODE_PARAM;
 
 		function __construct($status) {
 			//Get database instance
@@ -21,9 +15,11 @@
 			{
 				$this->USERSTATUS_TABLE = "adminUsers";
 				$this->CLIENTCODE_PARAM = "";
+				$this->CLIENTCODE_VALUE = ""; 
 			} else {
 				$this->USERSTATUS_TABLE = "clientUsers";
 				$this->CLIENTCODE_PARAM = "clientCode,";
+				$this->CLIENTCODE_VALUE = ":clientCode"; 
 			}
 		}
 
@@ -132,17 +128,6 @@
 		{
 			$isClient = isset($clientCode);
 
-			if(!$isClient)
-			{
-				$USERSECRETS_TABLE = "adminSecrets";
-				$USERSTATUS_TABLE = "adminUsers";
-				$USERSECRETS_COLUMN = "adminId";
-			} else {
-				$USERSECRETS_TABLE = "clientSecrets";
-				$USERSTATUS_TABLE = "clientUsers";
-				$USERSECRETS_COLUMN = "clientId";
-			}
-
 			//Set default messages
 			$errorMessageClient = "Ce nom d'utilisateur client existe déjà";
 			$errorMessageAdmin = "Ce nom d'utilisateur admin existe déjà";
@@ -182,37 +167,22 @@
 			} else {
 				$sql= 
 				"
-				INSERT INTO adminUsers (username, password) 
-				VALUES (:username, :password);
+				INSERT INTO adminUsers (username, password, secretId) 
+				VALUES (:username, :password, :secretId);
 				"; 
 
 				$step = $this->database->prepare($sql);
 				$step->bindValue(":username", $username); 
 				$step->bindValue(":password", sha1($password)); 
+				$step->bindValue(":secretId", $secretId); 
 				$step->execute();
 			}
 
-			/* 2) INSERT USERID AND SECRETID INTO USERSECRETS TABLE */
+			//Get secretId
+			$secretId = $this->secretId($label);
 
 			//Get userId
-			$sql= "
-			SELECT id FROM secrets WHERE label = :label"; 
-			$step = $this->database->prepare($sql);
-			$step->bindValue(":label", $label); 
-			$step->execute();
-
-			$row = $step->fetch(PDO::FETCH_ASSOC);
-			$secretId = $row['id'];
-
-			//Get userId
-			$sql= "
-			SELECT id FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
-			$step = $this->database->prepare($sql);
-			$step->bindValue(":username", $username); 
-			$step->execute();
-
-			$row = $step->fetch(PDO::FETCH_ASSOC);
-			$userId = $row['id'];
+			
 
 			//Insert
 			$sql= 
@@ -521,6 +491,32 @@
 			$nbResult = $step->rowCount();
 			$accountExist = $nbResult != 0;
 			return $accountExist;
+		}
+
+		private function getSecretId($label)
+		{
+			$sql= "
+			SELECT id FROM secrets WHERE label = :label"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":label", $label); 
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+			$secretId = $row['id'];
+			return $secretId;
+		}
+
+		private function getUserId($username)
+		{
+			$sql= "
+			SELECT id FROM {$this->USERSTATUS_TABLE} WHERE username = :username"; 
+			$step = $this->database->prepare($sql);
+			$step->bindValue(":username", $username); 
+			$step->execute();
+
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+			$userId = $row['id'];
+			return $userId;
 		}
 
 	}

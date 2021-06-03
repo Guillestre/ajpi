@@ -1,8 +1,8 @@
 <?php
 
-	/* Class that handle messages to inform the use */
+	/* Class that handle messages to inform the user */
 
-	abstract class messageHandler
+	abstract class MessageHandler
 	{
 
 		public static function sendErrorMessage($message)
