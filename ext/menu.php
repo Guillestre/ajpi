@@ -1,29 +1,27 @@
 <div class="navBar">
-	<form action="<?php echo $currentPage; ?>" method="post">
 
-		<div class="grid-container-buttons">
+	<div class="grid-container-buttons">
 
-			<button type="submit" name="logOff">
-				Se déconnecter
+		<button onclick="window.location.href='logOff.php';">
+			Se déconnecter
+		</button>
+
+		<?php if($isAdmin && $currentPage != "userManagement.php"){ ?>
+			<button onclick="window.location.href='userManagement.php';">
+				Gérer comptes
 			</button>
+		<?php } ?>
 
-			<?php if($isAdmin && $currentPage != "userHandler.php"){ ?>
-				<button type="submit" name="handleUser">
-					Gérer comptes
-				</button>
-			<?php } ?>
-
-			<?php if($currentPage == "userHandler.php"){ ?>
-				<button type="submit" name="dashboard">
-					Revenir sur les factures
-				</button>
-			<?php } ?>
-			
-			<button type="submit">
-				Afficher mon QR code
-			</button>
-
-		</div>
+		<?php if($currentPage == "userManagement.php"){ ?>
+			<button onclick="window.location.href='dashboard.php';">
+		 		Revenir sur les factures
+		 	</button>
+		<?php } ?>
 		
-	</form>
+		<button>
+			Afficher mon QR code
+		</button>
+
+	</div>
+
 </div>

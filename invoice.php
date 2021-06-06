@@ -1,5 +1,5 @@
 <?php include "ext/common.php"; ?>
-<?php include 'ext/search/fetchData.php';?>
+<?php include 'ext/search/fetchData.php'?>
 
 <!DOCTYPE html>
 <html>
@@ -13,12 +13,16 @@
 		<div class='LeftPart'>
 
 			<div class="infoArea">
-				<?php include 'ext/search/searchFilter.php';?>
+				<?php include 'ext/info/invoiceInfo.php';?>
 			</div>
+			
+			<button onclick="history.back()">
+				Retour
+			</button>
 
 		</div>
 
-		<?php include 'ext/table/invoice.php';?>
+		<?php include 'ext/table/line.php';?>
 
 	</body>
 

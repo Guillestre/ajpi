@@ -12,6 +12,13 @@
 			print("</div><span/>");
 		}
 
+		public static function sendSuccessMessage($message)
+		{
+			print("<div id='successMessageBox'><span id='successMessage'>");
+			print($message);
+			print("</div><span/>");
+		}
+
 
 		public static function sendInfoMessage($message)
 		{

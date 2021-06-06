@@ -1,243 +1,376 @@
 <?php
 
-	/* FILE THAT EXECUTE RECEIVED DATA FROM FORMS */
+/* FILE THAT EXECUTE RECEIVED DATA FROM FORMS */
 
-	//Include vendor
-	include './vendor/autoload.php';
-	
-	//Include src files
-	include "src/classes/SPDO.php";
-	include "src/util/MessageHandler.php";
-	include "src/classes/User.php";
-	include "src/classes/Admin.php";
-	include "src/classes/Client.php";
-	include "src/classes/Invoice.php";
-	include "src/classes/Line.php";
-	include "src/interfaces/UserDao.php";
-	include "src/interfaces/SecretDao.php";
-	include "src/dao/UserMySQLDao.php";
-	include "src/dao/SecretMySQLDao.php";
+//Include libraries
+include 'libraries/vendor/autoload.php';
 
-	//Get param from forms
-	$action = htmlspecialchars($_GET['action']);
+//Include src files
+include "src/class/MySQLConnection.php";
+include "src/class/User.php";
+include "src/class/AdminUser.php";
+include "src/class/ClientUser.php";
+include "src/class/Client.php";
+include "src/class/Invoice.php";
+include "src/class/Line.php";
+include "src/interface/UserDao.php";
+include "src/interface/SecretDao.php";
+include "src/dao/UserMySQLDao.php";
+include "src/dao/SecretMySQLDao.php";
+include "src/util/ExtractHelper.php";
 
-	//We use TOTP
-	use OTPHP\TOTP;
+//Verify if action has been performed
+if(!isset($_POST['action']))
+{
+	$redirection = "location:javascript://history.go(-1)";
+	header($redirection);
+}
 
-	//Start session
-	session_start();
+//Get param from forms
+$action = htmlspecialchars($_POST['action']);
 
-	//Set DAO
-	$userDao = new UserMySQLDao();
-	$secretDao = new SecretMySQLDao();
+//We use TOTP
+use OTPHP\TOTP;
 
-	switch($action)
-	{
-		case "connectAdmin" : case "connectClient" :
+//Start session
+session_start();
 
-			//Set status
-			if($action == "connectAdmin")
-				$status = "Admin";
-			else
-				$status = "Client";
+//Set DAO
+$userDao = new UserMySQLDao();
+$secretDao = new SecretMySQLDao();
 
-			//Get POST values
-			$username = $_POST['username'];
-			$password = $_POST['password'];
-			$otp = $_POST['otp'];
+switch($action)
+{
+	case "adminConnection" : case "clientConnection" :
 
-			//Set user
-			if($userDao->exist($username, $status))
-			{
-				$user = $userDao->getUser($username, $status);
-				$code = $secretDao->getCode($user->getSecretId());
-				$label = $secretDao->getLabel($user->getSecretId());
-			    $totp = TOTP::create($code);
-			    if($totp->verify($otp)){
-					$_SESSION['user'] = $user;
-					$url = "Location: dashboard.php";
-				} else {
-					$errorMessage = urlencode("Le code secret est incorrect");
-					$url = "Location: index.php?errorConnect${status}=${errorMessage}";
-				}
+		//Set status
+		if($action == "adminConnection")
+			$status = "admin";
+		else
+			$status = "client";
+
+		//Get POST values
+		$username = $_POST['username'];
+		$password = $_POST['password'];
+		$otp = $_POST['otp'];
+
+		//Set user
+		if($userDao->exist($username, $status))
+		{
+			$user = $userDao->getUser($username, $status);
+			$code = $secretDao->getCode($user->getSecretId());
+			$label = $secretDao->getLabel($user->getSecretId());
+		    $totp = TOTP::create($code);
+		    if($totp->verify($otp)){
+				$_SESSION['user'] = $user;
+				$url = "Location: dashboard.php";
 			} else {
-				$errorMessage = urlencode("Cet utilisateur n'existe pas");
-				$url = "Location: index.php?errorConnect${status}=${errorMessage}";
+				$errorMessage = urlencode("Le code secret est incorrect");
+				$url = "Location: index.php?${status}ErrorConnection=${errorMessage}";
+			}
+		} else {
+			$errorMessage = urlencode("Cet utilisateur n'existe pas");
+			$url = "Location: index.php?${status}ErrorConnection=${errorMessage}";
+		}
+
+		header($url);
+		break;
+
+	case "addUser" :
+
+		//Get POST values
+		$username = htmlspecialchars($_POST['username']);
+		$password = htmlspecialchars($_POST['password']);
+		$status = htmlspecialchars($_POST['status']);
+		$client = htmlspecialchars($_POST['client']);
+		$label = htmlspecialchars($_POST['label']);
+		$safe = true;
+		$isAdmin = $status == "admin";
+
+		//Verify if its safe to insert the new user
+		if($userDao->exist($username, $status))
+		{
+			$errorMessage = 
+			urlencode(
+				"Impossible. Le nom d'utilisateur {$status} '{$username}' existe déjà"
+			);
+			$safe = false;
+		} else if(isset($client) && !$isAdmin) {
+
+			//Extract client code
+			$start = strpos($client,"(") + 1;
+			$end = strpos($client,")");
+			$clientCode = substr($client, $start, $end - $start);
+
+			//Extract client name
+			$start = 0;
+			$end = strpos($client,"(") - 1;
+			$clientName = substr($client, $start, $end - $start);
+
+			//Verify if client code has already an owner
+			if($userDao->takenClientCode($clientCode))
+			{
+				$safe = false;
+				$owner = $userDao->getClientUser($clientCode);
+				$errorMessage = urlencode(
+					"Le client {$clientName} 
+					est déjà pris par l'utilisateur '{$owner->getUsername()}'"
+				);
+			}
+		}
+
+		//If test are passed, we can insert
+		if($safe)
+		{
+
+			$secretId = $secretDao->getId($label);
+			$id = $userDao->getLastId($status) + 1;
+
+			//Check new user status
+			if($status == "admin")
+				$user = new AdminUser ($id, $username, $password, $secretId);
+			else
+				$user = new ClientUser ($id, $username, $password, $secretId, $clientCode);
+			
+			$userDao->insertUser($user, $status); 
+			$successMessage = "L'utilisateur {$status} '{$username}' a été enregistré";
+			$url = "Location: userManagement.php?addUserSuccess=${successMessage}";
+		} else {
+			//Otherwise, send error message
+			$url = "Location: userManagement.php?addUserError=${errorMessage}";
+		}
+
+		header($url);
+
+		break;
+
+	case "deleteUser" :
+
+		//Get POST values
+		$status = $_POST['status'];
+
+		if(strcmp($status, "admin") == 0)
+			$username = $_POST['deleteAUD'];
+		else
+			$username = $_POST['deleteCUD'];
+
+		$result = $userDao->deleteUser($username, $status);
+
+		if($result == 1)
+		{
+			$successMessage = urlencode("L'utilisateur {$status} '{$username}' a bien été supprimé");
+			$url = 
+			"Location: userManagement.php?deleteUserSuccess=${successMessage}";
+		} else {
+			$errorMessage = urlencode("Une erreur est survenue. L'utilisateur {$status} '${username}' n'a pas pu être supprimé");
+			$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+		}
+
+		header($url);
+		break;
+
+	case "deleteOwner" :
+
+		//Get connected user
+		$user = $_SESSION['user'];
+
+		$nbAdmins = $userDao->countUser("admin");
+
+		if($nbAdmins > 1)
+		{
+			$result = $userDao->deleteUser($user->getUsername(), "admin");
+
+			if($result == 1)
+			{
+				$successMessage = 
+				urlencode("Votre compte a bien été supprimé");
+				$url = 
+				"Location: index.php?deleteMyAccountSuccess=${successMessage}";
+			} else {
+				$errorMessage = 
+				urlencode("Une erreur est survenue. Votre compte n'a pas pu être supprimé");
+				$url = 
+				"Location: userManagement.php?deleteMyAccountError=${errorMessage}";
+			}
+		} else {
+			$errorMessage = 
+			urlencode("Impossible. Vous êtes le seul administrateur");
+			$url = "Location: userManagement.php?deleteMyAccountError=${errorMessage}";
+		}
+
+		header($url);
+
+		break;
+
+	case "alterUsername" : case "alterPassword" : case "alterSecret" :
+
+		//Get SESSION POST values
+		$status = $_POST['status'];
+
+		if(strcmp($status, "admin") == 0)
+			$username = $_POST['alterAUD'];
+		else
+			$username = $_POST['alterCUD'];
+
+		$id = $userDao->getId($username, $status);
+		$user = $_SESSION['user'];
+		
+		if(strcmp($action, "alterUsername") == 0){
+
+			//Get SESSION POST values
+			$newUsername = $_POST['newUsername'];
+
+			//Check if newUsername isnt empty
+			if(trim($newUsername) == "")
+			{
+				$text = 
+				"Vous ne pouvez pas mettre un nom d'utilisateur contenant que des espaces";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
 			}
 
+			//Check if newUsername already exist
+			if($userDao->exist($newUsername, $status))
+			{
+				$ownerUsername = strcmp($newUsername, $user->getUsername()) == 0;
+				$ownerStatus = strcmp($status, "admin") == 0;
+				$owner = $ownerUsername && $ownerStatus;
+				if(!$owner) 
+					$text = "Le nom d'utilisateur admin '${newUsername}' existe déjà";
+				else
+					$text = "Vous posséder déjà ce nom d'utilisateur";
+
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
+			}
+				
+			//Execute
+			$result = $userDao->updateUsername($id, $newUsername, $status);
+
+			//Check if update has succeed
+			if($result != 1){
+				$text = "Une erreur est survenue. Le nom d'utilisateur n'a pas pu être modifié";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			$user->setUsername($newUsername);
+			$_SESSION['user'] = $user;
+
+			if($user->getId() == $id)
+				$text = "Votre nom d'utilisateur est maintenant '${newUsername}'";
+			else
+				$text = "Le nouveau nom d'utilisateur de '${username}' est maintenant '${newUsername}'";
+
+			$successMessage = urlencode($text);
+			$url = 
+			"Location: userManagement.php?alterUserSuccess=${successMessage}";
+			
 			header($url);
-			break;
 
-	}
-	/*
-	switch ($currentPage) {
+		} else if(strcmp($action, "alterPassword") == 0){
 
-		case 'index.php':
+			//Get SESSION POST values
+			$newPassword = $_POST['newPassword'];
 
-			if(isset($_POST['connection'])){
+			//Check if newPassword isnt empty
+			if(trim($newPassword) == "")
+			{
+				$text = "Vous ne pouvez pas mettre un mot de passe contenant que des espaces";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
+			}
+				
+			//Execute
+			$result = $userDao->updatePassword($id, $newPassword, $status);
 
-				$otp = $_POST['otp'];
-				$username = $_POST['username'];
-				$password = $_POST['password'];
-				$status = $_GET['status'];
+			//Check if update has succeed
+			if($result != 1 && $result != 0){
+				$text = "Une erreur est survenue. Le mot de passe n'a pas pu être modifié";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
+			} else if($result == 0) {
 
-				$userHandler = new UserHandler($status);
-
-				$param = $userHandler->connectUser(
-					$username, 
-					$password, 
-					$otp, 
-					$status
-				);
-
-				if(isset($param)){
-					$parameters = "${param}&status=${status}";
-					header("Location: index.php?${parameters}");
-				}
+				//Adapt alert
+				if($user->getId() == $id)
+					$text = "Vous avez déjà ce mot de passe";
 				else
-					header("Location: dashboard.php");
-			}
-		
-		case 'userHandler.php':
-		
-			/* ADD USER PART */
-			/*
-			//Verify if addUser button has been clicked
-			if(isset($_POST['addUser'])){
-				$status = $_POST['status'];
-				$userHandler = new UserHandler($status);
-				if($status == 'clientStatus'){
-					$param = $userHandler->addClientUser(
-						$_POST['username'], 
-						$_POST['password'], 
-						$_POST['client'], 
-						$_POST['label']
-					);
-					print($param);
-					header("Location: userHandler.php?${param}&button=addClient");
-				}
+					$text = "'${username}' possède déjà ce mot de passe'";
 
-				if($status == 'adminStatus'){
-					
-					$param = $userHandler->addAdminUser(
-						$_POST['username'], 
-						$_POST['password'], 
-						$_POST['label']
-					);
-					header("Location: userHandler.php?${param}&button=addAdmin");
-				}
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+				break;
 			}
 
-			/* DELETE USER PART */
-			/*
-			//Verify if deleteUser button has been clicked
-			if(isset($_POST['deleteUser'])){
-				$param = 
-				$userHandler->deleteSelectedUser($_POST['userDescription']);	
-				header("Location: userHandler.php?${param}&button=deleteUser");
-			}
+			$user->setPassword($newPassword);
+			$_SESSION['user'] = $user;
 
-			/* DELETE CONNECTED USER ACCOUNT PART */
-			/*
-			//Verify if deleteUser button has been clicked
-			if(isset($_POST['deleteMyAccount'])){
-				$param = 
-				$userHandler->deleteUser(
-					$_SESSION['id'], 
-					$_SESSION['username'], 
-					$_SESSION['status']
-				);
+			//Adapt alert
+			if($user->getId() == $id)
+				$text = "Votre mot de passe est maintenant '${newPassword}'";
+			else
+				$text = "Le mot de passe '${username}' est maintenant '${newPassword}'";
+			$successMessage = urlencode($text);
+			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
+			header($url);
 
-				if(strpos($param, "errorMessage") === false){
-					$url = 
-					"Location: index.php?${param}&button=deleteMyAccount";
-					header($url);
-				}
+		} else if(strcmp($action, "alterSecret") == 0){
+
+			//Get SESSION POST values
+			$newLabel = htmlspecialchars($_POST['newLabel']);
+
+			//Execute
+			$secretId = $secretDao->getId($newLabel);
+			$result = $userDao->updateSecretId($id, $newSecretId);
+
+			//Check if update has succeed
+			if($result != 1 && $result != 0){
+				$text = "Une erreur est survenue. La clé n'a pas pu être modifiée";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				header($url);
+			} else if($result == 0) {
+
+				//Adapt alert
+				if($user->getId() == $id)
+					$text = "Vous possédez déjà la clé ${newLabel}";
 				else
-				{
-					$url = 
-					"Location: userHandler.php?${param}&button=deleteMyAccount";
-					header($url);
-				}
-			}
+					$text = "'${username}' possède déjà la clé '${newLabel}'";
 
-			if(isset($_POST['modifyMyAccount'])){
-				$id = urlencode($_SESSION['id']);
-				$url = "Location: modifyAccount.php?id=${id}&status=admin";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
 				header($url);
+				break;
 			}
 
-			if(isset($_POST['modifyUser'])){
-				$userDescription = $_POST['userDescription'];
+			$user->setSecretId($newSecretId);
+			$_SESSION['user'] = $user;
 
-				//Get username from the selected user
-				$end = strpos($userDescription,"(") - 1;
-				$username = substr($userDescription, 0, $end);
+			//Adapt alert
+			if($user->getId() == $id)
+				$text = "Votre mot de passe est maintenant '${newLabel}'";
+			else
+				$text = "Le secret de '${username}' est maintenant '${newLabel}'";
 
-				//Get status from the selected user
-				if(strpos($userDescription, 'admin')){
-					$status = "admin";
-					$USERSTATUS_TABLE = "adminUsers";
-				}
-				else
-				{
-					$status = "client";
-					$USERSTATUS_TABLE = "clientUsers";
-				}
+			$successMessage = urlencode($text);
+			$url = 
+			"Location: userManagement.php?alterUserSuccess=${successMessage}";
+			header($url);
+		}
 
-				//Make request to fetch his id
-				$sql= "
-				SELECT * FROM ${USERSTATUS_TABLE} WHERE username = :username"; 
-				$step = $database->prepare($sql);
-				$step->bindValue(":username", $username); 
-				$step->execute();
+		break;
 
-				$row = $step->fetch(PDO::FETCH_ASSOC);
-				$id = $row['id'];
-
-				$url = "Location: modifyAccount.php?id=${id}&status=${status}";
-				header($url);
-			}
-
-			break;
-
-		case 'modifyAccount.php':
-
-			if(isset($_POST['modifyUsername'])){
-				$id = $_GET['id'];
-				$status = $_GET['status'];
-				$newUsername = $_POST['newUsername'];
-
-				$param = $userHandler->setUsername($id, $newUsername, $status);
-
-				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyUsername";
-				header($url);
-			}
-
-			if(isset($_POST['modifyPassword'])){
-				$id = $_GET['id'];
-				$status = $_GET['status'];
-				$newPassword = $_POST['newPassword'];
-
-				$param = $userHandler->setPassword($id, $newPassword, $status);
-
-				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyPassword";
-				header($url);
-			}
-
-			if(isset($_POST['modifyLabel'])){
-				$id = $_GET['id'];
-				$status = $_GET['status'];
-				$newLabel = $_POST['newLabel'];
-
-				$param = $userHandler->setLabel($id, $newLabel, $status);
-
-				$url = "Location: modifyAccount.php?${param}&id=${id}&status=${status}&button=modifyLabel";
-				header($url);
-			}
-
-			break;
-	}
-	*/
-
+}
+	
 ?>
