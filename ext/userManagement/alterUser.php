@@ -53,6 +53,13 @@
 					</div>
 
 				</div>
+
+				<?php
+
+					if($availableAdminUsers && !$availableClientUsers)
+						include_once "ext/userManagement/alterSelection.php";
+
+				?>
 				
 			<?php 
 				} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à modifier"); 
@@ -87,12 +94,24 @@
 
 				</div>
 
+				<?php
+
+					if(!$availableAdminUsers && $availableClientUsers)
+						include_once "ext/userManagement/alterSelection.php";
+
+				?>
+
 			<?php 
 				}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à modifier");
 			?>
 		</div>
 
-		<?php include "ext/userManagement/alterSelection.php"; ?>
+		<?php
+
+			if($availableAdminUsers && $availableClientUsers)
+				include_once "ext/userManagement/alterSelection.php";
+
+		 ?>
 
 </form>
 

@@ -237,8 +237,15 @@ switch($action)
 				$ownerUsername = strcmp($newUsername, $user->getUsername()) == 0;
 				$ownerStatus = strcmp($status, "admin") == 0;
 				$owner = $ownerUsername && $ownerStatus;
-				if(!$owner) 
-					$text = "Le nom d'utilisateur admin '${newUsername}' existe déjà";
+				if(!$owner)
+				{
+					$own = $username == $newUsername;
+
+					if($own)
+						$text = "L'utilisateur ${status} '${username}' possède déjà ce nom d'utilisateur";
+					else
+						$text = "Le nom d'utilisateur ${status} '${newUsername}' existe déjà";
+				}
 				else
 					$text = "Vous posséder déjà ce nom d'utilisateur";
 
@@ -252,7 +259,7 @@ switch($action)
 			$result = $userDao->updateUsername($id, $newUsername, $status);
 
 			//Check if update has succeed
-			if($result != 1){
+			if(!$result){
 				$text = "Une erreur est survenue. Le nom d'utilisateur n'a pas pu être modifié";
 				$errorMessage = urlencode($text);
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -266,7 +273,7 @@ switch($action)
 			if($user->getId() == $id)
 				$text = "Votre nom d'utilisateur est maintenant '${newUsername}'";
 			else
-				$text = "Le nouveau nom d'utilisateur de '${username}' est maintenant '${newUsername}'";
+				$text = "Le nouveau nom d'utilisateur ${status} de '${username}' est maintenant '${newUsername}'";
 
 			$successMessage = urlencode($text);
 			$url = 
@@ -305,7 +312,7 @@ switch($action)
 				if($user->getId() == $id)
 					$text = "Vous avez déjà ce mot de passe";
 				else
-					$text = "'${username}' possède déjà ce mot de passe'";
+					$text = "L'utilisateur ${status} '${username}' possède déjà ce mot de passe'";
 
 				$errorMessage = urlencode($text);
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
