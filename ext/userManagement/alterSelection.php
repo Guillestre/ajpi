@@ -1,35 +1,54 @@
-<div>
+<div class="grid-container-selection">
+	
+	<div>
+		<input 
+		type="radio" id="radioUsername" name="action" value="alterUsername" 
+		onclick="selection()"
+		checked
+		>
 
-	<input 
-	type="radio" id="alterUsername" name="action" value="alterUsername" 
-	onclick="selection()" checked >
+		<label for="radioUsername">Nom utilisateur</label>
+	</div>
 
-	<label for="alterUsername">Nom utilisateur</label>
+	<div>
+		<input type="radio" id="radioPassword" name="action"  value="alterPassword" 
+		onclick="selection()"
+		>
 
-	<input type="radio" id="alterPassword" name="action"  value="alterPassword" 
-	onclick="selection()">
+		<label for="radioPassword">Mot de passe</label>
+	</div>
 
-	<label for="alterPassword">Mot de passe</label>
+	<div>
+		<input type="radio" id="radioSecret" name="action"  value="alterSecret" 
+		onclick="selection()"
+		>
 
-	<input type="radio" id="alterLabel" name="action"  value="alterLabel" 
-	onclick="selection()"
-	>
+		<label for="radioSecret">Clé</label>
+	</div>
 
-	<label for="alterLabel">Clé</label>
-		
-</div>
+	<div id="radioBlockClient">
+		<input type="radio" id="radioClient" name="action"  value="alterClient" 
+		onclick="selection()"
+		>
+
+		<label for="radioClient">Client</label>
+	</div>
+
+</div>	
+
+
 
 <!-- USERNAME ---------------------------------------->
 
-<div id="UB">
+<div id="blockU">
 	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
-			<label for="newUsername">Nouveau nom utilisateur : </label>
+			<label for="inputUsername">Nouveau nom utilisateur : </label>
 		</div>
 
-		<div class="grid-item-input-text">
-			<input type="text" id="newUsername" name="newUsername">
+		<div>
+			<input type="text" id="inputUsername" name="newUsername">
 		</div>
 
 	</div>
@@ -44,15 +63,16 @@
 
 <!-- PASSWORD ---------------------------------------->
 
-<div id="PB">
+<div id="blockP">
+
 	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
-			<label for="newPassword">Nouveau mot de passe : </label>
+			<label for="inputPassword">Nouveau mot de passe : </label>
 		</div>
 
-		<div class="grid-item-input-text">
-			<input type="text" id="newPassword" name="newPassword">
+		<div>
+			<input type="text" id="inputPassword" name="newPassword">
 		</div>
 
 	</div>
@@ -67,15 +87,15 @@
 
 <!-- SECRET ---------------------------------------->
 
-<div id="LB">
+<div id="blockS">
 	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
-			<label for="newLabel">Nouvelle clé (A2F) : </label>
+			<label for="inputLabel">Nouvelle clé (A2F) : </label>
 		</div>
 
-		<div class="grid-item-input-text">
-		 	<select id="newLabel" name="newLabel">
+		<div>
+		 	<select id="inputLabel" name="newLabel">
 				<?php
 					foreach($secrets as $secret){
 						$label = $secret->getLabel();
@@ -97,46 +117,107 @@
 
 </div>
 
+<!-- CLIENT ---------------------------------------->
+
+<div id="blockC">
+	<div class="grid-container-userForm">
+
+		<div class="grid-item-label">
+			<label for="inputClient">Nom Client : </label>
+		</div>
+
+		<div>
+		 	<select id="inputClient" name="newClient">
+				<?php
+					foreach($clients as $client){
+						$name = $client->getName();
+						$code = $client->getCode(); 
+						print("<option value='${code}'>");
+						print("${name} (${code})");
+						print("</option>");	
+					}
+				?>
+			</select>
+		</div>
+
+	</div>
+
+	<div>
+		<button type="submit">
+			Changer client
+		</button>
+	</div>
+
+</div>
+
 
 <script>
 	function selection() {
 
-		var alterUsername = document.getElementById("alterUsername");
-		var alterPassword = document.getElementById("alterPassword");
-		var alterLabel = document.getElementById("alterLabel");
+		//Radios
+		var radioUsername = document.getElementById("radioUsername");
+		var radioPassword = document.getElementById("radioPassword");
+		var radioSecret = document.getElementById("radioSecret");
+		var radioClient = document.getElementById("radioClient");
 
-		var ub = document.getElementById("UB");
-		var pb = document.getElementById("PB");
-		var lb = document.getElementById("LB");
+		//Input
+		var inputUsername = document.getElementById("inputUsername");
+		var inputPassword = document.getElementById("inputPassword");
+		var inputSecret = document.getElementById("inputSecret");
+		var inputClient = document.getElementById("inputClient");
 
-		if (alterUsername.checked == true){
-			ub.style.display = "block";
-			pb.style.display = "none";
-			lb.style.display = "none";
+		//Block
+		var blockU = document.getElementById("blockU");
+		var blockP = document.getElementById("blockP");
+		var blockS = document.getElementById("blockS");
+		var blockC = document.getElementById("blockC");
 
-			document.getElementById("newUsername").required = true;
-			document.getElementById("newPassword").required = false;
-			document.getElementById("newLabel").required = false;
+		if (radioUsername.checked == true){
+			blockU.style.display = "block";
+			blockP.style.display = "none";
+			blockS.style.display = "none";
+			blockC.style.display = "none";
+
+			inputUsername.required = true;
+			inputPassword.required = false;
+			inputLabel.required = false;
+			inputClient.required = false;
 		}
 
-		if (alterPassword.checked == true){
-			ub.style.display = "none";
-			pb.style.display = "block";
-			lb.style.display = "none";
+		if (radioPassword.checked == true){
+			blockU.style.display = "none";
+			blockP.style.display = "block";
+			blockS.style.display = "none";
+			blockC.style.display = "none";
 
-			document.getElementById("newUsername").required = false;
-			document.getElementById("newPassword").required = true;
-			document.getElementById("newLabel").required = false;
+			inputUsername.required = false;
+			inputPassword.required = true;
+			inputLabel.required = false;
+			inputClient.required = false;
 		}
 
-		if (alterLabel.checked == true){
-			ub.style.display = "none";
-			pb.style.display = "none";
-			lb.style.display = "block";
+		if (radioSecret.checked == true){
+			blockU.style.display = "none";
+			blockP.style.display = "none";
+			blockS.style.display = "block";
+			blockC.style.display = "none";
 
-			document.getElementById("newUsername").required = false;
-			document.getElementById("newPassword").required = false;
-			document.getElementById("newLabel").required = true;
+			inputUsername.required = false;
+			inputPassword.required = false;
+			inputLabel.required = true;
+			inputClient.required = false;
+		}
+
+		if (radioClient.checked == true){
+			blockU.style.display = "none";
+			blockP.style.display = "none";
+			blockS.style.display = "none";
+			blockC.style.display = "block";
+
+			inputUsername.required = false;
+			inputPassword.required = false;
+			inputLabel.required = false;
+			inputClient.required = true;
 		}
 
 	}

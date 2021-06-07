@@ -129,6 +129,14 @@ select
     grid-template-columns: auto auto;
 }
 
+.grid-container-selection
+{
+	display: grid;
+    grid-template-columns: 150pt 150pt 100pt 150pt;
+    text-align: left;
+}
+
+
 #errorMessage{
 	color: red;
 	background-color: rgba(234, 122, 122, 0.2);

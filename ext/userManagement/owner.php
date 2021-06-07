@@ -35,18 +35,11 @@
 
 	</form>
 
-	<div>
-		<button 
-		<?php echo "onclick=\"window.location.href='${url}';\"" ?>>
-	 		Modifier mon compte
-	 	</button>
- 	</div>
-
 </div>
 
 <?php
-	if(isset($_GET['deleteMyAccountError']))
-		messageHandler::sendErrorMessage($_GET['deleteMyAccountError']);
+	if(isset($_GET['deleteOwnerError']))
+		messageHandler::sendErrorMessage($_GET['deleteOwnerError']);
 ?>
 
 			

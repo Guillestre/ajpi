@@ -46,7 +46,9 @@
 			$step->bindValue(":secretId", $user->getSecretId());
 			if(!$isAdmin)
 				$step->bindValue(":clientCode", $user->getClientCode());
+
 			$step->execute();
+			return $step->rowCount();
 		}
 
 		public function deleteUser($username, $status)
@@ -215,7 +217,7 @@
 		{
 			$query = "UPDATE ${status}Users SET password = :password WHERE id = :id";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":password", sha1($newPassword));
+			$step->bindValue(":password", $newPassword);
 			$step->bindValue(":id", $id);
 			$step->execute();
 			return $step->rowCount();
@@ -226,6 +228,17 @@
 			$query = "UPDATE ${status}Users SET secretId = :secretId WHERE id = :id";
 			$step = $this->database->prepare($query);
 			$step->bindValue(":secretId", $newSecretId);
+			$step->bindValue(":id", $id);
+			$step->execute();
+			return $step->rowCount();
+		}
+
+		public function updateClientCode($id, $newClientCode)
+		{
+			$query = "UPDATE clientUsers SET clientCode = :clientCode 
+			WHERE id = :id";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":clientCode", $newClientCode);
 			$step->bindValue(":id", $id);
 			$step->execute();
 			return $step->rowCount();
@@ -249,6 +262,25 @@
 			$query = "SELECT id FROM {$status}Users WHERE username = :username";
 			$step = $this->database->prepare($query);
 			$step->bindValue(":username", $username);
+			$step->execute();
+			return $step->fetchColumn();
+		}
+
+		public function getPassword($id, $status)
+		{
+			$query = "SELECT password FROM {$status}Users WHERE id = :id";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":id", $id);
+			$step->execute();
+			$row = $step->fetch(PDO::FETCH_ASSOC);
+			return $row['password'];
+		}
+
+		public function getSecretId($id, $status)
+		{
+			$query = "SELECT secretId FROM {$status}Users WHERE id = :id";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":id", $id);
 			$step->execute();
 			return $step->fetchColumn();
 		}

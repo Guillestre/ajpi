@@ -16,8 +16,8 @@
 		</div>
 
 		<?php
-			if(isset($_GET['deleteMyAccountSuccess']))
-					messageHandler::sendSuccessMessage($_GET['deleteMyAccountSuccess']);
+			if(isset($_GET['deleteOwnerSuccess']))
+					messageHandler::sendSuccessMessage($_GET['deleteOwnerSuccess']);
 		?>
 
 	</body>

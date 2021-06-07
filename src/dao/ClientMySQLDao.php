@@ -73,5 +73,17 @@ class ClientMySQLDao
 		return $clients;
 	}
 
+	public function getClientName($clientCode)
+	{
+		$query = "SELECT name FROM clients WHERE code = :code";
+		$step = $this->database->prepare($query);
+		$step->bindValue(":code", $clientCode); 
+		$step->execute();
+		
+		$row = $step->fetch(PDO::FETCH_ASSOC);
+	
+		return $row['name'];
+	}
+
 }
 ?>

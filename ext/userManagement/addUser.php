@@ -8,7 +8,7 @@
 			<label for="username">Nom d'utilisateur : </label>
 		</div>
 
-		<div class="grid-item-input-text">
+		<div>
 			<input type="text" id="username" name="username" required>
 		</div>
 
@@ -16,42 +16,42 @@
 			<label for="password">Mot de passe : </label>
 		</div>
 
-		<div class="grid-item-input-text">
+		<div>
 			<input type="password" id="password" name="password" required>
 		</div>
 
 		<div class="grid-item-label">
-			<label for="status">Status : </label>
+			<label>Status : </label>
 		</div>
 
 		<div>
 
 			<input 
-			type="radio" id="client" name="status" value="client" 
+			type="radio" id="addRadioClient" name="status" value="client" 
 			onclick="displayClientHandler()" 
 			checked
 			>
 
-			<label for="status">Client</label>
+			<label for="addRadioClient">Client</label>
 
-			<input type="radio" id="admin" name="status"  value="admin" 
+			<input type="radio" id="addRadioAdmin" name="status"  value="admin" 
 			onclick="displayClientHandler()"
 			>
-			<label for="status">Admin</label>
+			<label for="addRadioAdmin">Admin</label>
 			
 		</div>
 		
-		<div class="grid-item-label" id="clientLabel">
+		<div class="grid-item-label" id="labelClient">
 			<label for="client">Nom Client : </label>
 		</div>
 
-		<div class="grid-item-input-text" id="clientInput">
-		 	<select name="client">
+		<div id="inputClient">
+		 	<select id="client" name="clientCode">
 				<?php
 					foreach($clients as $client){
 						$name = $client->getName();
 						$code = $client->getCode(); 
-						print("<option value='${name} (${code})'>");
+						print("<option value='${code}'>");
 						print("${name} (${code})");
 						print("</option>");	
 					}
@@ -63,7 +63,7 @@
 			<label for="label">Clé (A2F) : </label>
 		</div>
 
-		<div class="grid-item-input-text">
+		<div>
 		 	<select id="label" name="label">
 				<?php
 					foreach($secrets as $secret){
@@ -97,16 +97,16 @@
 
 <script>
 	function displayClientHandler() {
-	  var clientStatus = document.getElementById("client");
-	  var adminStatus = document.getElementById("admin");
-	  var clientLabel = document.getElementById("clientLabel");
-	  var clientInput = document.getElementById("clientInput");
+	  var clientStatus = document.getElementById("addRadioClient");
+	  var adminStatus = document.getElementById("addRadioAdmin");
+	  var clientLabel = document.getElementById("labelClient");
+	  var inputClient = document.getElementById("inputClient");
 	  if (clientStatus.checked == true){
 	    clientLabel.style.display = "block";
-	    clientInput.style.display = "block";
+	    inputClient.style.display = "block";
 	  } else {
 	     clientLabel.style.display = "none";
-	     clientInput.style.display = "none";
+	     inputClient.style.display = "none";
 	  }
 	}
 </script>

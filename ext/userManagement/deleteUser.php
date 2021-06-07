@@ -11,34 +11,34 @@
 		<div>
 
 			<input 
-			type="radio" id="deleteCU" name="status" value="client" 
+			type="radio" id="deleteRadioCU" name="status" value="client" 
 			onclick="deleteUser()" 
 			checked
 			>
 
-			<label for="deleteCU">Client</label>
+			<label for="deleteRadioCU">Client</label>
 
-			<input type="radio" id="deleteAU" name="status"  value="admin" 
+			<input type="radio" id="deleteRadioAU" name="status"  value="admin" 
 			onclick="deleteUser()" 
 			>
 
-			<label for="deleteAU">Admin</label>
+			<label for="deleteRadioAU">Admin</label>
 		
 		</div>
 
 		<div></div>
 
-		<div id="deleteAUB" hidden>
+		<div id="deleteBlockAdmin" hidden>
 			<?php if($availableAdminUsers){ ?>
 
 				<div class="grid-container-userForm">
 
 					<div class="grid-item-label">
-						<label for="deleteAUD">Choisir utilisateur admin : </label>
+						<label for="deleteAdmin">Choisir utilisateur admin : </label>
 					</div>
 
-					<div class="grid-item-input-text">
-					 	<select id="deleteAUD" name="deleteAUD" >
+					<div>
+					 	<select id="deleteAdmin" name="adminUsername" >
 							<?php
 
 								foreach($adminUsers as $user){
@@ -66,17 +66,17 @@
 			?>
 		</div>
 
-		<div id="deleteCUB" >
+		<div id="deleteBlockClient" >
 			<?php if($availableClientUsers){ ?>
 				
 				<div class="grid-container-userForm">
 
 					<div class="grid-item-label">
-						<label for="deleteCUD">Choisir utilisateur client : </label>
+						<label for="deleteClient">Choisir utilisateur client : </label>
 					</div>
 
-					<div class="grid-item-input-text">
-					 	<select id="deleteCUD" name="deleteCUD" >
+					<div>
+					 	<select id="deleteClient" name="clientUsername" >
 							<?php
 
 								foreach($clientUsers as $user){
@@ -91,7 +91,7 @@
 							?>
 						</select>
 					</div>
-
+					
 					<div>
 						<button type="submit" name="action" value="deleteUser">
 							Supprimer utilisateur
@@ -117,16 +117,16 @@
 
 <script>
 	function deleteUser() {
-		var deleteAUB = document.getElementById("deleteAUB");
-		var deleteCUB = document.getElementById("deleteCUB");
-		var deleteCU = document.getElementById("deleteCU");
+		var deleteBlockAdmin = document.getElementById("deleteBlockAdmin");
+		var deleteBlockClient = document.getElementById("deleteBlockClient");
+		var deleteRadioCU = document.getElementById("deleteRadioCU");
 
-		if (deleteCU.checked == true){
-			deleteAUB.style.display = "none";
-			deleteCUB.style.display = "block";
+		if (deleteRadioCU.checked == true){
+			deleteBlockAdmin.style.display = "none";
+			deleteBlockClient.style.display = "block";
 		} else {
-			deleteAUB.style.display = "block";
-			deleteCUB.style.display = "none";
+			deleteBlockAdmin.style.display = "block";
+			deleteBlockClient.style.display = "none";
 		}
 	}
 	deleteUser();

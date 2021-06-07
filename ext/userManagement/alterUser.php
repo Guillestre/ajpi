@@ -7,111 +7,112 @@
 
 <form action="processForm.php" method="post">
 
+	<div>
 
-		<div>
+		<input 
+		type="radio" id="alterRadioCU" name="status" value="client" 
+		onclick="alterUser()" 
+		checked
+		>
 
-			<input 
-			type="radio" id="alterCU" name="status" value="client" 
-			onclick="alterUser()" 
-			checked 
-			>
+		<label for="alterRadioCU">Client</label>
 
-			<label for="alterCU">Client</label>
+		<input type="radio" id="alterRadioAU" name="status"  value="admin" 
+		onclick="alterUser()"
+		>
 
-			<input type="radio" id="alterAU" name="status"  value="admin" 
-			onclick="alterUser()"
-			>
+		<label for="alterRadioAU">Admin</label>
+	
+	</div>
 
-			<label for="alterAU">Admin</label>
-		
-		</div>
+	<div></div>
 
-		<div></div>
+	<div id="blockAU" hidden>
+		<?php if($availableAdminUsers){ ?>
 
-		<div id="alterAUB" hidden>
-			<?php if($availableAdminUsers){ ?>
+			<div class="grid-container-userForm">
 
-				<div class="grid-container-userForm">
-
-					<div class="grid-item-label">
-						<label for="alterAUD">Choisir utilisateur admin : </label>
-					</div>
-
-					<div class="grid-item-input-text">
-					 	<select id="alterAUD" name="alterAUD" >
-							<?php
-								foreach($adminUsers as $user){
-									$username = $user->getUsername();
-									$status = $user->getStatus();
-									print("<option value='${username}'>");
-									print("${username}");
-									print("</option>");
-								}
-
-							?>
-						</select>
-					</div>
-
+				<div class="grid-item-label">
+					<label for="alterAdminUsername">
+						Choisir utilisateur admin : 
+					</label>
 				</div>
 
-				<?php
+				<div>
+				 	<select id="alterAdminUsername" name="adminUsername" >
+						<?php
+							foreach($adminUsers as $user){
+								$username = $user->getUsername();
+								$status = $user->getStatus();
+								print("<option value='${username}'>");
+								print("${username}");
+								print("</option>");
+							}
 
-					if($availableAdminUsers && !$availableClientUsers)
-						include_once "ext/userManagement/alterSelection.php";
-
-				?>
-				
-			<?php 
-				} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à modifier"); 
-			?>
-		</div>
-
-		<div id="alterCUB" >
-			<?php if($availableClientUsers){ ?>
-				
-				<div class="grid-container-userForm">
-
-					<div class="grid-item-label">
-						<label for="alterCUD">Choisir utilisateur client : </label>
-					</div>
-
-					<div class="grid-item-input-text">
-					 	<select id="alterCUD" name="alterCUD" >
-							<?php
-
-								foreach($clientUsers as $user){
-									$username = $user->getUsername();
-									$status = $user->getStatus();
-									$clientCode = $user->getClientCode();
-									print("<option value='${username}'>");
-									print("${username} (${clientCode})");
-									print("</option>");
-								}
-
-							?>
-						</select>
-					</div>
-
+						?>
+					</select>
 				</div>
 
-				<?php
+			</div>
 
-					if(!$availableAdminUsers && $availableClientUsers)
-						include_once "ext/userManagement/alterSelection.php";
-
-				?>
-
-			<?php 
-				}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à modifier");
+			<?php
+				if($availableAdminUsers && !$availableClientUsers)
+					include_once "ext/userManagement/alterSelection.php";
 			?>
-		</div>
+			
+		<?php 
+			} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à modifier"); 
+		?>
+	</div>
 
-		<?php
+	<div id="blockCU" >
+		<?php if($availableClientUsers){ ?>
+			
+			<div class="grid-container-userForm">
 
-			if($availableAdminUsers && $availableClientUsers)
-				include_once "ext/userManagement/alterSelection.php";
+				<div class="grid-item-label">
+					<label for="alterClientUsername">
+						Choisir utilisateur client : 
+					</label>
+				</div>
 
-		 ?>
+				<div class="grid-item-input-text">
+				 	<select id="alterClientUsername" name="clientUsername" >
+						<?php
+
+							foreach($clientUsers as $user){
+								$username = $user->getUsername();
+								$status = $user->getStatus();
+								$clientCode = $user->getClientCode();
+								print("<option value='${username}'>");
+								print("${username} (${clientCode})");
+								print("</option>");
+							}
+
+						?>
+					</select>
+				</div>
+
+			</div>
+
+			<?php
+
+				if(!$availableAdminUsers && $availableClientUsers)
+					include_once "ext/userManagement/alterSelection.php";
+
+			?>
+
+		<?php 
+			}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à modifier");
+		?>
+	</div>
+
+	<?php
+
+		if($availableAdminUsers && $availableClientUsers)
+			include_once "ext/userManagement/alterSelection.php";
+
+	 ?>
 
 </form>
 
@@ -125,17 +126,43 @@
 
 <script>
 	function alterUser() {
-		var alterAUB = document.getElementById("alterAUB");
-		var alterCUB = document.getElementById("alterCUB");
-		var alterCU = document.getElementById("alterCU");
 
-		if (alterCU.checked == true){
-			alterAUB.style.display = "none";
-			alterCUB.style.display = "block";
+		//Blocks
+		var blockAU = document.getElementById("blockAU");
+		var blockCU = document.getElementById("blockCU");
+
+		//First radio line
+		var alterRadioCU = document.getElementById("alterRadioCU");
+
+		//Second radio line
+		var radioBlockClient = document.getElementById("radioBlockClient");
+		var radioClient = document.getElementById("radioClient");
+		var radioUsername = document.getElementById("radioUsername");
+
+		//Block
+		blockC = document.getElementById("blockC");
+		blockU = document.getElementById("blockU");
+
+		//Display
+		if (alterRadioCU.checked == true){
+			blockCU.style.display = "block";
+			blockAU.style.display = "none";
+			radioBlockClient.style.display = "block";
 		} else {
-			alterAUB.style.display = "block";
-			alterCUB.style.display = "none";
+			blockCU.style.display = "none";
+			blockAU.style.display = "block";
+			radioBlockClient.style.display = "none";
 		}
+
+		//Check
+		if(alterRadioCU.checked == false && radioClient.checked == true)
+		{
+			radioClient.checked = false;
+			radioUsername.checked = true;
+			blockC.style.display = "none";
+			blockU.style.display = "block";
+		}
+
 	}
 	alterUser();
 </script>
