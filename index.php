@@ -10,7 +10,7 @@
 
 		<h1>AJPI Records</h1>
 
-		<div class="grid-container-forms">
+		<div class="grid-container-userBoxGroup">
 			<?php include "ext/connection/clientConnection.php"; ?>
 			<?php include "ext/connection/adminConnection.php"; ?>
 		</div>

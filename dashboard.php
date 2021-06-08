@@ -25,4 +25,3 @@
 	<?php include "ext/footer.php" ?>
 
 </html>
-

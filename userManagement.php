@@ -10,21 +10,21 @@
 
 		<?php include 'ext/search/fetchData.php';?>
 
-		<div class="grid-container-forms">	
+		<div class="grid-container-userBoxGroup">	
 
-			<div class="userFormBox">
+			<div class="userBox">
 				<?php include "ext/userManagement/owner.php"; ?>
 			</div>
 
-			<div class="userFormBox">
+			<div class="userBox">
 				<?php include "ext/userManagement/deleteUser.php"; ?>
 			</div>
-
-			<div class="userFormBox">
+			
+			<div class="userBox">
 				<?php include "ext/userManagement/addUser.php"; ?>
 			</div>
 
-			<div class="userFormBox">
+			<div class="userBox">
 				<?php include "ext/userManagement/alterUser.php"; ?>
 			</div>
 					

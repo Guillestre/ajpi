@@ -105,9 +105,7 @@ select
     background-color: rgb(200, 220, 200);
 }
 
-/* USER FORM PART ***************************************************/
-
-.userFormBox{
+.userBox{
 	background-color: rgba(200, 222, 206);
 	border: solid 1pt;
 	margin: 5pt;
@@ -123,7 +121,12 @@ select
     grid-template-columns: 200pt auto;
 }
 
-.grid-container-forms
+.grid-container-userFormGroup {
+    display: grid;
+    grid-template-columns: 300pt auto;
+}
+
+.grid-container-userBoxGroup
 {
 	display: grid;
     grid-template-columns: auto auto;
@@ -151,25 +154,51 @@ select
 	border : 1pt dotted;
 }
 
+.LeftPart
+{
+	float: left;
+	position: sticky;
+	top : 39pt;
+}
+
 /* ADAPTATION PART ***************************************************/
 
-@media (min-width:800pt) and (max-width:1000pt) {
+@media (max-width:1350pt) {
 
-	th, td
+	h1, h2, label, p, input, button, a, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
-		font-size: 14pt;
-		text-align: center;
-		padding: 5pt 5pt;
+		margin: 6pt;
 	}
 
-	label, p, input, button {
-		font-size: 16pt;
+	#errorMessageBox, #successMessageBox
+	{
+		margin: 15pt;
 	}
 
 	h1
 	{
 		font-size: 20pt;
-		margin: 10pt;
+	}
+
+	h2
+	{
+		font-size: 18pt;
+	}
+
+	label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
+		font-size: 13pt;
+	}
+
+	select
+	{
+		font-size: 12pt;
+	}
+
+	.grid-container-selection
+	{
+	display: grid;
+    grid-template-columns: 120pt 120pt 75pt 75pt;
+    text-align: left;
 	}
 
 }
@@ -177,11 +206,6 @@ select
 
 @media (min-width:500pt) {
 
-	.LeftPart
-	{
-		float: left;
-		position: sticky;
-		top : 39pt;
-	}
+	
 
 }

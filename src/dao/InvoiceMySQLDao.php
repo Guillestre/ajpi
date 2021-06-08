@@ -22,7 +22,7 @@ class InvoiceMySQLDao
 		/* PREPARE FILTERS */
 
 		if(!$isAdmin)
-			$clause .= " AND clientCodeOwner LIKE :clientCodeOwner ";
+			$clause .= " AND clientCode LIKE :clientCodeOwner ";
 
 		if(isset($filters['invoiceCode']))
 			$clause .= " AND invoices.code LIKE :invoiceCode ";

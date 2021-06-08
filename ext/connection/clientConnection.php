@@ -1,4 +1,4 @@
-<div class="userFormBox">
+<div class="userBox">
 
 	<h2>Connexion en tant que client: </h2>
 

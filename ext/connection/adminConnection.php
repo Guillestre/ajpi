@@ -1,4 +1,4 @@
-<div class="userFormBox">
+<div class="userBox">
 
 	<h2>Connexion en tant qu'administrateur: </h2>
 

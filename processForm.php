@@ -43,6 +43,9 @@ $clientDao = new ClientMySQLDao();
 
 switch($action)
 {
+
+	/* USER CONNECTION *****************************************/
+
 	case "adminConnection" : case "clientConnection" :
 
 		//Set status according connection mode
@@ -92,6 +95,8 @@ switch($action)
 		$url = "Location: dashboard.php";
 		header($url);
 		break;
+
+	/* ADD USER *****************************************/
 
 	case "addUser" :
 
@@ -209,6 +214,8 @@ switch($action)
 		header($url);
 		break;
 
+	/* DELETE USER *****************************************/
+
 	case "deleteUser" :
 
 		//Get status from POST
@@ -245,6 +252,8 @@ switch($action)
 		header($url);
 
 		break;
+
+	/* DELETE OWNER *****************************************/
 
 	case "deleteOwner" :
 
@@ -290,6 +299,8 @@ switch($action)
 		$url = "Location: index.php?deleteOwnerSuccess=${successMessage}";
 		header($url);
 		break;
+
+	/* ALTER USER *****************************************/
 
 	case "alterUsername" : case "alterPassword" : 
 	case "alterSecret" : case "alterClient" :
@@ -534,6 +545,204 @@ switch($action)
 
 		break;
 
+	/* ALTER OWNER *****************************************/
+
+	case "alterOwnerUsername" : case "alterOwnerPassword" : 
+	case "alterOwnerSecret" :
+
+		//Set info from the owner
+		$owner = $_SESSION['user'];
+		$status = "admin";
+		$username = $owner->getUsername();
+		$id = $owner->getId();
+		
+		/* ALTER OWNER USERNAME */
+
+		if(strcmp($action, "alterOwnerUsername") == 0){
+
+			//Get new username from POST
+			$newUsername = $_POST['newUsername'];
+
+			//Check if new username is not empty
+			if( strcmp(trim($newUsername), "") == 0 )
+			{
+				//Prepare message
+				$text = 
+				"Vous ne pouvez pas mettre un nom d'utilisateur contenant que des espaces";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Check if new username already exist
+			if($userDao->exist($newUsername, $status))
+			{
+				//Prepare message
+				$text = "Vous avez déjà ce nom d'utilisateur";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+				
+			//Execute
+			$result = $userDao->updateUsername($id, $newUsername, $status);
+
+			//Check if update has succeed
+			if(!$result){
+				//Prepare message
+				$text = 
+				"Une erreur est survenue. Le nom d'utilisateur n'a pas pu être modifié";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Update username session
+			$owner->setUsername($newUsername);
+			$_SESSION['user'] = $owner;
+
+			//Prepare success message
+			$text = "Votre nom a été modifié";
+			$successMessage = urlencode($text);
+
+			//Redirection
+			$url = "Location: userManagement.php?alterOwnerSuccess=${successMessage}";
+			header($url);
+
+		/* ALTER OWNER PASSWORD */
+
+		} else if(strcmp($action, "alterOwnerPassword") == 0){
+
+			//Get new password from POST
+			$newPassword = $_POST['newPassword'];
+
+			//Get password from the id
+			$password = $userDao->getPassword($id, $status);
+
+			//Check if newPassword is not empty
+			if(strcmp(trim($newPassword), "") == 0)
+			{
+				//Prepare message
+				$text = "Vous ne pouvez pas mettre un mot de passe contenant que des espaces";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Hash password
+			$newPassword = sha1($newPassword);
+
+			//Verify if it is the password that selected user has
+			if(strcmp($newPassword, $password) == 0)
+			{
+				//Prepare message
+				$text = "Vous avez déjà ce mot de passe";
+				$errorMessage = urlencode($text);
+
+				//redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+				
+			//Execute
+			$result = $userDao->updatePassword($id, $newPassword, $status);
+
+			//Check if update has succeed
+			if(!$result){
+
+				//Prepare message
+				$text = "Une erreur est survenue. Le mot de passe n'a pas pu être modifié";
+				$errorMessage = urlencode($text);
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				
+				//Redirection
+				header($url);
+				break;
+			}
+
+			//Update password session
+			$owner->setPassword($newPassword);
+			$_SESSION['user'] = $owner;
+
+			//Prepare success message
+			$text = "Votre mot de passe a été modifié";
+			$successMessage = urlencode($text);
+
+			//Redirection
+			$url = "Location: userManagement.php?alterOwnerSuccess=${successMessage}";
+			header($url);
+
+		/* ALTER OWNER SECRET */
+
+		} else if(strcmp($action, "alterOwnerSecret") == 0){
+
+			//Get new label from POST
+			$newLabel = $_POST['newLabel'];
+
+			//Set secretId according the status
+			$secretId = $userDao->getSecretId($id, $status);
+
+			//Get new secret Id
+			$newSecretId = $secretDao->getId($newLabel);
+
+			//Verify if it is the secret that user has
+			if(strcmp($newSecretId, $secretId) == 0)
+			{
+				//Prepare message
+				$text = "Vous avez déjà cette clé";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Make update
+			$result = $userDao->updateSecretId($id, $newSecretId);
+
+			//Check if update has succeed
+			if(!$result)
+			{
+				//Prepare message
+				$text = "Une erreur est survenue. La clé n'a pas pu être modifiée";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				header($url);
+			}
+
+			//Update secretId session
+			$owner->setSecretId($secretId);
+			$_SESSION['user'] = $owner;
+
+			//Prepare success message
+			$text = "Votre clé a été modifiée";
+			$successMessage = urlencode($text);
+
+			//Prepare redirection
+			$page = "userManagement.php";
+			$url_p1 = "alterOwnerSuccess=${successMessage}";
+			$url = "Location: ${page}?${url_p1}";
+
+			header($url);
+		}
+
+		break;
 }
 	
 ?>
