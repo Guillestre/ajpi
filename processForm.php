@@ -11,6 +11,7 @@ include "src/class/User.php";
 include "src/class/AdminUser.php";
 include "src/class/ClientUser.php";
 include "src/class/Client.php";
+include "src/class/Secret.php";
 include "src/class/Invoice.php";
 include "src/class/Line.php";
 include "src/interface/UserDao.php";
@@ -743,6 +744,121 @@ switch($action)
 		}
 
 		break;
+
+	/* ADD OR DELETE SECRET *****************************************/
+
+	case "addSecret" : case "deleteSecret" : 
+
+		//Get label from POST
+		$label = $_POST['label'];
+
+		if(strcmp($action, "addSecret") == 0){
+
+			//Check if entered label is not empty
+			if(strcmp(trim($label), "") == 0) 
+			{
+				//Prepare error message
+				$text = "Vous ne pouvez pas ajouter un label contenant que des espaces";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Check if entered label already exist
+			if($secretDao->exist($label))
+			{
+				//Prepare error message
+				$text = "Cette clé existe déjà";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Generate new secret
+			$totp = TOTP::create();
+	    	$totp->setLabel($label);
+
+	    	//Get secret code
+	    	$code = $totp->getSecret();
+
+	    	//set secret object
+	    	$id = $secretDao->getLastId() + 1;
+	    	$secret = new Secret($id, $code, $label);
+
+	    	//Insert secret
+	    	$result = $secretDao->insertSecret($secret);
+
+	    	if(!$result)
+	    	{
+	    		//Prepare error message
+				$text = "Une erreur est survenue. La clé a pas pu être enregistrée";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
+				header($url);
+				break;
+	    	}
+
+	    	//Prepare success message
+			$text = "La clé a bien été enregistrée";
+			$successMessage = urlencode($text);
+
+			//Redirection
+			$url = "Location: secretManagement.php?addSecretSuccess=${successMessage}";
+			header($url);
+
+		} if(strcmp($action, "deleteSecret") == 0){
+
+			//Get secret id
+			$id = $secretDao->getId($label);
+
+			//Check if users are using this key
+			if($secretDao->secretToken($id) >= 1)
+			{
+				//Prepare error message
+				$text = "Cette clé est utilisée par des utilisateurs";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: secretManagement.php?deleteSecretError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//delete secret
+			$result = $secretDao->deleteSecret($id);
+	
+			//Check if secret has been deleted
+			if(!$result)
+			{
+				//Prepare error message
+				$text = "Une erreur est survenue. La clé a pas pu être supprimée";
+				$errorMessage = urlencode($text);
+
+				//Redirection
+				$url = "Location: secretManagement.php?deleteSecretError=${errorMessage}";
+				header($url);
+				break;
+			}
+
+			//Prepare error message
+			$text = "La clé ${label} a été supprimée";
+			$successMessage = urlencode($text);
+
+			//Redirection
+			$url = "Location: secretManagement.php?deleteSecretSuccess=${successMessage}";
+			header($url);
+		}
+
+		break;
+
 }
 	
 ?>

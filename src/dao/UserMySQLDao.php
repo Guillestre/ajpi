@@ -23,7 +23,6 @@
 			$step->bindValue(":secret", $user->getSecretId());
 			$step->bindValue(":clientCode", $user->getClientCode());
 			$step->execute();
-			$x = $step->execute();
 		}
 
 		public function insertUser($user, $status)

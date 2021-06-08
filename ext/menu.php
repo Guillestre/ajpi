@@ -1,27 +1,36 @@
+<?php 
+
+$invoiceReturnPages = array("userManagement.php", "secretManagement.php");
+
+?>
+
+
 <div class="navBar">
 
-	<div class="grid-container-buttons">
+	
 
-		<button onclick="window.location.href='logOff.php';">
-			Se déconnecter
-		</button>
-
+		
+			<a class="item-menu" href="logOff.php">Se déconnecter</a>
+		
 		<?php if($isAdmin && $currentPage != "userManagement.php"){ ?>
-			<button onclick="window.location.href='userManagement.php';">
-				Gérer comptes
-			</button>
+			
+			<a class="item-menu" href="userManagement.php">Gérer comptes</a>
+			
 		<?php } ?>
 
-		<?php if($currentPage == "userManagement.php"){ ?>
-			<button onclick="window.location.href='dashboard.php';">
-		 		Revenir sur les factures
-		 	</button>
+		<?php if(in_array($currentPage, $invoiceReturnPages)){ ?>
+		 	<a class="item-menu" href="dashboard.php">Revenir sur les factures</a>
 		<?php } ?>
 		
-		<button>
-			Afficher mon QR code
-		</button>
+		<?php if($currentPage != "secretManagement.php"){ ?>
+			<?php if($isAdmin) { ?>
+				<a  class="item-menu" href="secretManagement.php">Gérer clés</a>
+			<?php } else { ?>
+				<a class="item-menu" href="secretManagement.php">Voir ma clé</a>
+			<?php } ?>
+		<?php } ?>
 
-	</div>
+	
+
 
 </div>

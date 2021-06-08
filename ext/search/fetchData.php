@@ -87,6 +87,12 @@ switch($currentPage)
 		
 		break;
 
+	case "secretManagement.php" :
+
+		$secrets = $secretDao->getAllSecret();
+		
+		break;
+
 }
 
 ?>

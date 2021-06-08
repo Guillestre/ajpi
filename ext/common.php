@@ -13,6 +13,9 @@
 	header("Cache-Control: no-cache, must-revalidate" ); //no cache
 	session_cache_limiter('private_no_expire'); // works
 
+	//Include libraries
+	include 'libraries/vendor/autoload.php';
+
 	//Include src files
 	include "src/class/MySQLConnection.php";
 	include "src/util/MessageHandler.php";
@@ -39,7 +42,7 @@
 	//Set session pages
 	$sessionPages = array(
 		"dashboard.php", "client.php", "invoice.php", 
-		"userManagement.php", "alterUser.php"
+		"userManagement.php", "alterUser.php", "secretManagement.php"
 	);
 
 	//Set available status 

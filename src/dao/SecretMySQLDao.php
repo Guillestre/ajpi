@@ -64,5 +64,63 @@
 			return $secrets;
 		}
 
+		public function exist($label)
+		{
+			$query = "SELECT * FROM secrets WHERE label = :label";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":label", $label); 
+			$step->execute();
+			$nbResult = $step->rowCount();
+			return $nbResult != 0 ;
+		}
+
+		public function getLastId()
+		{
+			$query = "SELECT MAX(id) AS id FROM secrets";
+			$step = $this->database->prepare($query);
+			$step->execute();
+			return $step->fetchColumn();
+		}
+
+		public function insertSecret($secret)
+		{
+			$query = "INSERT INTO secrets VALUES (:id, :code, :label)";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":id", $secret->getId());
+			$step->bindValue(":code", $secret->getCode());
+			$step->bindValue(":label", $secret->getLabel());
+			$step->execute();
+			return $step->rowCount();
+		}
+
+		public function secretToken($id)
+		{
+
+			$query = "
+			SELECT adminusers.id FROM adminUsers, secrets 
+			WHERE adminUsers.secretId = secrets.id AND secretId = :idAdmin
+
+			UNION
+
+			SELECT clientUsers.id FROM clientUsers, secrets 
+			WHERE clientUsers.secretId = secrets.id AND secretId = :idClient";
+
+			$step = $this->database->prepare($query);
+			$step->bindValue(":idAdmin", $id);
+			$step->bindValue(":idClient", $id);
+			$step->execute();
+			return $step->rowCount();
+		}
+
+		public function deleteSecret($id)
+		{
+			$query = "DELETE FROM secrets WHERE id = :id";
+
+			$step = $this->database->prepare($query);
+			$step->bindValue(":id", $id);
+			$step->execute();
+			return $step->rowCount();
+		}
+
 	}
 ?>

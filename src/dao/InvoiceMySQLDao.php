@@ -109,7 +109,8 @@ class InvoiceMySQLDao
 		$user = $_SESSION['user'];
 	
 		//Prepare query
-		$query = "SELECT * FROM invoices WHERE code = :code";
+		$query = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date 
+		FROM invoices WHERE code = :code";
 		$step=$this->database->prepare($query);
 		$step->bindValue(":code", $code);
 		$step->execute();

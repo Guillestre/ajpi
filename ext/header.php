@@ -27,6 +27,10 @@
 				$title = "Gérer utilisateurs";
 				break;
 
+			case 'secretManagement.php':
+				$title = "Clés";
+				break;
+
 			case 'alterUser.php':
 				$username = $_GET['username'];
 				$title = "Modification utilisateur ${username}";

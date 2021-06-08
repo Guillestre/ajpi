@@ -7,8 +7,26 @@ body{
 .navBar{
 	position: sticky;
 	top: 0;
-	border: 1pt solid;
+	background-color: rgb(100, 200, 100);
+	display: grid;
+    grid-template-columns: 200pt 200pt 200pt;
 }
+
+.item-menu:hover {
+  background-color: rgb(50, 180, 50);
+}
+
+.item-menu
+{
+	text-decoration:none; 
+  	color: black;
+  	text-align: center;
+  	margin-left: 0pt;
+  	margin-right: 0pt;
+  	padding: 5pt;
+}
+
+
 
 th, td
 {
@@ -40,17 +58,12 @@ table, .infoArea, #descriptionBox
 table thead th 
 {
 	position: sticky;
-	top: 39pt;
+	top: 27pt;
 }
 
-h1, h2, label, p, input, button, a, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
+h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 {
 	margin: 10pt;
-}
-
-#errorMessageBox, #successMessageBox
-{
-	margin: 20pt;
 }
 
 h1
@@ -70,6 +83,17 @@ label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #su
 select
 {
 	font-size: 14pt;
+}
+
+img
+{
+	width: 150pt;
+	height: 150pt;
+}
+
+#errorMessageBox, #successMessageBox
+{
+	margin: 20pt;
 }
 
 .tdDescription
@@ -99,12 +123,6 @@ select
 	background-color: rgba(200, 200, 200, .5);
 }
 
-.grid-container-buttons {
-    display: grid;
-    grid-template-columns: 240pt 240pt 240pt;
-    background-color: rgb(200, 220, 200);
-}
-
 .userBox{
 	background-color: rgba(200, 222, 206);
 	border: solid 1pt;
@@ -116,6 +134,7 @@ select
   text-align: right;
 }
 
+
 .grid-container-userForm {
     display: grid;
     grid-template-columns: 200pt auto;
@@ -123,7 +142,7 @@ select
 
 .grid-container-userFormGroup {
     display: grid;
-    grid-template-columns: 300pt auto;
+    grid-template-columns: auto auto;
 }
 
 .grid-container-userBoxGroup
@@ -135,7 +154,7 @@ select
 .grid-container-selection
 {
 	display: grid;
-    grid-template-columns: 150pt 150pt 100pt 150pt;
+    grid-template-columns: 150pt 150pt 90pt 90pt;
     text-align: left;
 }
 
@@ -146,6 +165,8 @@ select
 	padding: 4pt;
 	border : 1pt dotted;
 }
+
+
 
 #successMessage{
 	color: green;
@@ -158,14 +179,15 @@ select
 {
 	float: left;
 	position: sticky;
-	top : 39pt;
+	top : 45pt;
 }
+
 
 /* ADAPTATION PART ***************************************************/
 
 @media (max-width:1350pt) {
 
-	h1, h2, label, p, input, button, a, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
+	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
 		margin: 6pt;
 	}
@@ -196,16 +218,11 @@ select
 
 	.grid-container-selection
 	{
-	display: grid;
-    grid-template-columns: 120pt 120pt 75pt 75pt;
-    text-align: left;
+		display: grid;
+	    grid-template-columns: 120pt 120pt 75pt 75pt;
+	    text-align: left;
 	}
 
 }
 
 
-@media (min-width:500pt) {
-
-	
-
-}
