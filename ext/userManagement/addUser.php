@@ -2,7 +2,7 @@
 
 <form action="processForm.php" method="post">
 	
-	<div class="grid-container-userForm">
+	<div class="grid-container-addUserForm">
 
 		<div class="grid-item-label">
 			<label for="username">Nom d'utilisateur : </label>

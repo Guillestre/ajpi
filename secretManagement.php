@@ -32,7 +32,7 @@ $owner = $_SESSION['user'];
 		</div>
 
 		<?php if($isAdmin) { ?>
-			<div class="userBox">
+			<div class="userBox" id="secretTable">
 				<?php include "ext/table/secret.php"; ?>
 			</div>
 		<?php } ?>

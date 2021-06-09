@@ -8,10 +8,6 @@
 
 	<body>
 
-		<!-- Load an icon library to show a hamburger menu (bars) on small screens -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
 		<h1>AJPI Records</h1>
 
 		<div class="grid-container-userBoxGroup">
