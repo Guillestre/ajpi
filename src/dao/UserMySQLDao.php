@@ -12,19 +12,6 @@
 			$this->database = MySQLConnection::getInstance()->getConnection();
 		}
 
-		public function insertClientUser($user)
-		{
-			$query = "INSERT INTO clientUsers 
-			(username, password, secretId, clientCode ) 
-			VALUES (:username, :password, :secretId, :clientCode)";
-			$step = $this->database->prepare($query);
-			$step->bindValue(":username", $user->getUsername());
-			$step->bindValue(":password", $user->getPassword());
-			$step->bindValue(":secret", $user->getSecretId());
-			$step->bindValue(":clientCode", $user->getClientCode());
-			$step->execute();
-		}
-
 		public function insertUser($user, $status)
 		{
 			$isAdmin = $status == "admin";
@@ -222,7 +209,7 @@
 			return $step->rowCount();
 		}
 
-		public function updateSecretId($id, $newSecretId)
+		public function updateSecretId($id, $newSecretId, $status)
 		{
 			$query = "UPDATE ${status}Users SET secretId = :secretId WHERE id = :id";
 			$step = $this->database->prepare($query);

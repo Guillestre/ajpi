@@ -1,7 +1,7 @@
 <?php
-	$username = $user->getUsername();
-	$status = $user->getStatus();
-	$id = $user->getId();
+	$username = $owner->getUsername();
+	$status = $owner->getStatus();
+	$id = $owner->getId();
 ?>
 
 <div class="grid-container-userFormGroup">
@@ -18,7 +18,7 @@
 			</div>
 
 			<div class="grid-item-text" id="ownerUsername">
-		 		<?php echo $user->getUsername(); ?>
+		 		<?php echo $owner->getUsername(); ?>
 			</div>
 
 			<div class="grid-item-label" >
@@ -26,7 +26,7 @@
 			</div>
 
 			<div class="grid-item-text" id="ownerLabel">
-		 		<?php echo $secretDao->getLabel($user->getSecretId()); ?>
+		 		<?php echo $secretDao->getLabel($owner->getSecretId()); ?>
 			</div>
 
 			<form action="processForm.php" method="post">
@@ -120,7 +120,7 @@
 					</div>
 
 					<div>
-						<input type="text" id="inputOwnerPassword" name="newPassword">
+						<input type="password" id="inputOwnerPassword" name="newPassword">
 					</div>
 
 				</div>

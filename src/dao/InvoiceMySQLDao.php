@@ -89,7 +89,7 @@ class InvoiceMySQLDao
 			$date = $row['date'];
 			$totalExcludingTaxes = $row['totalExcludingTaxes'];
 			$totalIncludingTaxes = $row['totalIncludingTaxes'];
-			$description = utf8_encode($row['description']);
+			$description = $row['description'];
 			$invoice = new Invoice(
 				$code, 
 				$clientCode, 

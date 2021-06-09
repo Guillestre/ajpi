@@ -1,8 +1,6 @@
 /* MAIN PART ***************************************************/
 
-body{
-	background-color: rgba(200, 222, 206, 0.3);
-}
+body{ background-color: rgba(200, 222, 206, 0.3); }
 
 .navBar{
 	position: sticky;
@@ -12,14 +10,7 @@ body{
   grid-template-columns: 200pt 200pt 200pt;
 }
 
-.item-menu
-{
-	font-size: 15pt;
-}
-
-.item-menu:hover {
-  background-color: rgb(50, 180, 50);
-}
+.item-menu:hover { background-color: rgb(50, 180, 50); }
 
 .item-menu
 {
@@ -43,12 +34,7 @@ th
 	background: rgba(240, 250, 230, 1);
 }
 
-.infoArea, th, td
-{
-	border: 0pt solid;
-}
-
-.infoArea
+.infoArea, .userBox
 {
 	border: 1pt solid;
 }
@@ -69,7 +55,8 @@ table thead th
 	top: 27pt;
 }
 
-h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
+h1, h2, label, 
+p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 {
 	margin: 10pt;
 }
@@ -84,7 +71,7 @@ h2
 	font-size: 20pt;
 }
 
-label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
+label, p, input, button, a, .item-menu, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 	font-size: 15pt;
 }
 
@@ -99,7 +86,7 @@ img
 	height: 150pt;
 }
 
-#errorMessageBox, #successMessageBox
+.errorMessageBox, .successMessageBox
 {
 	margin: 20pt;
 }
@@ -109,7 +96,7 @@ img
 	text-align: left;
 }
 
-#boxDescriptionInvoice, #boxDescriptionMyAccount
+#boxDescriptionInvoice
 {
 	text-align: justify;
 	border: 1pt dotted;
@@ -127,13 +114,8 @@ img
 	background-color: rgba(200, 200, 200, .2);
 }
 
-#boxDescriptionMyAccount {
-	background-color: rgba(200, 200, 200, .5);
-}
-
 .userBox{
 	background-color: rgba(200, 222, 206);
-	border: solid 1pt;
 	margin: 5pt;
 	padding : 5pt;
 }
@@ -141,7 +123,6 @@ img
 .grid-item-label {
   text-align: right;
 }
-
 
 .grid-container-userForm {
     display: grid;
@@ -166,28 +147,18 @@ img
   text-align: left;
 }
 
-
-#errorMessage{
-	color: red;
-	background-color: rgba(234, 122, 122, 0.2);
+.errorMessage, .successMessage{
 	padding: 4pt;
 	border : 1pt dotted;
 }
 
+.successMessage{color: green;background-color: rgba(122, 122, 230, 0.2);}
+.errorMessage{color: red;background-color: rgba(234, 122, 122, 0.2);}
 
-
-#successMessage{
-	color: green;
-	background-color: rgba(122, 122, 230, 0.2);
-	padding: 4pt;
-	border : 1pt dotted;
+#grid-container-addUserForm {
+  display: grid;
+  grid-template-columns: 160pt auto;
 }
-
-	.grid-container-addUserForm {
-    display: grid;
-    grid-template-columns: 150pt auto;
-	}
-
 
 
 /* ADAPTATION PART ***************************************************/
@@ -196,61 +167,14 @@ img
 
 	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
-		margin: 6pt;
+		margin: 8pt;
 	}
 
-	#errorMessageBox, #successMessageBox
-	{
-		margin: 15pt;
-	}
-
-	h1
-	{
-		font-size: 20pt;
-	}
-
-	h2
-	{
-		font-size: 18pt;
-	}
-
-	label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
-		font-size: 14pt;
-	}
-
-	select
-	{
-		font-size: 12pt;
-	}
-
-	.grid-container-selection
-	{
-		display: grid;
-    grid-template-columns: 120pt 120pt 75pt 75pt;
-    text-align: left;
-	}
-
-	table thead th 
-	{
-		position: sticky;
-		top: 27pt;
-	}
-
-}
-
-
-@media (max-width:1050pt) {
-
-	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
+	.errorMessageBox, .successMessageBox
 	{
 		margin: 8pt;
 	}
 
-	#errorMessageBox, #successMessageBox
-	{
-		margin: 10pt;
-	}
-
 	h1
 	{
 		font-size: 20pt;
@@ -261,8 +185,8 @@ img
 		font-size: 18pt;
 	}
 
-	label, p, input, button, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
-		font-size: 14pt;
+	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
+		font-size: 13pt;
 	}
 
 	select
@@ -283,6 +207,11 @@ img
 		top: 27pt;
 	}
 
+}
+
+
+@media (max-width:1150pt) {
+
 	.grid-container-userFormGroup {
     display: grid;
     grid-template-columns: auto;
@@ -294,26 +223,16 @@ img
 	}
 
 	th, td
-{
-	font-size: 13pt;
-	text-align: center;
-	padding: 5pt 5pt;
-}
+	{
+		font-size: 13pt;
+		text-align: center;
+		padding: 5pt 5pt;
+	}
 
 
 }
 
 @media (max-width:950pt) {
-
-	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
-	{
-		margin: 8pt;
-	}
-
-	#errorMessageBox, #successMessageBox
-	{
-		margin: 10pt;
-	}
 
 	h1
 	{
@@ -325,7 +244,7 @@ img
 		font-size: 20pt;
 	}
 
-	label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
+	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 15pt;
 	}
 
@@ -344,14 +263,13 @@ img
 	table thead th 
 	{
 		position: sticky;
-		top: 26pt;
+		top: 27pt;
 	}
-
 
 	.grid-container-userBoxGroup
 	{
 		display: grid;
-	    grid-template-columns: auto;
+    grid-template-columns: auto;
 	}
 
 	.navBar{
@@ -370,17 +288,6 @@ img
 		padding: 5pt 5pt;
 	}
 
-
-}
-
-@media (min-width:900pt) {
-
-	.LeftPart
-{
-	float: left;
-	position: sticky;
-	top : 45pt;
-}
 }
 
 
@@ -397,12 +304,7 @@ img
 
 	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
-		margin: 6pt;
-	}
-
-	#errorMessageBox, #successMessageBox
-	{
-		margin: 8pt;
+		margin: 5pt;
 	}
 
 	h1
@@ -415,7 +317,7 @@ img
 		font-size: 16pt;
 	}
 
-	label, p, input, button, a, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
+	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 13pt;
 	}
 
@@ -436,6 +338,12 @@ img
     grid-template-columns: 160pt auto;
 	}
 
+	table thead th 
+	{
+		position: sticky;
+		top: 25pt;
+	}
+
 }
 
 
@@ -445,39 +353,16 @@ img
 	  grid-template-columns: 120pt 120pt 90pt;
 	}
 
-	.item-menu
-	{
-		font-size: 13pt;
-	}
-
-	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
+	.errorMessageBox, .successMessageBox
 	{
 		margin: 5pt;
 	}
 
-	#errorMessageBox, #successMessageBox
-	{
-		margin: 5pt;
-	}
-
-	h1
-	{
-		font-size: 18pt;
-	}
-
-	h2
-	{
-		font-size: 16pt;
-	}
-
-	label, p, input, button, a, td, .grid-item-text, #infoMessage, #errorMessageBox, #successMessageBox {
+	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 11pt;
 	}
 
-	select
-	{
-		font-size: 9pt;
-	}
+	select{ font-size: 9pt; }
 
 	.grid-container-selection
 	{
@@ -491,40 +376,41 @@ img
     grid-template-columns: 140pt auto;
 	}
 
-	.grid-container-addUserForm {
+	#grid-container-addUserForm {
     display: grid;
     grid-template-columns: 100pt auto;
 	}
 
-	#errorMessage{
-		color: red;
+	.errorMessage{
 		background-color: rgba(234, 122, 122, 0);
-		padding: 4pt;
 		border : 0pt dotted;
 	}
 
-
-
-	#successMessage{
-		color: green;
+	.successMessage{
 		background-color: rgba(122, 122, 230, 0);
-		padding: 4pt;
 		border : 0pt dotted;
 	}
 
 	.userBox{
-	background-color: rgba(200, 222, 206);
-	border: solid 1pt;
-	margin: 0pt;
+		margin: 0pt;
 	}
 
 	th, td
-{
-	font-size: 9pt;
-	text-align: center;
-	padding: 0pt 0pt;
+	{
+		font-size: 9pt;
+		text-align: center;
+		padding: 0pt 0pt;
+	}
+
 }
 
+@media (min-width:900pt) {
+
+	.LeftPart
+	{
+		float: left;
+		position: sticky;
+		top : 45pt;
+	}
 
 }
-

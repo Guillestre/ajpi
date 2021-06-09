@@ -1,11 +1,5 @@
 <?php include "ext/common.php"; ?>
 
-<?php 
-
-//Get owner from session
-$owner = $_SESSION['user'];
-?>
-
 <!DOCTYPE html>
 <html>
 	
@@ -32,7 +26,7 @@ $owner = $_SESSION['user'];
 		</div>
 
 		<?php if($isAdmin) { ?>
-			<div class="userBox" id="secretTable">
+			<div id="secretTable">
 				<?php include "ext/table/secret.php"; ?>
 			</div>
 		<?php } ?>

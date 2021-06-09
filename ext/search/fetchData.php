@@ -15,23 +15,23 @@ switch($currentPage)
 			$filters['clientCodeOwner'] = $user->getClientCode();
 
 		//Verify if user has added invoiceCode filter
-		if(isset($_POST['invoiceCode']) && trim($_POST['invoiceCode']) != "")
+		if(isset($_POST['invoiceCode']) && strcmp(trim($_POST['invoiceCode']), "") != 0)
 			$filters['invoiceCode'] = trim($_POST['invoiceCode']);
 
 		//Verify if user has added client code filter
-		if(isset($_POST['clientCode']) && trim($_POST['clientCode']) != "")
+		if(isset($_POST['clientCode']) && strcmp(trim($_POST['clientCode']), "") != 0)
 			$filters['clientCode'] = trim($_POST["clientCode"]);
 
 		//Verify if user has added client name filter
-		if(isset($_POST['name']) && trim($_POST['name']) != "")
+		if(isset($_POST['name']) && strcmp(trim($_POST['name']), "") != 0)
 			$filters['name'] = trim($_POST["name"]);
 
 		//Verify if user has added start date filter
-		if(isset($_POST['startPeriod']) && trim($_POST['startPeriod']) != "")
+		if(isset($_POST['startPeriod']) && strcmp(trim($_POST['startPeriod']), "") != 0)
 			$filters['startPeriod'] = $_POST['startPeriod'];
 
 		//Verify if user has added end date filter
-		if(isset($_POST['endPeriod']) && trim($_POST['endPeriod']) != "")
+		if(isset($_POST['endPeriod']) && strcmp(trim($_POST['endPeriod']), "") != 0)
 			$filters['endPeriod'] = $_POST['endPeriod'];
 
 		$invoices = $invoiceDao->getInvoices($filters);

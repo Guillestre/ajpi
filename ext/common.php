@@ -1,10 +1,4 @@
 <?php 
-	
-	//Verify if logOff button has been clicked
-	if(isset($_POST['logOff'])){
-		session_destroy();
-		header("Location: index.php");
-	}
 
 	//Set current page
 	$currentPage = basename($_SERVER['PHP_SELF']);
@@ -60,8 +54,11 @@
 
 	//Get connected user and status
 	if(isset($_SESSION['user'])){
-		$user = $_SESSION['user'];
-		$isAdmin = $user->getStatus() == "admin";
+		$owner = $_SESSION['user'];
+		$isAdmin = $owner->getStatus() == "admin";
+		print("hello");
 	}
+	else
+		header("Location : index.php")
 
 ?>

@@ -19,7 +19,6 @@ include "src/interface/SecretDao.php";
 include "src/dao/UserMySQLDao.php";
 include "src/dao/SecretMySQLDao.php";
 include "src/dao/ClientMySQLDao.php";
-include "src/util/ExtractHelper.php";
 
 //Verify if action has been performed
 if(!isset($_POST['action']))
@@ -466,7 +465,7 @@ switch($action)
 			}
 
 			//Make update
-			$result = $userDao->updateSecretId($id, $newSecretId);
+			$result = $userDao->updateSecretId($id, $newSecretId, $status);
 
 			//Check if update has succeed
 			if(!$result)
@@ -708,12 +707,13 @@ switch($action)
 
 				//Redirection
 				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
+				print($newLabel);
 				header($url);
 				break;
 			}
 
 			//Make update
-			$result = $userDao->updateSecretId($id, $newSecretId);
+			$result = $userDao->updateSecretId($id, $newSecretId, $status);
 
 			//Check if update has succeed
 			if(!$result)
@@ -725,10 +725,11 @@ switch($action)
 				//Redirection
 				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
 				header($url);
+				break;
 			}
 
 			//Update secretId session
-			$owner->setSecretId($secretId);
+			$owner->setSecretId($newSecretId);
 			$_SESSION['user'] = $owner;
 
 			//Prepare success message

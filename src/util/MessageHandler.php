@@ -7,14 +7,14 @@
 
 		public static function sendErrorMessage($message)
 		{
-			print("<div id='errorMessageBox'><span id='errorMessage'>");
+			print("<div class='errorMessageBox'><span class='errorMessage'>");
 			print($message);
 			print("</div><span/>");
 		}
 
 		public static function sendSuccessMessage($message)
 		{
-			print("<div id='successMessageBox'><span id='successMessage'>");
+			print("<div class='successMessageBox'><span class='successMessage'>");
 			print($message);
 			print("</div><span/>");
 		}
@@ -22,7 +22,7 @@
 
 		public static function sendInfoMessage($message)
 		{
-			print("<div id='infoMessageBox'><p id='infoMessage'>");
+			print("<div class='infoMessageBox'><p class='infoMessage'>");
 			print($message);
 			print("</p></div>");
 		}

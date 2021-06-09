@@ -44,11 +44,11 @@
 							foreach($adminUsers as $user){
 								$username = $user->getUsername();
 								$status = $user->getStatus();
+								$id = $user->getId();
 								print("<option value='${username}'>");
 								print("${username}");
 								print("</option>");
 							}
-
 						?>
 					</select>
 				</div>
