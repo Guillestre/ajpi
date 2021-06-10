@@ -1,4 +1,8 @@
 <?php 
+	session_start();
+	session_unset();
 	session_destroy();
-	header("Location: index.php");
+	$text = "Vous avez été déconnecté";
+	$successMessage = urlencode($text);
+	header("Location: index.php?logOffSuccess=${successMessage}");
 ?>

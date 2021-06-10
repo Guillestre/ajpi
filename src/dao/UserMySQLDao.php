@@ -37,26 +37,26 @@
 			return $step->rowCount();
 		}
 
-		public function deleteUser($username, $status)
+		public function deleteUser($id, $status)
 		{	
-			$query = "DELETE FROM {$status}Users WHERE username = :username";
+			$query = "DELETE FROM {$status}Users WHERE id = :id";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":username", $username);
+			$step->bindValue(":id", $id);
 			return $step->execute();
 		}
 
-		public function getUser($username, $status)
+		public function getUser($id, $status)
 		{
-			$query = "SELECT * FROM {$status}Users WHERE username = :username";
+			$query = "SELECT * FROM {$status}Users WHERE id = :id";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":username", $username); 
+			$step->bindValue(":id", $id); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
-			$step->closeCursor();
 			$id = $row['id'];
 			$username = $row['username'];
 			$password = $row['password'];
 			$secretId = $row['secretId'];
+
 			if($status == "admin")
 				return new AdminUser($id, $username, $password, $secretId);
 			else
@@ -74,7 +74,6 @@
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
 			$nbResult = $step->rowCount();
-			$step->closeCursor();
 
 			$id = $row['id'];
 			$username = $row['username'];
@@ -143,11 +142,8 @@
 
 		public function getAllAdminUser()
 		{
-			$user = $_SESSION['user'];
-
-			$query = "SELECT * FROM adminUsers WHERE username != :username";
+			$query = "SELECT * FROM adminUsers";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":username", $user->getUsername());
 			$step->execute();
 			$rows = $step->fetchAll();
 			$nbResult = $step->rowCount();

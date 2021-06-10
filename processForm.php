@@ -2,23 +2,7 @@
 
 /* FILE THAT EXECUTE RECEIVED DATA FROM FORMS */
 
-//Include libraries
-include 'libraries/vendor/autoload.php';
-
-//Include src files
-include "src/class/MySQLConnection.php";
-include "src/class/User.php";
-include "src/class/AdminUser.php";
-include "src/class/ClientUser.php";
-include "src/class/Client.php";
-include "src/class/Secret.php";
-include "src/class/Invoice.php";
-include "src/class/Line.php";
-include "src/interface/UserDao.php";
-include "src/interface/SecretDao.php";
-include "src/dao/UserMySQLDao.php";
-include "src/dao/SecretMySQLDao.php";
-include "src/dao/ClientMySQLDao.php";
+include "ext/common.php";
 
 //Verify if action has been performed
 if(!isset($_POST['action']))
@@ -27,14 +11,11 @@ if(!isset($_POST['action']))
 	header($redirection);
 }
 
-//Get param from forms
+//Get action from FORM
 $action = $_POST['action'];
 
 //We use TOTP
 use OTPHP\TOTP;
-
-//Start session
-session_start();
 
 //Set DAO
 $userDao = new UserMySQLDao();
@@ -67,13 +48,14 @@ switch($action)
 			$errorMessage = urlencode($text);
 
 			//Redirection
-			$url = "Location: index.php?${status}ErrorConnection=${errorMessage}";
+			$url = "Location: index.php?errorConnection=${errorMessage}";
 			header($url);
 			break;
 		}
 
 		//Prepare TOTP
-		$user = $userDao->getUser($username, $status);
+		$id = $userDao->getId($username, $status);
+		$user = $userDao->getUser($id, $status);
 		$code = $secretDao->getCode($user->getSecretId());
 	    $totp = TOTP::create($code);
 
@@ -82,10 +64,10 @@ switch($action)
 		{
 			//Prepare error message
 			$text = "Le code secret est incorrect";
-			$errorMessage = urlencode("Cet utilisateur n'existe pas");
+			$errorMessage = urlencode($text);
 
 			//Redirection
-			$url = "Location: index.php?${status}ErrorConnection=${errorMessage}";
+			$url = "Location: index.php?errorConnection=${errorMessage}";
 			header($url);
 			break;
 		}
@@ -223,12 +205,51 @@ switch($action)
 
 		//Get right username according the status
 		if(strcmp($status, "admin") == 0)
-			$username = $_POST['adminUsername'];
+			$id = $_POST['adminId'];
 		else
-			$username = $_POST['clientUsername'];
+			$id = $_POST['clientId'];
 
-		$result = $userDao->deleteUser($username, $status);
+		//Get username
+		$username = $userDao->getUser($id, $status)->getUsername();
 
+		if(strcmp($status, "admin") == 0)
+		{
+			//Check if is owner
+			$isOwner = $user->getId() == $id;
+
+			//Count how many admin in database
+			$nbAdmins = $userDao->countUser("admin");
+
+			//Check if there are more than one admin
+			if($nbAdmins == 1)
+			{
+				if($isOwner){
+					//Prepare error message
+					$text = "Impossible. Vous êtes le seul administrateur";
+					$errorMessage = urlencode($text);
+
+					//Redirection
+					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+					header($url);
+					break;
+				} else {
+					//Prepare error message
+					$text = "Impossible. ${username} est le seul administrateur";
+					$errorMessage = urlencode($text);
+
+					//Redirection
+					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+					header($url);
+					break;
+				}
+			}
+
+		} else
+			$isOwner = false;
+
+		//Delete user
+		$result = $userDao->deleteUser($id, $status);
+		
 		//Check if user has been deleted
 		if(!$result)
 		{
@@ -244,60 +265,23 @@ switch($action)
 		}
 
 		//Prepare success message
-		$text = "L'utilisateur {$username} a bien été supprimé";
-		$successMessage = urlencode($text);
-
-		//Redirection
-		$url = "Location: userManagement.php?deleteUserSuccess=${successMessage}";
-		header($url);
-
-		break;
-
-	/* DELETE OWNER *****************************************/
-
-	case "deleteOwner" :
-
-		//Get connected user
-		$user = $_SESSION['user'];
-
-		//Count how admin in database
-		$nbAdmins = $userDao->countUser("admin");
-
-		//Check if there are more than one admin
-		if($nbAdmins == 1)
-		{
-			//Prepare error message
-			$text = "Impossible. Vous êtes le seul administrateur";
-			$errorMessage = urlencode($text);
+		if(!$isOwner){
+			$text = "L'utilisateur ${username} a bien été supprimé";
+			$successMessage = urlencode($text);
 
 			//Redirection
-			$url = "Location: userManagement.php?deleteOwnerError=${errorMessage}";
+			$url = "Location: userManagement.php?deleteUserSuccess=${successMessage}";
 			header($url);
-			break;
-		}
+		} else {
+			$text = "Votre compte a bien été supprimé";
+			$successMessage = urlencode($text);
 
-		//Delete connected user
-		$result = $userDao->deleteUser($user->getUsername(), "admin");
-
-		if(!$result)
-		{
-			//Prepare error message
-			$text = "Une erreur est survenue. Votre compte a pas pu être supprimé";
-			$errorMessage = urlencode($text);
-			
+			session_destroy();
 			//Redirection
-			$url = "Location: userManagement.php?deleteOwnerError=${errorMessage}";
+			$url = "Location: index.php?deleteOwnerSuccess=${successMessage}";
 			header($url);
-			break;
 		}
 
-		//Prepare success message
-		$text = "Votre compte a bien été supprimé";
-		$successMessage = urlencode($text);
-
-		//Redirection
-		$url = "Location: index.php?deleteOwnerSuccess=${successMessage}";
-		header($url);
 		break;
 
 	/* ALTER USER *****************************************/
@@ -498,7 +482,7 @@ switch($action)
 			$newClientCode = $_POST['newClient'];
 
 			//Get client name
-			$clientName = utf8_encode($clientDao->getClientName($newClientCode));
+			$clientName = $clientDao->getClientName($newClientCode);
 
 			//Verify if client code has already an owner
 			if($userDao->takenClientCode($newClientCode))
@@ -541,207 +525,6 @@ switch($action)
 			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
 			header($url);
 			break;
-		}
-
-		break;
-
-	/* ALTER OWNER *****************************************/
-
-	case "alterOwnerUsername" : case "alterOwnerPassword" : 
-	case "alterOwnerSecret" :
-
-		//Set info from the owner
-		$owner = $_SESSION['user'];
-		$status = "admin";
-		$username = $owner->getUsername();
-		$id = $owner->getId();
-		
-		/* ALTER OWNER USERNAME */
-
-		if(strcmp($action, "alterOwnerUsername") == 0){
-
-			//Get new username from POST
-			$newUsername = $_POST['newUsername'];
-
-			//Check if new username is not empty
-			if( strcmp(trim($newUsername), "") == 0 )
-			{
-				//Prepare message
-				$text = 
-				"Vous ne pouvez pas mettre un nom d'utilisateur contenant que des espaces";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-
-			//Check if new username already exist
-			if($userDao->exist($newUsername, $status))
-			{
-				//Prepare message
-				$text = "Vous avez déjà ce nom d'utilisateur";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-				
-			//Execute
-			$result = $userDao->updateUsername($id, $newUsername, $status);
-
-			//Check if update has succeed
-			if(!$result){
-				//Prepare message
-				$text = 
-				"Une erreur est survenue. Le nom d'utilisateur n'a pas pu être modifié";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-
-			//Update username session
-			$owner->setUsername($newUsername);
-			$_SESSION['user'] = $owner;
-
-			//Prepare success message
-			$text = "Votre nom a été modifié";
-			$successMessage = urlencode($text);
-
-			//Redirection
-			$url = "Location: userManagement.php?alterOwnerSuccess=${successMessage}";
-			header($url);
-
-		/* ALTER OWNER PASSWORD */
-
-		} else if(strcmp($action, "alterOwnerPassword") == 0){
-
-			//Get new password from POST
-			$newPassword = $_POST['newPassword'];
-
-			//Get password from the id
-			$password = $userDao->getPassword($id, $status);
-
-			//Check if newPassword is not empty
-			if(strcmp(trim($newPassword), "") == 0)
-			{
-				//Prepare message
-				$text = "Vous ne pouvez pas mettre un mot de passe contenant que des espaces";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-
-			//Hash password
-			$newPassword = sha1($newPassword);
-
-			//Verify if it is the password that selected user has
-			if(strcmp($newPassword, $password) == 0)
-			{
-				//Prepare message
-				$text = "Vous avez déjà ce mot de passe";
-				$errorMessage = urlencode($text);
-
-				//redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-				
-			//Execute
-			$result = $userDao->updatePassword($id, $newPassword, $status);
-
-			//Check if update has succeed
-			if(!$result){
-
-				//Prepare message
-				$text = "Une erreur est survenue. Le mot de passe n'a pas pu être modifié";
-				$errorMessage = urlencode($text);
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				
-				//Redirection
-				header($url);
-				break;
-			}
-
-			//Update password session
-			$owner->setPassword($newPassword);
-			$_SESSION['user'] = $owner;
-
-			//Prepare success message
-			$text = "Votre mot de passe a été modifié";
-			$successMessage = urlencode($text);
-
-			//Redirection
-			$url = "Location: userManagement.php?alterOwnerSuccess=${successMessage}";
-			header($url);
-
-		/* ALTER OWNER SECRET */
-
-		} else if(strcmp($action, "alterOwnerSecret") == 0){
-
-			//Get new label from POST
-			$newLabel = $_POST['newLabel'];
-
-			//Set secretId according the status
-			$secretId = $userDao->getSecretId($id, $status);
-
-			//Get new secret Id
-			$newSecretId = $secretDao->getId($newLabel);
-
-			//Verify if it is the secret that user has
-			if(strcmp($newSecretId, $secretId) == 0)
-			{
-				//Prepare message
-				$text = "Vous avez déjà cette clé";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				print($newLabel);
-				header($url);
-				break;
-			}
-
-			//Make update
-			$result = $userDao->updateSecretId($id, $newSecretId, $status);
-
-			//Check if update has succeed
-			if(!$result)
-			{
-				//Prepare message
-				$text = "Une erreur est survenue. La clé n'a pas pu être modifiée";
-				$errorMessage = urlencode($text);
-
-				//Redirection
-				$url = "Location: userManagement.php?alterOwnerError=${errorMessage}";
-				header($url);
-				break;
-			}
-
-			//Update secretId session
-			$owner->setSecretId($newSecretId);
-			$_SESSION['user'] = $owner;
-
-			//Prepare success message
-			$text = "Votre clé a été modifiée";
-			$successMessage = urlencode($text);
-
-			//Prepare redirection
-			$page = "userManagement.php";
-			$url_p1 = "alterOwnerSuccess=${successMessage}";
-			$url = "Location: ${page}?${url_p1}";
-
-			header($url);
 		}
 
 		break;

@@ -1,6 +1,6 @@
 /* MAIN PART ***************************************************/
 
-body{ background-color: rgba(200, 222, 206, 0.3); }
+body{ background-color: rgba(200, 222, 206, 0.5); }
 
 .navBar{
 	position: sticky;
@@ -118,6 +118,7 @@ img
 	background-color: rgba(200, 222, 206);
 	margin: 5pt;
 	padding : 5pt;
+	display: inline-block;
 }
 
 .grid-item-label {
@@ -129,11 +130,6 @@ img
     grid-template-columns: 200pt auto;
 }
 
-.grid-container-userFormGroup {
-    display: grid;
-    grid-template-columns: auto auto;
-}
-
 .grid-container-userBoxGroup
 {
 	display: grid;
@@ -143,8 +139,7 @@ img
 .grid-container-selection
 {
 	display: grid;
-  grid-template-columns: 150pt 150pt 90pt 90pt;
-  text-align: left;
+  grid-template-columns: auto auto;
 }
 
 .errorMessage, .successMessage{
@@ -172,7 +167,7 @@ img
 
 	.errorMessageBox, .successMessageBox
 	{
-		margin: 8pt;
+		margin: 15pt;
 	}
 
 	h1
@@ -197,8 +192,7 @@ img
 	.grid-container-selection
 	{
 		display: grid;
-    grid-template-columns: 140pt 120pt 75pt 80pt;
-    text-align: left;
+    grid-template-columns: auto auto;
 	}
 
 	table thead th 
@@ -212,10 +206,6 @@ img
 
 @media (max-width:1150pt) {
 
-	.grid-container-userFormGroup {
-    display: grid;
-    grid-template-columns: auto;
-	}
 
 	#secretTable
 	{
@@ -274,11 +264,6 @@ img
 
 	.navBar{
 	  grid-template-columns: 200pt 200pt 200pt;
-	}
-
-	.grid-container-userFormGroup {
-    display: grid;
-    grid-template-columns: auto;
 	}
 
 	th, td

@@ -46,7 +46,7 @@ class InvoiceMySQLDao
 		invoices.clientCode = clients.code
 		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
 		LENGTH(invoices.code)), 
-		UNSIGNED INTEGER) DESC;";
+		UNSIGNED INTEGER) DESC LIMIT 0, 50;";
 
 		$step=$this->database->prepare($query);
 
