@@ -46,8 +46,12 @@
 			<div class="grid-item-text" id="ownerQRCode">
 		 		<img alt="<?php echo "QR CODE clé ${label}"; ?>" src="<?php echo $link; ?>">
 			</div>
-			
+
 		</div>
+
+		<div></div>
+
+		<!-- SECRET CODE ----------------------->
 
 		<?php if(!$isAdmin){ ?>
 

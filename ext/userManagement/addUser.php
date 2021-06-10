@@ -2,7 +2,7 @@
 
 <form action="processForm.php" method="post">
 	
-	<div id="grid-container-addUserForm">
+	<div class="grid-container-userForm">
 
 		<div class="grid-item-label">
 			<label for="username">Nom utilisateur : </label>
@@ -41,6 +41,23 @@
 			
 		</div>
 		
+		<div class="grid-item-label">
+			<label for="label">Clé (A2F) : </label>
+		</div>
+
+		<div>
+		 	<select id="label" name="label">
+				<?php
+					foreach($secrets as $secret){
+						$label = $secret->getLabel();
+						print("<option value='${label}'>");
+						print("${label}");
+						print("</option>");
+					}
+				?>
+			</select>
+		</div>
+
 		<div class="grid-item-label" id="labelClient">
 			<label for="client">Nom Client : </label>
 		</div>
@@ -54,23 +71,6 @@
 						print("<option value='${code}'>");
 						print("${name} (${code})");
 						print("</option>");	
-					}
-				?>
-			</select>
-		</div>
-
-		<div class="grid-item-label">
-			<label for="label">Clé (A2F) : </label>
-		</div>
-
-		<div>
-		 	<select id="label" name="label">
-				<?php
-					foreach($secrets as $secret){
-						$label = $secret->getLabel();
-						print("<option value='${label}'>");
-						print("${label}");
-						print("</option>");
 					}
 				?>
 			</select>
@@ -102,11 +102,11 @@
 	  var clientLabel = document.getElementById("labelClient");
 	  var inputClient = document.getElementById("inputClient");
 	  if (clientStatus.checked == true){
-	    clientLabel.style.display = "block";
-	    inputClient.style.display = "block";
+	    clientLabel.style.visibility = "visible";
+	    inputClient.style.visibility = "visible";
 	  } else {
-	     clientLabel.style.display = "none";
-	     inputClient.style.display = "none";
+	     clientLabel.style.visibility = "hidden";
+	     inputClient.style.visibility = "hidden";
 	  }
 	}
 </script>

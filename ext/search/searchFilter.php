@@ -25,7 +25,7 @@
 
 	<div class="filter">
 		<label for="endPeriod">Au :</label><br>
-		<input type="date"name="endPeriod" >
+		<input type="date" name="endPeriod" >
 	</div>
 
 	<input type="submit" id="searchButton" name="searchButton" value="Lancer recherche"/>

@@ -58,9 +58,12 @@
 		//Check if logged user is on session pages
 		if(!in_array($currentPage, $loggedPages))
 		{
-			$redirection = "location:javascript://history.go(-1)";
+			$redirection = "Location: dashboard.php";
 			header($redirection);
 		}
+
+		//Set status
+		$isAdmin = strcmp($user->getStatus(), "admin") == 0 ;
 
 	} else if(!in_array($currentPage, $logOffPages)) {
 		header("Location: index.php");
@@ -68,8 +71,5 @@
 
 	//Connect to database
 	$database = MySQLConnection::getInstance()->getConnection();
-	
-	//Set status
-	$isAdmin = true;
 
 ?>

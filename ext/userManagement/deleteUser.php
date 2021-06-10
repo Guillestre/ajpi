@@ -37,8 +37,9 @@
 						<label for="deleteAdmin">Choisir utilisateur admin : </label>
 					</div>
 
-					<div>
+					<div> 
 					 	<select id="deleteAdmin" name="adminId" >
+
 							<?php
 
 								foreach($adminUsers as $admin){
@@ -92,11 +93,11 @@
 					 	<select id="deleteClient" name="clientId" >
 							<?php
 
-								foreach($clientUsers as $user){
-									$username = $user->getUsername();
-									$id = $user->getId();
-									$status = $user->getStatus();
-									$clientCode = $user->getClientCode();
+								foreach($clientUsers as $client){
+									$username = $client->getUsername();
+									$id = $client->getId();
+									$status = $client->getStatus();
+									$clientCode = $client->getClientCode();
 									print("<option value='${id}'>");
 									print("${username} (${clientCode})");
 									print("</option>");

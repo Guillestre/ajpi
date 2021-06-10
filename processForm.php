@@ -45,7 +45,7 @@ switch($action)
 		{
 			//Prepare message
 			$text = "Cet utilisateur existe pas";
-			$errorMessage = urlencode($text);
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: index.php?errorConnection=${errorMessage}";
@@ -64,7 +64,7 @@ switch($action)
 		{
 			//Prepare error message
 			$text = "Le code secret est incorrect";
-			$errorMessage = urlencode($text);
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: index.php?errorConnection=${errorMessage}";
@@ -95,8 +95,8 @@ switch($action)
 		{
 			//Prepare error message
 			$text = 
-			"Vous ne pouvez pas mettre un nom d'utilisateur contenant que des espaces";
-			$errorMessage = urlencode($text);
+			"Vous ne pouvez pas mettre un nom d'utilisateur vide";
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?addUserError=${errorMessage}";
@@ -108,8 +108,8 @@ switch($action)
 		if(strcmp(trim($password), "") == 0)
 		{
 			//Prepare error message
-			$text = "Vous ne pouvez pas mettre un mot de passe contenant que des espaces";
-			$errorMessage = urlencode($text);
+			$text = "Vous ne pouvez pas mettre un mot de passe vide";
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?addUserError=${errorMessage}";
@@ -122,7 +122,7 @@ switch($action)
 		{
 			//Prepare error message
 			$text = "Ce nom d'utilisateur est déjà pris";
-			$errorMessage = urlencode($text);
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?addUserError=${errorMessage}";
@@ -138,7 +138,7 @@ switch($action)
 		if(!$isAdmin)
 		{
 			//Get client name
-			$clientName = utf8_encode($clientDao->getClientName($clientCode));
+			$clientName = $clientDao->getClientName($clientCode);
 
 			//Get owner from the client
 			$owner = $userDao->getClientUser($clientCode);
@@ -148,7 +148,7 @@ switch($action)
 			{
 				//Prepare error message
 				$text = "Le client {$clientName} est déjà pris par l'utilisateur {$owner->getUsername()}";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirect
 				$url = "Location: userManagement.php?addUserError=${errorMessage}";
@@ -157,8 +157,8 @@ switch($action)
 			}
 
 			//Prepare success message
-			$text = "L'utilisateur client ${username} a bien été enregistré";
-			$successMessage = urlencode($text);
+			$text = "L'utilisateur client ${username} lié au client ${clientName} a bien été enregistré";
+			$successMessage = $text;
 
 			//Create client user
 			$user = new ClientUser ($id, $username, $password, $secretId, $clientCode);
@@ -167,7 +167,7 @@ switch($action)
 
 			//Prepare success message
 			$text = "L'administrateur ${username} a bien été enregistré";
-			$successMessage = urlencode($text);
+			$successMessage = $text;
 
 			//Create admin user
 			$user = new AdminUser ($id, $username, $password, $secretId);
@@ -183,7 +183,7 @@ switch($action)
 			//Prepare error message
 			$text = 
 			"Une erreur est survenue. L'utilisateur a pas pu être ajouté";
-			$errorMessage = urlencode($text);
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?addUserError=${errorMessage}";
@@ -226,7 +226,7 @@ switch($action)
 				if($isOwner){
 					//Prepare error message
 					$text = "Impossible. Vous êtes le seul administrateur";
-					$errorMessage = urlencode($text);
+					$errorMessage = $text;
 
 					//Redirection
 					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
@@ -235,7 +235,7 @@ switch($action)
 				} else {
 					//Prepare error message
 					$text = "Impossible. ${username} est le seul administrateur";
-					$errorMessage = urlencode($text);
+					$errorMessage = $text;
 
 					//Redirection
 					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
@@ -256,7 +256,7 @@ switch($action)
 			//Prepare error message
 			$text = 
 			"Une erreur est survenue. L'utilisateur a pas pu être supprimé";
-			$errorMessage = urlencode($text);
+			$errorMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
@@ -267,14 +267,14 @@ switch($action)
 		//Prepare success message
 		if(!$isOwner){
 			$text = "L'utilisateur ${username} a bien été supprimé";
-			$successMessage = urlencode($text);
+			$successMessage = $text;
 
 			//Redirection
 			$url = "Location: userManagement.php?deleteUserSuccess=${successMessage}";
 			header($url);
 		} else {
 			$text = "Votre compte a bien été supprimé";
-			$successMessage = urlencode($text);
+			$successMessage = $text;
 
 			session_destroy();
 			//Redirection
@@ -292,14 +292,22 @@ switch($action)
 		//Get status from POST
 		$status = $_POST['status'];
 
-		//Set username according the status
+		//Get right username according the status
 		if(strcmp($status, "admin") == 0)
-			$username = $_POST['adminUsername'];
-		else
-			$username = $_POST['clientUsername'];
+		{
+			$id = $_POST['adminId'];
 
-		//Set id according the status
-		$id = $userDao->getId($username, $status);
+			//Check if is owner
+			$isOwner = $user->getId() == $id;
+		}
+		else
+		{
+			$id = $_POST['clientId'];
+			$isOwner = false;
+		}
+
+		//Set username according the status and id
+		$username = $userDao->getUser($id, $status)->getUsername();
 		
 		/* ALTER USERNAME */
 
@@ -313,8 +321,8 @@ switch($action)
 			{
 				//Prepare message
 				$text = 
-				"Vous ne pouvez pas mettre un nom d'utilisateur contenant que des espaces";
-				$errorMessage = urlencode($text);
+				"Vous ne pouvez pas mettre un nom d'utilisateur vide";
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -325,13 +333,19 @@ switch($action)
 			//Check if new username already exist
 			if($userDao->exist($newUsername, $status))
 			{
-				//Prepare message
-				$text = "Cet utilisateur possède déjà ce nom d'utilisateur";
-				$errorMessage = urlencode($text);
+				//Prepare error message
+				if($isOwner && strcmp($user->getUsername(), $newUsername) == 0){
+					$text = "Vous posséder déjà ce nom d'utlisateur";
+					$errorMessage = $text;
+				} else {
+					$text = "Ce nom d'utilisateur est déjà pris";
+					$errorMessage = $text;
+				}
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
 				header($url);
+	
 				break;
 			}
 				
@@ -340,10 +354,10 @@ switch($action)
 
 			//Check if update has succeed
 			if(!$result){
-				//Prepare message
+				//Prepare error message
 				$text = 
 				"Une erreur est survenue. Le nom d'utilisateur n'a pas pu être modifié";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -352,8 +366,17 @@ switch($action)
 			}
 
 			//Prepare success message
-			$text = "Le nom de l'utilisateur ${username} a été modifié";
-			$successMessage = urlencode($text);
+			if(!$isOwner){
+				$text = "Le nom de l'utilisateur ${username} est maintenant ${newUsername}";
+				$successMessage = $text;
+			} else {
+				$text = "Votre nom d'utilisateur est maintenant ${newUsername}";
+				$successMessage = $text;
+
+				//Update owner
+				$user->setUsername($newUsername);
+				$_SESSION['user'] = $user;
+			}
 
 			//Redirection
 			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
@@ -372,9 +395,9 @@ switch($action)
 			//Check if newPassword is not empty
 			if(strcmp(trim($newPassword), "") == 0)
 			{
-				//Prepare message
-				$text = "Vous ne pouvez pas mettre un mot de passe contenant que des espaces";
-				$errorMessage = urlencode($text);
+				//Prepare error message
+				$text = "Vous ne pouvez pas mettre un mot de passe vide";
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -388,9 +411,14 @@ switch($action)
 			//Verify if it is the password that selected user has
 			if(strcmp($newPassword, $password) == 0)
 			{
-				//Prepare message
-				$text = "Cet utilisateur possède déjà ce mot de passe";
-				$errorMessage = urlencode($text);
+				//Prepare error message
+				if($isOwner && strcmp($user->getPassword(), $newPassword) == 0){
+					$text = "Vous posséder déjà ce mot de passe";
+					$errorMessage = $text;
+				} else {
+					$text = "Cet utilisateur possède déjà ce mot de passe";
+					$errorMessage = $text;
+				}
 
 				//redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -404,9 +432,9 @@ switch($action)
 			//Check if update has succeed
 			if(!$result){
 
-				//Prepare message
+				//Prepare error message
 				$text = "Une erreur est survenue. Le mot de passe n'a pas pu être modifié";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
 				
 				//Redirection
@@ -415,8 +443,17 @@ switch($action)
 			}
 
 			//Prepare success message
-			$text = "Le mot de passe de l'utilisateur ${username} a été modifié";
-			$successMessage = urlencode($text);
+			if(!$isOwner){
+				$text = "Le mot de passe de l'utilisateur ${username} a été modifié";
+				$successMessage = $text;
+			} else {
+				$text = "Votre mot de passe a été modifié";
+				$successMessage = $text;
+
+				//Update owner
+				$user->setPassword($newPassword);
+				$_SESSION['user'] = $user;
+			}
 
 			//Redirection
 			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
@@ -438,9 +475,14 @@ switch($action)
 			//Verify if it is the secret that user has
 			if(strcmp($newSecretId, $secretId) == 0)
 			{
-				//Prepare message
-				$text = "Cet utilisateur possède déjà cette clé";
-				$errorMessage = urlencode($text);
+				//Prepare error message
+				if($isOwner && strcmp($user->getSecretId(), $newSecretId) == 0){
+					$text = "Vous posséder déjà cette clé";
+					$errorMessage = $text;
+				} else {
+					$text = "Cet utilisateur possède déjà cette clé";
+					$errorMessage = $text;
+				}
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -456,7 +498,7 @@ switch($action)
 			{
 				//Prepare message
 				$text = "Une erreur est survenue. La clé n'a pas pu être modifiée";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -464,8 +506,17 @@ switch($action)
 			}
 
 			//Prepare success message
-			$text = "La clé de l'utilisateur ${username} a été modifiée";
-			$successMessage = urlencode($text);
+			if(!$isOwner){
+				$text = "La clé de l'utilisateur ${username} est maintenant ${newLabel}";
+				$successMessage = $text;
+			} else {
+				$text = "Votre clé est maintenant ${newLabel}";
+				$successMessage = $text;
+
+				//Update owner
+				$user->setSecretId($newSecretId);
+				$_SESSION['user'] = $user;
+			}
 
 			//Prepare redirection
 			$page = "userManagement.php";
@@ -492,7 +543,7 @@ switch($action)
 
 				//Prepare message
 				$text = "Le client {$clientName} est déjà lié à l'utilisateur {$owner->getUsername()}";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirect
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -508,7 +559,7 @@ switch($action)
 			{
 				//Prepare message
 				$text = "Une erreur est survenue. Le client a pas pu être modifié";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirect
 				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
@@ -519,7 +570,7 @@ switch($action)
 			//Prepare success message
 			$text = 
 			"L'utilisateur ${username} est maintenant lié au client ${clientName}";
-			$successMessage = urlencode($text);
+			$successMessage = $text;
 
 			//Redirect
 			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
@@ -542,8 +593,8 @@ switch($action)
 			if(strcmp(trim($label), "") == 0) 
 			{
 				//Prepare error message
-				$text = "Vous ne pouvez pas ajouter un label contenant que des espaces";
-				$errorMessage = urlencode($text);
+				$text = "Vous ne pouvez pas ajouter un label vide";
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
@@ -556,7 +607,7 @@ switch($action)
 			{
 				//Prepare error message
 				$text = "Cette clé existe déjà";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
@@ -582,7 +633,7 @@ switch($action)
 	    	{
 	    		//Prepare error message
 				$text = "Une erreur est survenue. La clé a pas pu être enregistrée";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: secretManagement.php?addSecretError=${errorMessage}";
@@ -591,8 +642,8 @@ switch($action)
 	    	}
 
 	    	//Prepare success message
-			$text = "La clé a bien été enregistrée";
-			$successMessage = urlencode($text);
+			$text = "La clé ${label} a été enregistrée";
+			$successMessage = $text;
 
 			//Redirection
 			$url = "Location: secretManagement.php?addSecretSuccess=${successMessage}";
@@ -608,7 +659,7 @@ switch($action)
 			{
 				//Prepare error message
 				$text = "Cette clé est utilisée par des utilisateurs";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: secretManagement.php?deleteSecretError=${errorMessage}";
@@ -624,7 +675,7 @@ switch($action)
 			{
 				//Prepare error message
 				$text = "Une erreur est survenue. La clé a pas pu être supprimée";
-				$errorMessage = urlencode($text);
+				$errorMessage = $text;
 
 				//Redirection
 				$url = "Location: secretManagement.php?deleteSecretError=${errorMessage}";
@@ -634,7 +685,7 @@ switch($action)
 
 			//Prepare error message
 			$text = "La clé ${label} a été supprimée";
-			$successMessage = urlencode($text);
+			$successMessage = $text;
 
 			//Redirection
 			$url = "Location: secretManagement.php?deleteSecretSuccess=${successMessage}";

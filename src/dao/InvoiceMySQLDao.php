@@ -15,14 +15,13 @@ class InvoiceMySQLDao
 	
 	public function getInvoices($filters)
 	{
-		$user = $_SESSION['user'];
-		$isAdmin = $user->getStatus() == "admin";
 		$clause = "";
 
 		/* PREPARE FILTERS */
 
-		if(!$isAdmin)
+		if(isset($filters['clientCodeOwner'])){
 			$clause .= " AND clientCode LIKE :clientCodeOwner ";
+		}
 
 		if(isset($filters['invoiceCode']))
 			$clause .= " AND invoices.code LIKE :invoiceCode ";
@@ -46,7 +45,7 @@ class InvoiceMySQLDao
 		invoices.clientCode = clients.code
 		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
 		LENGTH(invoices.code)), 
-		UNSIGNED INTEGER) DESC LIMIT 0, 50;";
+		UNSIGNED INTEGER) DESC LIMIT 0, 100;";
 
 		$step=$this->database->prepare($query);
 
@@ -64,15 +63,15 @@ class InvoiceMySQLDao
 		} 
 		if(isset($filters['startPeriod'])){
 			$startPeriod = $filters['startPeriod'];
-			$step->bindValue(":startPeriod", "%{$startPeriod}%");
+			$step->bindValue(":startPeriod", $startPeriod);
 		} 
 		if(isset($filters['endPeriod'])){
 			$endPeriod = $filters['endPeriod'];
-			$step->bindValue(":endPeriod", "%{$endPeriod}%");
+			$step->bindValue(":endPeriod", $endPeriod);
 		} 
 
 		if(isset($filters['clientCodeOwner']))
-			$step->bindValue(":clientCodeOwner", $user->getClientCode());
+			$step->bindValue(":clientCodeOwner", $filters['clientCodeOwner']);
 
 		$step->execute();
 		$rows = $step->fetchAll();

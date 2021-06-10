@@ -15,12 +15,23 @@
 			<div class="infoArea">
 				<?php include 'ext/search/searchFilter.php';?>
 			</div>
+			<button>
+			Précédent
+		</button>
+
+		<button>
+			Suivant
+		</button>
 
 		</div>
 
+		<div>
 		<?php include 'ext/table/invoice.php';?>
-
+		
+	</div>
 	</body>
+
+
 
 	<?php include "ext/footer.php" ?>
 

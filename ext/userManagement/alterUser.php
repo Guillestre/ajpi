@@ -7,6 +7,8 @@
 
 <form action="processForm.php" method="post">
 
+	<!-- STATUS SELECTION -->
+
 	<div>
 
 		<input 
@@ -25,104 +27,41 @@
 	
 	</div>
 
-	<div></div>
+	<!-- ADMIN SELECTION -->
 
 	<div id="blockAU" hidden>
-		<?php if($availableAdminUsers){ ?>
-
-			<div class="grid-container-userForm">
-
-				<div class="grid-item-label">
-					<label for="alterAdminUsername">
-						Choisir utilisateur admin : 
-					</label>
-				</div>
-
-				<div>
-				 	<select id="alterAdminUsername" name="adminUsername" >
-						<?php
-							foreach($adminUsers as $user){
-								$username = $user->getUsername();
-								$status = $user->getStatus();
-								$id = $user->getId();
-								print("<option value='${username}'>");
-								print("${username}");
-								print("</option>");
-							}
-						?>
-					</select>
-				</div>
-
-			</div>
-
-			<?php
+		<?php if($availableAdminUsers){
 				if($availableAdminUsers && !$availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
-			?>
-			
-		<?php 
 			} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à modifier"); 
 		?>
 	</div>
 
+	<!-- USER CLIENT SELECTION -->
+
 	<div id="blockCU" >
-		<?php if($availableClientUsers){ ?>
-			
-			<div class="grid-container-userForm">
-
-				<div class="grid-item-label">
-					<label for="alterClientUsername">
-						Choisir utilisateur client : 
-					</label>
-				</div>
-
-				<div class="grid-item-input-text">
-				 	<select id="alterClientUsername" name="clientUsername" >
-						<?php
-
-							foreach($clientUsers as $user){
-								$username = $user->getUsername();
-								$status = $user->getStatus();
-								$clientCode = $user->getClientCode();
-								print("<option value='${username}'>");
-								print("${username} (${clientCode})");
-								print("</option>");
-							}
-
-						?>
-					</select>
-				</div>
-
-			</div>
-
-			<?php
-
+		<?php if($availableClientUsers){
 				if(!$availableAdminUsers && $availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
-
-			?>
-
-		<?php 
 			}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à modifier");
 		?>
 	</div>
 
 	<?php
-
 		if($availableAdminUsers && $availableClientUsers)
 			include_once "ext/userManagement/alterSelection.php";
+	?>
 
-	 ?>
+	<!-- MESSAGE -->
+
+	<?php
+		if(isset($_GET['alterUserSuccess']))
+			messageHandler::sendSuccessMessage($_GET['alterUserSuccess']);
+		else if(isset($_GET['alterUserError']))
+			messageHandler::sendErrorMessage($_GET['alterUserError']);
+	?>
 
 </form>
-
-<?php
-	if(isset($_GET['alterUserSuccess']))
-		messageHandler::sendSuccessMessage($_GET['alterUserSuccess']);
-	else if(isset($_GET['alterUserError']))
-		messageHandler::sendErrorMessage($_GET['alterUserError']);
-?>
-
 
 <script>
 	function alterUser() {
@@ -131,35 +70,52 @@
 		var blockAU = document.getElementById("blockAU");
 		var blockCU = document.getElementById("blockCU");
 
-		//First radio line
+		//radio line
 		var alterRadioCU = document.getElementById("alterRadioCU");
 
-		//Second radio line
-		var radioBlockClient = document.getElementById("radioBlockClient");
-		var radioClient = document.getElementById("radioClient");
-		var radioUsername = document.getElementById("radioUsername");
-
-		//Block
+		//Client selection
 		labelNewClient = document.getElementById("labelNewClient");
 		inputNewClient = document.getElementById("inputNewClient");
+		submitNewClient = document.getElementById("submitNewClient");
 
-		//Display
+		//Admin user selection
+		labelAlterAdmin = document.getElementById("labelAlterAdmin");
+		inputAlterAdmin = document.getElementById("inputAlterAdmin");
+
+		//Client user selection
+		labelAlterClient = document.getElementById("labelAlterClient");
+		inputAlterClient = document.getElementById("inputAlterClient");
+
+		//Display Block
 		if (alterRadioCU.checked == true){
 			blockCU.style.display = "block";
 			blockAU.style.display = "none";
-			radioBlockClient.style.display = "block";
 		} else {
 			blockCU.style.display = "none";
 			blockAU.style.display = "block";
-			radioBlockClient.style.display = "none";
-			labelNewClient.style.display = "none";
-			inputNewClient.style.display = "none";
 		}
 
+		//Display selection
+		if (alterRadioCU.checked == true){
+			labelNewClient.style.visibility = "visible";
+			inputNewClient.style.visibility = "visible";
+			submitNewClient.style.visibility = "visible";
 
-			
-		
+			labelAlterAdmin.style.display = "none";
+			inputAlterAdmin.style.display = "none";
+			labelAlterClient.style.display = "block";
+			inputAlterClient.style.display = "block";
+		} else {
+			labelNewClient.style.visibility = "hidden";
+			inputNewClient.style.visibility = "hidden";
+			submitNewClient.style.visibility = "hidden";
 
+			labelAlterClient.style.display = "none";
+			inputAlterClient.style.display = "none";
+			labelAlterAdmin.style.display = "block";
+			inputAlterAdmin.style.display = "block";
+		}
 	}
 	alterUser();
 </script>
+

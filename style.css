@@ -126,8 +126,8 @@ img
 }
 
 .grid-container-userForm {
-    display: grid;
-    grid-template-columns: 200pt auto;
+    display: inline-grid;
+    grid-template-columns: auto auto;
 }
 
 .grid-container-userBoxGroup
@@ -136,9 +136,15 @@ img
     grid-template-columns: auto auto;
 }
 
-.grid-container-selection
+.grid-container-three-item
 {
-	display: grid;
+	display: inline-grid;
+  grid-template-columns: auto auto auto;
+}
+
+.grid-container-two-item
+{
+	display: inline-grid;
   grid-template-columns: auto auto;
 }
 
@@ -149,11 +155,6 @@ img
 
 .successMessage{color: green;background-color: rgba(122, 122, 230, 0.2);}
 .errorMessage{color: red;background-color: rgba(234, 122, 122, 0.2);}
-
-#grid-container-addUserForm {
-  display: grid;
-  grid-template-columns: 160pt auto;
-}
 
 
 /* ADAPTATION PART ***************************************************/
