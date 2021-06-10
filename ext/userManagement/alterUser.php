@@ -140,8 +140,8 @@
 		var radioUsername = document.getElementById("radioUsername");
 
 		//Block
-		blockC = document.getElementById("blockC");
-		blockU = document.getElementById("blockU");
+		labelNewClient = document.getElementById("labelNewClient");
+		inputNewClient = document.getElementById("inputNewClient");
 
 		//Display
 		if (alterRadioCU.checked == true){
@@ -152,16 +152,13 @@
 			blockCU.style.display = "none";
 			blockAU.style.display = "block";
 			radioBlockClient.style.display = "none";
+			labelNewClient.style.display = "none";
+			inputNewClient.style.display = "none";
 		}
 
-		//Check
-		if(alterRadioCU.checked == false && radioClient.checked == true)
-		{
-			radioClient.checked = false;
-			radioUsername.checked = true;
-			blockC.style.display = "none";
-			blockU.style.display = "block";
-		}
+
+			
+		
 
 	}
 	alterUser();

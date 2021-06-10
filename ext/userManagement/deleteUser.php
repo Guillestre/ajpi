@@ -38,15 +38,28 @@
 					</div>
 
 					<div>
-					 	<select id="deleteAdmin" name="adminUsername" >
+					 	<select id="deleteAdmin" name="adminId" >
 							<?php
 
-								foreach($adminUsers as $user){
-									$username = $user->getUsername();
-									$status = $user->getStatus();
-									print("<option value='${username}'>");
-									print("${username}");
-									print("</option>");
+								foreach($adminUsers as $admin){
+
+									//Retrieve user data
+									$username = $admin->getUsername();
+									$status = $admin->getStatus();
+									$id = $admin->getId();
+
+									//Check if admin is the owner
+									if($user->getId() == $id)
+									{
+										print("<option value='${id}' selected>");
+										print("${username}");
+										print("</option>");
+									} else {
+										print("<option value='${id}'>");
+										print("${username}");
+										print("</option>");
+									}
+
 								}
 
 							?>
@@ -76,14 +89,15 @@
 					</div>
 
 					<div>
-					 	<select id="deleteClient" name="clientUsername" >
+					 	<select id="deleteClient" name="clientId" >
 							<?php
 
 								foreach($clientUsers as $user){
 									$username = $user->getUsername();
+									$id = $user->getId();
 									$status = $user->getStatus();
 									$clientCode = $user->getClientCode();
-									print("<option value='${username}'>");
+									print("<option value='${id}'>");
 									print("${username} (${clientCode})");
 									print("</option>");
 								}

@@ -1,10 +1,10 @@
 <?php
 
 	//Get owner data
-	$username = $owner->getUsername();
-	$status = $owner->getStatus();
-	$id = $owner->getId();
-	$secretId = $owner->getSecretId();
+	$username = $user->getUsername();
+	$status = $user->getStatus();
+	$id = $user->getId();
+	$secretId = $user->getSecretId();
 	$code = $secretDao->getCode($secretId);
 	$label = $secretDao->getLabel($secretId);
 

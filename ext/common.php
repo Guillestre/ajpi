@@ -27,6 +27,9 @@
 	include "src/dao/InvoiceMySQLDao.php";
 	include "src/dao/ClientMySQLDao.php";
 
+	//Start session
+	session_start();
+
 	//Set DAO
 	$userDao = new UserMySQLDao();
 	$secretDao = new SecretMySQLDao();
@@ -34,31 +37,39 @@
 	$clientDao = new ClientMySQLDao();
 
 	//Set session pages
-	$sessionPages = array(
+	$loggedPages = array(
 		"dashboard.php", "client.php", "invoice.php", 
-		"userManagement.php", "alterUser.php", "secretManagement.php"
+		"userManagement.php", "secretManagement.php", "processForm.php"
+	);
+
+	$logOffPages = array(
+		"index.php", "processForm.php"
 	);
 
 	//Set available status 
 	$availableStatus = array("client", "admin");
 	
-	//Start session
-	if(in_array($currentPage, $sessionPages))
-		session_start();
+	//Check if user is connected
+	if(isset($_SESSION['user']))
+	{
+		$user = $_SESSION['user'];
+		$isAdmin = $user->getStatus() == "admin";
+
+		//Check if logged user is on session pages
+		if(!in_array($currentPage, $loggedPages))
+		{
+			$redirection = "location:javascript://history.go(-1)";
+			header($redirection);
+		}
+
+	} else if(!in_array($currentPage, $logOffPages)) {
+		header("Location: index.php");
+	}
 
 	//Connect to database
 	$database = MySQLConnection::getInstance()->getConnection();
 	
 	//Set status
 	$isAdmin = true;
-
-	//Get connected user and status
-	if(isset($_SESSION['user'])){
-		$owner = $_SESSION['user'];
-		$isAdmin = $owner->getStatus() == "admin";
-		print("hello");
-	}
-	else
-		header("Location : index.php")
 
 ?>
