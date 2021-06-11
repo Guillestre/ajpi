@@ -7,26 +7,39 @@
 
 <form action="processForm.php" method="post">
 
-
 		<div>
 
 			<input 
-			type="radio" id="deleteRadioCU" name="status" value="client" 
+			type="radio" id="radioDeleteClient" name="status" value="client" 
 			onclick="deleteUser()" 
-			checked
+			<?php 
+				if(isset($_GET['radioDelete']))
+				{
+					$addRadio = $_GET['radioDelete'];
+					if(strcmp($addRadio, "client") == 0)
+						print("checked");
+				} else
+					print("checked");
+			?>
 			>
 
-			<label for="deleteRadioCU">Client</label>
+			<label for="radioDeleteClient">Client</label>
 
-			<input type="radio" id="deleteRadioAU" name="status"  value="admin" 
+			<input type="radio" id="radioDeleteAdmin" name="status"  value="admin" 
 			onclick="deleteUser()" 
+			<?php 
+				if(isset($_GET['radioDelete']))
+				{
+					$addRadio = $_GET['radioDelete'];
+					if(strcmp($addRadio, "admin") == 0)
+						print("checked");
+				}
+			?>
 			>
 
-			<label for="deleteRadioAU">Admin</label>
+			<label for="radioDeleteAdmin">Staff</label>
 		
 		</div>
-
-		<div></div>
 
 		<div id="deleteBlockAdmin" hidden>
 			<?php if($availableAdminUsers){ ?>
@@ -34,11 +47,11 @@
 				<div class="grid-container-userForm">
 
 					<div class="grid-item-label">
-						<label for="deleteAdmin">Choisir utilisateur admin : </label>
+						<label for="selectDeleteAdmin">Choisir utilisateur admin : </label>
 					</div>
 
 					<div> 
-					 	<select id="deleteAdmin" name="adminId" >
+					 	<select id="selectDeleteAdmin" name="adminId" >
 
 							<?php
 
@@ -86,11 +99,11 @@
 				<div class="grid-container-userForm">
 
 					<div class="grid-item-label">
-						<label for="deleteClient">Choisir utilisateur client : </label>
+						<label for="selectDeleteClient">Choisir utilisateur client : </label>
 					</div>
 
 					<div>
-					 	<select id="deleteClient" name="clientId" >
+					 	<select id="selectDeleteClient" name="clientId" >
 							<?php
 
 								foreach($clientUsers as $client){
@@ -134,9 +147,9 @@
 	function deleteUser() {
 		var deleteBlockAdmin = document.getElementById("deleteBlockAdmin");
 		var deleteBlockClient = document.getElementById("deleteBlockClient");
-		var deleteRadioCU = document.getElementById("deleteRadioCU");
+		var radioDeleteClient = document.getElementById("radioDeleteClient");
 
-		if (deleteRadioCU.checked == true){
+		if (radioDeleteClient.checked == true){
 			deleteBlockAdmin.style.display = "none";
 			deleteBlockClient.style.display = "block";
 		} else {

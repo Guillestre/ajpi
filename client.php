@@ -17,7 +17,7 @@
 				<?php include 'ext/info/clientInfo.php';?>
 			</div>
 
-			<button onclick="history.back()">
+			<button onclick="history.back()" class="footerButton">
 				Retour
 			</button>
 

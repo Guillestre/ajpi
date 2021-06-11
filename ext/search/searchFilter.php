@@ -1,8 +1,5 @@
-
-<form action="dashboard.php" method="post">
-
 	<h1>Filtres</h1>
-
+<form action="dashboard.php" method="get">
 	<div class="filter">
 		<label for="invoiceCode">Numéro de facture :</label><br>
 		<input type="text" id="invoiceCode" name="invoiceCode"  />
@@ -29,5 +26,4 @@
 	</div>
 
 	<input type="submit" id="searchButton" name="searchButton" value="Lancer recherche"/>
-
 </form>

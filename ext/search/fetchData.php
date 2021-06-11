@@ -4,7 +4,28 @@
 
 switch($currentPage)
 {
-	case "dashboard.php" : 
+	case "dashboard.php" :
+
+		if(isset($_GET['start']))
+			$start = (int) $_GET['start'];
+		else
+			$start = 0;
+
+		if(isset($_GET['searchButton']))
+			$start = 0;
+
+		if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
+		{
+			$start -= 100;
+		}
+
+		if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
+		{
+			$start += 100;
+		}
+
+		if($start < 0)
+			$start = 0;
 
 		//Set variables
 		$clause = "";
@@ -15,26 +36,31 @@ switch($currentPage)
 			$filters['clientCodeOwner'] = $user->getClientCode();
 
 		//Verify if user has added invoiceCode filter
-		if(isset($_POST['invoiceCode']) && strcmp(trim($_POST['invoiceCode']), "") != 0)
-			$filters['invoiceCode'] = trim($_POST['invoiceCode']);
+		if(isset($_GET['invoiceCode']) && strcmp(trim($_GET['invoiceCode']), "") != 0)
+			$filters['invoiceCode'] = trim($_GET['invoiceCode']);
 
 		//Verify if user has added client code filter
-		if(isset($_POST['clientCode']) && strcmp(trim($_POST['clientCode']), "") != 0)
-			$filters['clientCode'] = trim($_POST["clientCode"]);
+		if(isset($_GET['clientCode']) && strcmp(trim($_GET['clientCode']), "") != 0)
+			$filters['clientCode'] = trim($_GET["clientCode"]);
 
 		//Verify if user has added client name filter
-		if(isset($_POST['name']) && strcmp(trim($_POST['name']), "") != 0)
-			$filters['name'] = trim($_POST["name"]);
+		if(isset($_GET['name']) && strcmp(trim($_GET['name']), "") != 0)
+			$filters['name'] = trim($_GET["name"]);
 
 		//Verify if user has added start date filter
-		if(isset($_POST['startPeriod']) && strcmp(trim($_POST['startPeriod']), "") != 0)
-			$filters['startPeriod'] = $_POST['startPeriod'];
+		if(isset($_GET['startPeriod']) && strcmp(trim($_GET['startPeriod']), "") != 0)
+			$filters['startPeriod'] = $_GET['startPeriod'];
 
 		//Verify if user has added end date filter
-		if(isset($_POST['endPeriod']) && strcmp(trim($_POST['endPeriod']), "") != 0)
-			$filters['endPeriod'] = $_POST['endPeriod'];
+		if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
+			$filters['endPeriod'] = $_GET['endPeriod'];
 
-		$invoices = $invoiceDao->getInvoices($filters);
+		//Fetch invoices
+		$invoices = $invoiceDao->fetchInvoices($filters, $start);
+
+		//Check if invoices are available next and previously
+		$nextAvailable = $invoiceDao->countFetchInvoices($filters, $start + 100) != 0;
+		$previousAvailable = $invoiceDao->countFetchInvoices($filters, $start - 100) != 0;
 
 		break;
 

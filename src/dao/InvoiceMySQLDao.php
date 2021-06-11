@@ -13,7 +13,7 @@ class InvoiceMySQLDao
 	}
 
 	
-	public function getInvoices($filters)
+	public function fetchInvoices($filters, $start)
 	{
 		$clause = "";
 
@@ -37,15 +37,14 @@ class InvoiceMySQLDao
 
 		if(isset($filters['endPeriod']))
 			$clause .= " AND date <= :endPeriod ";
-	
-		//Prepare query
+
 		$query = "SELECT *, invoices.code AS invoiceCode, 
 		DATE_FORMAT(date, '%d/%m/%Y') AS date 
 		FROM invoices, clients WHERE 1 ${clause} AND 
 		invoices.clientCode = clients.code
 		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
 		LENGTH(invoices.code)), 
-		UNSIGNED INTEGER) DESC LIMIT 0, 100;";
+		UNSIGNED INTEGER) DESC LIMIT 100 OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
@@ -101,6 +100,71 @@ class InvoiceMySQLDao
 		}
 
 		return $invoices;
+	}
+
+	public function countFetchInvoices($filters, $start)
+	{
+		$clause = "";
+
+		/* PREPARE FILTERS */
+
+		if(isset($filters['clientCodeOwner'])){
+			$clause .= " AND clientCode LIKE :clientCodeOwner ";
+		}
+
+		if(isset($filters['invoiceCode']))
+			$clause .= " AND invoices.code LIKE :invoiceCode ";
+
+		if(isset($filters['clientCode']))
+			$clause .= " AND clientCode LIKE :clientCode ";
+
+		if(isset($filters['name']))
+			$clause .= " AND name LIKE :name ";
+
+		if(isset($filters['startPeriod']))
+			$clause .= " AND date >= :startPeriod ";
+
+		if(isset($filters['endPeriod']))
+			$clause .= " AND date <= :endPeriod ";
+
+		$query = "SELECT *, invoices.code AS invoiceCode, 
+		DATE_FORMAT(date, '%d/%m/%Y') AS date 
+		FROM invoices, clients WHERE 1 ${clause} AND 
+		invoices.clientCode = clients.code
+		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
+		LENGTH(invoices.code)), 
+		UNSIGNED INTEGER) DESC LIMIT 100 OFFSET ${start};";
+
+		$step=$this->database->prepare($query);
+
+		if(isset($filters['invoiceCode'])){
+			$invoiceCode = $filters['invoiceCode'];
+			$step->bindValue(":invoiceCode", "%{$invoiceCode}%");
+		}
+		if(isset($filters['clientCode'])){
+			$clientCode = $filters['clientCode'];
+			$step->bindValue(":clientCode", "%{$clientCode}%");
+		} 
+		if(isset($filters['name'])){
+			$name = $filters['name'];
+			$step->bindValue(":name", "%{$name}%");
+		} 
+		if(isset($filters['startPeriod'])){
+			$startPeriod = $filters['startPeriod'];
+			$step->bindValue(":startPeriod", $startPeriod);
+		} 
+		if(isset($filters['endPeriod'])){
+			$endPeriod = $filters['endPeriod'];
+			$step->bindValue(":endPeriod", $endPeriod);
+		} 
+
+		if(isset($filters['clientCodeOwner']))
+			$step->bindValue(":clientCodeOwner", $filters['clientCodeOwner']);
+
+		$step->execute();
+		$rows = $step->fetchAll();
+		$nbResult = $step->rowCount();
+		return $nbResult;
 	}
 
 	public function getInvoice($code)

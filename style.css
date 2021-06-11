@@ -1,13 +1,13 @@
 /* MAIN PART ***************************************************/
 
-body{ background-color: rgba(200, 222, 206, 0.5); }
+body{ background-color: rgba(200, 222, 206, 0.6); }
 
 .navBar{
 	position: sticky;
 	top: 0;
 	background-color: rgb(100, 200, 100);
 	display: grid;
-  grid-template-columns: 200pt 200pt 200pt;
+  grid-template-columns: 200pt 200pt 200pt 200pt;
 }
 
 .item-menu:hover { background-color: rgb(50, 180, 50); }
@@ -86,11 +86,6 @@ img
 	height: 150pt;
 }
 
-.errorMessageBox, .successMessageBox
-{
-	margin: 20pt;
-}
-
 .tdDescription
 {
 	text-align: left;
@@ -115,7 +110,7 @@ img
 }
 
 .userBox{
-	background-color: rgba(200, 222, 206);
+	background-color: rgb(200, 222, 206);
 	margin: 5pt;
 	padding : 5pt;
 	display: inline-block;
@@ -148,13 +143,16 @@ img
   grid-template-columns: auto auto;
 }
 
-.errorMessage, .successMessage{
-	padding: 4pt;
-	border : 1pt dotted;
-}
 
-.successMessage{color: green;background-color: rgba(122, 122, 230, 0.2);}
-.errorMessage{color: red;background-color: rgba(234, 122, 122, 0.2);}
+.errorMessageBox, .successMessageBox{margin: 10pt;}
+.successMessage{color: rgb(20, 80, 20);}
+.errorMessage{color: red;}
+
+.footerButton
+{
+	position: fixed;
+	bottom: 10pt;
+}
 
 
 /* ADAPTATION PART ***************************************************/
@@ -164,11 +162,6 @@ img
 	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
 		margin: 8pt;
-	}
-
-	.errorMessageBox, .successMessageBox
-	{
-		margin: 15pt;
 	}
 
 	h1
@@ -181,13 +174,9 @@ img
 		font-size: 18pt;
 	}
 
-	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
-		font-size: 13pt;
-	}
-
 	select
 	{
-		font-size: 11pt;
+		font-size: 12pt;
 	}
 
 	.grid-container-selection
@@ -319,11 +308,6 @@ img
     text-align: left;
 	}
 
-	.grid-container-userForm {
-    display: grid;
-    grid-template-columns: 160pt auto;
-	}
-
 	table thead th 
 	{
 		position: sticky;
@@ -339,11 +323,6 @@ img
 	  grid-template-columns: 120pt 120pt 90pt;
 	}
 
-	.errorMessageBox, .successMessageBox
-	{
-		margin: 5pt;
-	}
-
 	label, p, input, button, a, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 11pt;
 	}
@@ -355,26 +334,6 @@ img
 		display: grid;
     grid-template-columns: 120pt 100pt 55pt 60pt;
     text-align: left;
-	}
-
-	.grid-container-userForm {
-    display: grid;
-    grid-template-columns: 140pt auto;
-	}
-
-	#grid-container-addUserForm {
-    display: grid;
-    grid-template-columns: 100pt auto;
-	}
-
-	.errorMessage{
-		background-color: rgba(234, 122, 122, 0);
-		border : 0pt dotted;
-	}
-
-	.successMessage{
-		background-color: rgba(122, 122, 230, 0);
-		border : 0pt dotted;
 	}
 
 	.userBox{

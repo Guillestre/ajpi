@@ -2,15 +2,15 @@
 
 	<!---- ADMIN SELECTION ----->
 
-	<div class="grid-item-label" id="labelAlterAdmin">
-		<label for="adminId">
-			Choisir utilisateur admin : 
-		</label>
-	</div>
 
-	<div id="inputAlterAdmin">
-		
-	 	<select id="adminId" name="adminId" >
+	<div  id="labelAlterAdmin">
+	<label class="grid-item-label" for="selectAlterAdmin">
+		Choisir utilisateur admin : 
+	</label>
+</div>
+
+	<div id="selectAlterAdmin">
+	 	<select name="adminId" >
 			<?php
 
 				foreach($adminUsers as $admin){
@@ -18,32 +18,37 @@
 					$status = $admin->getStatus();
 					$id = $admin->getId();
 
-					if($user->getId() == $id){
+					if(isset($_GET['selectAlterAdmin']) && strcmp($_GET['selectAlterAdmin'], $id) == 0)
+					{
 						print("<option value='${id}' selected>");
 						print("${username}");
-						print("</option>");
+						print("</option>");	
 					} else {
-						print("<option value='${id}'>");
-						print("${username}");
-						print("</option>");
+						if($user->getId() == $id){
+							print("<option value='${id}' selected>");
+							print("${username}");
+							print("</option>");
+						} else {
+							print("<option value='${id}'>");
+							print("${username}");
+							print("</option>");
+						}
 					}
 				}
 			?>
 		</select>
 	</div>
 
-
-
 	<!---- CLIENT SELECTION ----->
 
-	<div class="grid-item-label" id="labelAlterClient">
-		<label for="clientId">
+	<div id="labelAlterClient">
+		<label class="grid-item-label" for="selectAlterClient">
 			Choisir utilisateur client : 
 		</label>
 	</div>
 
-	<div id="inputAlterClient">
-	 	<select id="clientId" name="clientId" >
+	<div id="selectAlterClient">
+	 	<select name="clientId" >
 			<?php
 
 				foreach($clientUsers as $client){
@@ -51,9 +56,23 @@
 					$status = $client->getStatus();
 					$clientCode = $client->getClientCode();
 					$id = $client->getId();
-					print("<option value='${id}'>");
-					print("${username} (${clientCode})");
-					print("</option>");
+
+					if(isset($_GET['selectAlterClient']) && strcmp($_GET['selectAlterClient'], $id) == 0)
+					{
+						print("<option value='${id}'>");
+						print("${username} (${clientCode})");
+						print("</option>");
+					} else {
+						if($user->getId() == $id){
+							print("<option value='${id}'>");
+							print("${username} (${clientCode})");
+							print("</option>");
+						} else {
+							print("<option value='${id}'>");
+							print("${username} (${clientCode})");
+							print("</option>");
+						}
+					}
 				}
 
 			?>
@@ -67,32 +86,32 @@
 
 	<!---- USERNAME SELECTION ----->
 
-	<div class="grid-item-label">
-		<label for="inputUsername">Nom d'utilisateur : </label>
-	</div>
+	<label class="grid-item-label" for="inputUsername">
+		Nom d'utilisateur : 
+	</label>
 
 	<div>
 		<input type="text" id="inputUsername" name="newUsername">
 	</div>
 
 	<div>
-		<button name="action" value="alterUsername" for="inputUsername">
+		<button name="action" value="alterUsername">
 			Changer nom
 		</button>
 	</div>
 
 	<!---- PASSWORD SELECTION ----->
 
-	<div class="grid-item-label">
-		<label for="inputPassword">Mot de passe : </label>
-	</div>
+	<label class="grid-item-label" for="inputPassword">
+		Mot de passe : 
+	</label>
 
 	<div>
 		<input type="password" id="inputPassword" name="newPassword">
 	</div>
 
 	<div>
-		<button name="action" for="inputPassword" value="alterPassword">
+		<button name="action" value="alterPassword">
 			Changer mot de passe
 		</button>
 	</div>
@@ -100,20 +119,28 @@
 	<!---- SECRET SELECTION ----->
 
 	<div class="grid-item-label">
-		<label for="inputLabel">Clé : </label>
+		<label for="selectAlterLabel">Clé : </label>
 	</div>
 
- 	<select id="inputLabel" name="newLabel">
+ 	<select id="selectAlterLabel" name="newLabel">
 		<?php
-			foreach($secrets as $secret){
+			foreach($secrets as $secret)
+			{
 				$label = $secret->getLabel();
-				print("<option value='${label}'>");
-				print("${label}");
-				print("</option>");
+
+				if(isset($_GET['selectAlterLabel']) && strcmp($_GET['selectAlterLabel'], $label) == 0){
+					print("<option value='${label}' selected>");
+					print("${label}");
+					print("</option>");	
+				} else {
+					print("<option value='${label}'>");
+					print("${label}");
+					print("</option>");	
+				}
 			}
 		?>
 	</select>
-
+		
 	<div>
 		<button name="action" value="alterSecret">
 			Changer la clé
@@ -128,26 +155,36 @@
 
 	<!---- CLIENT SELECTION ----->
 
-	<div class="grid-item-label" id="labelNewClient">
-		<label for="newClient">Nom Client : </label>
-	</div>
+	<label class="grid-item-label" for="selectAlterClient">
+		Nom Client : 
+	</label>
 
-	<div id="inputNewClient">
-	 	<select id="newClient" name="newClient">
+	<div>
+	 	<select id="selectAlterClient" name="newClient">
 			<?php
 				foreach($clients as $client){
 					$name = $client->getName();
 					$code = $client->getCode(); 
-					print("<option value='${code}'>");
-					print("${name} (${code})");
-					print("</option>");	
+
+					if(isset($_GET['selectAlterClient']) && 
+						strcmp($_GET['selectAlterClient'], $code) == 0)
+					{
+						print("<option value='${code}' selected>");
+						print("${name} (${code})");
+						print("</option>");	
+						
+					} else {
+						print("<option value='${code}'>");
+						print("${name} (${code})");
+						print("</option>");	
+					}
 				}
 			?>
 		</select>
 	</div>
 
-	<div id="submitNewClient">
-		<button name="action" value="alterClient">
+	<div>
+		<button name="action" value="alterClient" >
 			Changer client
 		</button>
 	</div>

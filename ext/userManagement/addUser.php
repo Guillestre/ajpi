@@ -4,73 +4,111 @@
 	
 	<div class="grid-container-userForm">
 
-		<div class="grid-item-label">
-			<label for="username">Nom utilisateur : </label>
-		</div>
+		<label class="grid-item-label" for="inputAddUsername">Nom utilisateur : </label>
 
 		<div>
-			<input type="text" id="username" name="username" required>
+			<input type="text" id="inputAddUsername" name="username" required>
 		</div>
 
-		<div class="grid-item-label">
-			<label for="password">Mot de passe : </label>
-		</div>
+		<label  class="grid-item-label" for="inputAddPassword">Mot de passe : </label>
 
 		<div>
-			<input type="password" id="password" name="password" required>
+			<input type="password" id="inputAddPassword" name="password" required>
 		</div>
 
-		<div class="grid-item-label">
-			<label>Status : </label>
-		</div>
+		<label  class="grid-item-label">Status : </label>
 
 		<div>
 
 			<input 
-			type="radio" id="addRadioClient" name="status" value="client" 
-			onclick="displayClientHandler()" 
-			checked
-			>
-
-			<label for="addRadioClient">Client</label>
-
-			<input type="radio" id="addRadioAdmin" name="status"  value="admin" 
+			type="radio" id="radioAddClient" name="status" value="client" 
 			onclick="displayClientHandler()"
+
+			<?php 
+				if(isset($_GET['radioAdd']))
+				{
+					$addRadio = $_GET['radioAdd'];
+					if(strcmp($addRadio, "client") == 0)
+						print("checked");
+				} else
+					print("checked");
+			?>
 			>
-			<label for="addRadioAdmin">Admin</label>
+
+			<label for="radioAddClient">Client</label>
+
+			<input type="radio" id="radioAddAdmin" name="status"  value="admin" 
+			onclick="displayClientHandler()"
+
+			<?php 
+				if(isset($_GET['radioAdd']))
+				{
+					$addRadio = $_GET['radioAdd'];
+					if(strcmp($addRadio, "admin") == 0)
+						print("checked");
+				}
+			?>
+
+			>
+			<label for="radioAddAdmin">Staff</label>
 			
 		</div>
 		
-		<div class="grid-item-label">
-			<label for="label">Clé (A2F) : </label>
-		</div>
+		<label class="grid-item-label" for="selectAddLabel">Clé (A2F) : </label>
 
 		<div>
-		 	<select id="label" name="label">
+		 	<select id="selectAddLabel" name="label">
 				<?php
 					foreach($secrets as $secret){
 						$label = $secret->getLabel();
-						print("<option value='${label}'>");
-						print("${label}");
-						print("</option>");
+
+						if(isset($_GET['selectAddLabel'])){
+							if(strcmp($_GET['selectAddLabel'], $label) == 0)
+							{
+								print("<option value='${label}' selected>");
+								print("${label}");
+								print("</option>");	
+							} else {
+								print("<option value='${label}'>");
+								print("${label}");
+								print("</option>");	
+							}
+						} else {
+							print("<option value='${label}'>");
+							print("${label}");
+							print("</option>");	
+						}
 					}
 				?>
 			</select>
 		</div>
 
-		<div class="grid-item-label" id="labelClient">
-			<label for="client">Nom Client : </label>
-		</div>
+		<label class="grid-item-label" for="selectAddClient" id="labelClient">Nom Client : </label>
 
-		<div id="inputClient">
-		 	<select id="client" name="clientCode">
+		<div>
+		 	<select id="selectAddClient" name="clientCode">
 				<?php
 					foreach($clients as $client){
 						$name = $client->getName();
 						$code = $client->getCode(); 
-						print("<option value='${code}'>");
-						print("${name} (${code})");
-						print("</option>");	
+
+						if(isset($_GET['selectAddClient']))
+						{
+							if(strcmp($_GET['selectAddClient'], $code) == 0)
+							{
+								print("<option value='${code}' selected>");
+								print("${name} (${code})");
+								print("</option>");	
+							} else {
+								print("<option value='${code}'>");
+								print("${name} (${code})");
+								print("</option>");	
+							}
+						} else {
+							print("<option value='${code}'>");
+							print("${name} (${code})");
+							print("</option>");	
+						}
 					}
 				?>
 			</select>
@@ -82,14 +120,13 @@
 			</button>
 		</div>
 
-		<div>
-			<?php
-				if(isset($_GET['addUserSuccess']))
-					messageHandler::sendSuccessMessage($_GET['addUserSuccess']);
-				else if(isset($_GET['addUserError']))
-					messageHandler::sendErrorMessage($_GET['addUserError']);
-			?>
-		</div>
+	
+		<?php
+			if(isset($_GET['addUserSuccess']))
+				messageHandler::sendSuccessMessage($_GET['addUserSuccess']);
+			else if(isset($_GET['addUserError']))
+				messageHandler::sendErrorMessage($_GET['addUserError']);
+		?>
 
 	</div>
 
@@ -97,16 +134,17 @@
 
 <script>
 	function displayClientHandler() {
-	  var clientStatus = document.getElementById("addRadioClient");
-	  var adminStatus = document.getElementById("addRadioAdmin");
+	  var clientStatus = document.getElementById("radioAddClient");
+	  var adminStatus = document.getElementById("radioAddAdmin");
 	  var clientLabel = document.getElementById("labelClient");
-	  var inputClient = document.getElementById("inputClient");
+	  var selectAddClient = document.getElementById("selectAddClient");
 	  if (clientStatus.checked == true){
 	    clientLabel.style.visibility = "visible";
-	    inputClient.style.visibility = "visible";
+	    selectAddClient.style.visibility = "visible";
 	  } else {
 	     clientLabel.style.visibility = "hidden";
-	     inputClient.style.visibility = "hidden";
+	     selectAddClient.style.visibility = "hidden";
 	  }
 	}
+	displayClientHandler();
 </script>

@@ -99,7 +99,9 @@ switch($action)
 			$errorMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?addUserError=${errorMessage}";
+			$params = 
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
@@ -112,7 +114,9 @@ switch($action)
 			$errorMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?addUserError=${errorMessage}";
+			$params = 
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
@@ -125,7 +129,9 @@ switch($action)
 			$errorMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?addUserError=${errorMessage}";
+			$params = 
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
@@ -147,11 +153,14 @@ switch($action)
 			if($userDao->takenClientCode($clientCode))
 			{
 				//Prepare error message
-				$text = "Le client {$clientName} est déjà pris par l'utilisateur {$owner->getUsername()}";
+				$text = 
+				"Le client ${clientName} est déjà pris par l'utilisateur {$owner->getUsername()}";
 				$errorMessage = $text;
 
 				//Redirect
-				$url = "Location: userManagement.php?addUserError=${errorMessage}";
+				$params = 
+				"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -186,13 +195,18 @@ switch($action)
 			$errorMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?addUserError=${errorMessage}";
+			$params = 
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
 
 		//Redirection
-		$url = "Location: userManagement.php?addUserSuccess=${successMessage}";
+		$params = 
+		"addUserSuccess=${successMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+
+		$url = "Location: userManagement.php?${params}";
 		header($url);
 		break;
 
@@ -229,7 +243,8 @@ switch($action)
 					$errorMessage = $text;
 
 					//Redirection
-					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+					$params = "deleteUserError=${errorMessage}&radioDelete=${status}";
+					$url = "Location: userManagement.php?${params}";
 					header($url);
 					break;
 				} else {
@@ -238,7 +253,8 @@ switch($action)
 					$errorMessage = $text;
 
 					//Redirection
-					$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+					$params = "deleteUserError=${errorMessage}&radioDelete=${status}";
+					$url = "Location: userManagement.php?${params}";
 					header($url);
 					break;
 				}
@@ -259,7 +275,8 @@ switch($action)
 			$errorMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?deleteUserError=${errorMessage}";
+			$params = "deleteUserError=${errorMessage}&radioDelete=${status}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
@@ -270,7 +287,8 @@ switch($action)
 			$successMessage = $text;
 
 			//Redirection
-			$url = "Location: userManagement.php?deleteUserSuccess=${successMessage}";
+			$params = "deleteUserSuccess=${successMessage}&radioDelete=${status}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 		} else {
 			$text = "Votre compte a bien été supprimé";
@@ -319,13 +337,14 @@ switch($action)
 			//Check if new username is not empty
 			if( strcmp(trim($newUsername), "") == 0 )
 			{
-				//Prepare message
+				//Prepare error message
 				$text = 
 				"Vous ne pouvez pas mettre un nom d'utilisateur vide";
 				$errorMessage = $text;
 
 				//Redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -343,7 +362,8 @@ switch($action)
 				}
 
 				//Redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 	
 				break;
@@ -379,7 +399,8 @@ switch($action)
 			}
 
 			//Redirection
-			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
+			$params = "alterUserSuccess=${successMessage}&radioAlter=${status}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 
 		/* ALTER PASSWORD */
@@ -400,7 +421,8 @@ switch($action)
 				$errorMessage = $text;
 
 				//Redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -421,7 +443,8 @@ switch($action)
 				}
 
 				//redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -435,9 +458,10 @@ switch($action)
 				//Prepare error message
 				$text = "Une erreur est survenue. Le mot de passe n'a pas pu être modifié";
 				$errorMessage = $text;
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
 				
 				//Redirection
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -456,7 +480,8 @@ switch($action)
 			}
 
 			//Redirection
-			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
+			$params = "alterUserSuccess=${successMessage}&radioAlter=${status}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 
 		/* ALTER SECRET */
@@ -485,7 +510,9 @@ switch($action)
 				}
 
 				//Redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = 
+				"alterUserError=${errorMessage}&radioAlter=${status}&selectAlterSecret=${newLabel}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -501,7 +528,8 @@ switch($action)
 				$errorMessage = $text;
 
 				//Redirection
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}&selectAlterSecret=${newLabel}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 			}
 
@@ -519,10 +547,9 @@ switch($action)
 			}
 
 			//Prepare redirection
-			$page = "userManagement.php";
-			$url_p1 = "alterUserSuccess=${successMessage}";
-			$url = "Location: ${page}?${url_p1}";
-
+			$params = 
+			"alterUserSuccess=${successMessage}&radioAlter=${status}&selectAlterSecret=${newLabel}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 
 		/* ALTER CLIENT */
@@ -546,7 +573,8 @@ switch($action)
 				$errorMessage = $text;
 
 				//Redirect
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}&selectAlterClient=${newClientCode}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -562,7 +590,8 @@ switch($action)
 				$errorMessage = $text;
 
 				//Redirect
-				$url = "Location: userManagement.php?alterUserError=${errorMessage}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}&selectAlterClient=${newClientCode}";
+				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
 			}
@@ -573,7 +602,8 @@ switch($action)
 			$successMessage = $text;
 
 			//Redirect
-			$url = "Location: userManagement.php?alterUserSuccess=${successMessage}";
+			$params = "alterUserSuccess=${successMessage}&radioAlter=${status}&selectAlterClient=${newClientCode}";
+			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}

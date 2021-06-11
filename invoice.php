@@ -15,14 +15,16 @@
 			<div class="infoArea">
 				<?php include 'ext/info/invoiceInfo.php';?>
 			</div>
-			
-			<button onclick="history.back()">
+
+			<button onclick="history.back()" class="footerButton">
 				Retour
 			</button>
-
+			
 		</div>
 
 		<?php include 'ext/table/line.php';?>
+
+		
 
 	</body>
 

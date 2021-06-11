@@ -12,18 +12,34 @@
 	<div>
 
 		<input 
-		type="radio" id="alterRadioCU" name="status" value="client" 
+		type="radio" id="radioAlterClient" name="status" value="client" 
 		onclick="alterUser()" 
-		checked
+		<?php 
+			if(isset($_GET['radioAlter']))
+			{
+				$addRadio = $_GET['radioAlter'];
+				if(strcmp($addRadio, "client") == 0)
+					print("checked");
+			} else
+				print("checked");
+		?>
 		>
 
-		<label for="alterRadioCU">Client</label>
+		<label for="radioAlterClient">Client</label>
 
-		<input type="radio" id="alterRadioAU" name="status"  value="admin" 
+		<input type="radio" id="radioAlterAdmin" name="status"  value="admin" 
 		onclick="alterUser()"
+		<?php 
+			if(isset($_GET['radioAlter']))
+			{
+				$addRadio = $_GET['radioAlter'];
+				if(strcmp($addRadio, "admin") == 0)
+					print("checked");
+			}
+		?>
 		>
 
-		<label for="alterRadioAU">Admin</label>
+		<label for="radioAlterAdmin">Staff</label>
 	
 	</div>
 
@@ -71,23 +87,23 @@
 		var blockCU = document.getElementById("blockCU");
 
 		//radio line
-		var alterRadioCU = document.getElementById("alterRadioCU");
+		var radioAlterClient = document.getElementById("radioAlterClient");
 
 		//Client selection
-		labelNewClient = document.getElementById("labelNewClient");
-		inputNewClient = document.getElementById("inputNewClient");
-		submitNewClient = document.getElementById("submitNewClient");
+		labelAlterClient = document.getElementById("labelAlterClient");
+		selectAlterClient = document.getElementById("selectAlterClient");
+		submitAlterClient = document.getElementById("submitAlterClient");
 
 		//Admin user selection
 		labelAlterAdmin = document.getElementById("labelAlterAdmin");
-		inputAlterAdmin = document.getElementById("inputAlterAdmin");
+		selectAlterAdmin = document.getElementById("selectAlterAdmin");
 
 		//Client user selection
-		labelAlterClient = document.getElementById("labelAlterClient");
-		inputAlterClient = document.getElementById("inputAlterClient");
+		labelAlterClientUser = document.getElementById("labelAlterClientUser");
+		selectAlterClientUser = document.getElementById("selectAlterClientUser");
 
 		//Display Block
-		if (alterRadioCU.checked == true){
+		if (radioAlterClient.checked == true){
 			blockCU.style.display = "block";
 			blockAU.style.display = "none";
 		} else {
@@ -96,24 +112,24 @@
 		}
 
 		//Display selection
-		if (alterRadioCU.checked == true){
-			labelNewClient.style.visibility = "visible";
-			inputNewClient.style.visibility = "visible";
-			submitNewClient.style.visibility = "visible";
+		if (radioAlterClient.checked == true){
+			labelAlterClient.style.visibility = "visible";
+			selectAlterClient.style.visibility = "visible";
+			submitAlterClient.style.visibility = "visible";
 
 			labelAlterAdmin.style.display = "none";
-			inputAlterAdmin.style.display = "none";
-			labelAlterClient.style.display = "block";
-			inputAlterClient.style.display = "block";
+			selectAlterAdmin.style.display = "none";
+			labelAlterClientUser.style.display = "block";
+			selectAlterClientUser.style.display = "block";
 		} else {
-			labelNewClient.style.visibility = "hidden";
-			inputNewClient.style.visibility = "hidden";
-			submitNewClient.style.visibility = "hidden";
+			labelAlterClient.style.visibility = "hidden";
+			selectAlterClient.style.visibility = "hidden";
+			submitAlterClient.style.visibility = "hidden";
 
-			labelAlterClient.style.display = "none";
-			inputAlterClient.style.display = "none";
+			labelAlterClientUser.style.display = "none";
+			selectAlterClientUser.style.display = "none";
 			labelAlterAdmin.style.display = "block";
-			inputAlterAdmin.style.display = "block";
+			selectAlterAdmin.style.display = "block";
 		}
 	}
 	alterUser();

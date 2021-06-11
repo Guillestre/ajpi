@@ -16,7 +16,7 @@
 		{
 			print("<div class='successMessageBox'><span class='successMessage'>");
 			print($message);
-			print("</div><span/>");
+			print("<span/></div>");
 		}
 
 
