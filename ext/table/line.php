@@ -6,6 +6,7 @@ if(!$emptyResult){
 	print("<table>");
 
 	print("
+		<tbody>
 		<thead>
 			<tr>
 				<th>Code article</th>
@@ -17,20 +18,32 @@ if(!$emptyResult){
 				<th class='thDescription'>Description</th>
 			</tr>
 		</thead>
+		</tbody>
 	");
 
-	foreach($lines as $line) 
+	foreach($lines as $line)
+	{ 
+
+		$articleCode = htmlspecialchars($line->getArticleCode());
+		$designation = $line->getDesignation();
+		$amount = htmlspecialchars($line->getAmount());
+		$unitPrice = htmlspecialchars($line->getUnitPrice());
+		$discount = htmlspecialchars($line->getDiscount());
+		$totalPrice = htmlspecialchars($line->getTotalPrice());
+		$description = $line->getDescription();
+
 		print("
 			<tr>
-				<td>{$line->getArticleCode()}</td>
-				<td>{$line->getDesignation()}</td>
-				<td>{$line->getAmount()}</td>
-				<td>{$line->getUnitPrice()}</td>
-				<td>{$line->getDiscount()}</td>
-				<td>{$line->getTotalPrice()}</td>
-				<td class='tdDescription'>{$line->getDescription()}</td>
+				<td>{$articleCode}</td>
+				<td>{$designation}</td>
+				<td>{$amount}</td>
+				<td>{$unitPrice}</td>
+				<td>{$discount}</td>
+				<td>{$totalPrice}</td>
+				<td class='tdDescription'>{$description}</td>
 			</tr>	
 		");
+	}
 
 
 	print("</table>");

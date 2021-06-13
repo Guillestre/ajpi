@@ -1,7 +1,7 @@
 <?php include "ext/common.php"; ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 	<?php include 'ext/header.php'; ?>
 	<?php include 'script/scriptHandler.php'; ?>
@@ -23,14 +23,26 @@
 					<input 
 					type="radio" id="clientConnection" name="action" value="clientConnection"
 					onclick="displayClientHandler()" 
-					checked
-					>
+					<?php
+						if(isset($_GET['status'])){
+							if(strcmp($_GET['status'], "client") == 0)
+								print("checked");
+						} else
+							print("checked");
+					?>
+					/>
 
 					<label for="clientConnection">Client</label>
 
 					<input type="radio" id="adminConnection" name="action" value="adminConnection"
 					onclick="displayClientHandler()"
-					>
+					<?php
+						if(isset($_GET['status'])){
+							if(strcmp($_GET['status'], "admin") == 0)
+								print("checked");
+						}
+					?>
+					/>
 					<label for="adminConnection">Staff</label>
 		
 				</div>
@@ -44,7 +56,7 @@
 					</div>
 
 					<div class="grid-item-input-text">
-						<input type="text" id="username" name="username" required>
+						<input type="text" id="username" name="username" required />
 					</div>
 
 					<div class="grid-item-label">
@@ -52,7 +64,7 @@
 					</div>
 
 					<div class="grid-item-input-text">
-						<input type="password" id="password" name="password" required>
+						<input type="password" id="password" name="password" required />
 					</div>
 
 					<div class="grid-item-label">
@@ -60,7 +72,7 @@
 					</div>
 
 					<div class="grid-item-input-text">
-						<input type="password" id="otp" name="otp" maxlength="6" size="6" required>
+						<input type="password" id="otp" name="otp" maxlength="6" size="6" required/>
 					</div>
 
 					<div class="grid-item-input-button">
@@ -82,7 +94,6 @@
 
 		</div>
 		
-
 		<?php
 			if(isset($_GET['deleteOwnerSuccess']))
 					messageHandler::sendSuccessMessage($_GET['deleteOwnerSuccess']);

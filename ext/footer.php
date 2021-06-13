@@ -13,3 +13,7 @@
   }
  })();
 </script>
+
+<!-- IMPORT AWESOME FONT ------->
+
+<script src="https://kit.fontawesome.com/3e8a897278.js" crossorigin="anonymous"></script>

@@ -26,7 +26,7 @@
 		include 'script/delete_results.php';
 
 	if($loadRawTables)
-			include 'script/load_raw_tables.php';
+		include 'script/load_raw_tables.php';
 
 	if($ebp){
 		include 'script/ebp_clients.php';

@@ -5,8 +5,8 @@
 	$status = $user->getStatus();
 	$id = $user->getId();
 	$secretId = $user->getSecretId();
-	$code = $secretDao->getCode($secretId);
-	$label = $secretDao->getLabel($secretId);
+	$code = htmlspecialchars($secretDao->getCode($secretId));
+	$label = htmlspecialchars($secretDao->getLabel($secretId));
 
 	//We use TOTP
 	use OTPHP\TOTP;
@@ -36,7 +36,7 @@
 			</div>
 
 			<div class="grid-item-text" id="ownerLabel">
-		 		<?php echo $secretDao->getLabel($user->getSecretId()); ?>
+		 		<?php print($label); ?>
 			</div>
 
 			<div class="grid-item-label">

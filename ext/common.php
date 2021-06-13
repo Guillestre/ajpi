@@ -3,10 +3,6 @@
 	//Set current page
 	$currentPage = basename($_SERVER['PHP_SELF']);
 
-	//Cache gestion : avoid error when click on return button
-	header("Cache-Control: no-cache, must-revalidate" ); //no cache
-	session_cache_limiter('private_no_expire'); // works
-
 	//Include libraries
 	include 'libraries/vendor/autoload.php';
 

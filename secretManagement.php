@@ -1,7 +1,7 @@
 <?php include "ext/common.php"; ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	
 	<?php include 'ext/header.php'; ?>
 
@@ -26,7 +26,7 @@
 		</div>
 
 		<?php if($isAdmin) { ?>
-			<div id="secretTable">
+			<div id='secretBox'>
 				<?php include "ext/table/secret.php"; ?>
 			</div>
 		<?php } ?>

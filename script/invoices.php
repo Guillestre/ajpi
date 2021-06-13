@@ -26,7 +26,7 @@
 			e.date, 
 			e.totalExcludingTaxes, 
 			e.totalIncludingTaxes, 
-			CONCAT(GROUP_CONCAT(designation SEPARATOR '<br>'), eir.description) AS description 
+			CONCAT(GROUP_CONCAT(designation SEPARATOR '<br/>'), eir.description) AS description 
 		FROM
 		(
 			SELECT  
@@ -59,7 +59,7 @@
 	//Insert sage2016 invoices with resume
 	$step=$database->prepare("
 		INSERT INTO invoices
-		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br>') AS description FROM
+		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br/>') AS description FROM
 		(
 			SELECT  
 			si.code AS code, 
@@ -110,7 +110,7 @@
 	//Insert sage2019 invoices with resume
 	$step=$database->prepare("
 		INSERT INTO invoices
-		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br>') AS description FROM
+		SELECT code, clientCode, date, totalExcludingTaxes, totalIncludingTaxes, GROUP_CONCAT(designation SEPARATOR '<br/>') AS description FROM
 		(
 			SELECT  
 			si.code AS code, 

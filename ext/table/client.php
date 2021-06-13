@@ -20,16 +20,25 @@ if(!$emptyResult){
 			</thead>
 		");
 
+		$code = htmlspecialchars($client->getCode());
+		$name = htmlspecialchars($client->getName());
+		$title = htmlspecialchars($client->getTitle());
+		$address = htmlspecialchars($client->getAddress());
+		$capital = htmlspecialchars($client->getCapital());
+		$city = htmlspecialchars($client->getCity());
+		$number = htmlspecialchars($client->getNumber());
+		$mail = htmlspecialchars($client->getMail());
+
 		print("
 			<tr>
-				<td>{$client->getCode()}</td>
-				<td>{$client->getName()}</td>
-				<td>{$client->getTitle()}</td>
-				<td>{$client->getAddress()}</td>
-				<td>{$client->getCapital()}</td>
-				<td>{$client->getCity()}</td>
-				<td>{$client->getNumber()}</td>
-				<td>{$client->getMail()}</td>
+				<td>{$code}</td>
+				<td>{$name}</td>
+				<td>{$title}</td>
+				<td>{$address}</td>
+				<td>{$capital}</td>
+				<td>{$city}</td>
+				<td>{$number}</td>
+				<td>{$mail}</td>
 			</tr>	
 		");
 

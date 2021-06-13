@@ -9,43 +9,40 @@
 
 	<!-- STATUS SELECTION -->
 
-	<div>
-
-		<input 
-		type="radio" id="radioAlterClient" name="status" value="client" 
-		onclick="alterUser()" 
-		<?php 
-			if(isset($_GET['radioAlter']))
-			{
-				$addRadio = $_GET['radioAlter'];
-				if(strcmp($addRadio, "client") == 0)
-					print("checked");
-			} else
+	<input 
+	type="radio" id="radioAlterClient" name="status" value="client" 
+	onclick="alterUser()" 
+	<?php 
+		if(isset($_GET['radioAlter']))
+		{
+			$addRadio = $_GET['radioAlter'];
+			if(strcmp($addRadio, "client") == 0)
 				print("checked");
-		?>
-		>
+		} else
+			print("checked");
+	?>
+	/>
 
-		<label for="radioAlterClient">Client</label>
+	<label for="radioAlterClient">Client</label>
 
-		<input type="radio" id="radioAlterAdmin" name="status"  value="admin" 
-		onclick="alterUser()"
-		<?php 
-			if(isset($_GET['radioAlter']))
-			{
-				$addRadio = $_GET['radioAlter'];
-				if(strcmp($addRadio, "admin") == 0)
-					print("checked");
-			}
-		?>
-		>
+	<input type="radio" id="radioAlterAdmin" name="status"  value="admin" 
+	onclick="alterUser()"
+	<?php 
+		if(isset($_GET['radioAlter']))
+		{
+			$addRadio = $_GET['radioAlter'];
+			if(strcmp($addRadio, "admin") == 0)
+				print("checked");
+		}
+	?>
+	/>
 
-		<label for="radioAlterAdmin">Staff</label>
-	
-	</div>
+	<label for="radioAlterAdmin">Staff</label>
+
 
 	<!-- ADMIN SELECTION -->
 
-	<div id="blockAU" hidden>
+	<div id="alterBlockAdmin" hidden>
 		<?php if($availableAdminUsers){
 				if($availableAdminUsers && !$availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
@@ -55,7 +52,7 @@
 
 	<!-- USER CLIENT SELECTION -->
 
-	<div id="blockCU" >
+	<div id="alterBlockClient" >
 		<?php if($availableClientUsers){
 				if(!$availableAdminUsers && $availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
@@ -83,8 +80,8 @@
 	function alterUser() {
 
 		//Blocks
-		var blockAU = document.getElementById("blockAU");
-		var blockCU = document.getElementById("blockCU");
+		var alterBlockAdmin = document.getElementById("alterBlockAdmin");
+		var alterBlockClient = document.getElementById("alterBlockClient");
 
 		//radio line
 		var radioAlterClient = document.getElementById("radioAlterClient");
@@ -92,7 +89,7 @@
 		//Client selection
 		labelAlterClient = document.getElementById("labelAlterClient");
 		selectAlterClient = document.getElementById("selectAlterClient");
-		submitAlterClient = document.getElementById("submitAlterClient");
+		buttonAlterClient = document.getElementById("buttonAlterClient");
 
 		//Admin user selection
 		labelAlterAdmin = document.getElementById("labelAlterAdmin");
@@ -104,18 +101,20 @@
 
 		//Display Block
 		if (radioAlterClient.checked == true){
-			blockCU.style.display = "block";
-			blockAU.style.display = "none";
+			alterBlockClient.style.display = "block";
+			alterBlockAdmin.style.display = "none";
 		} else {
-			blockCU.style.display = "none";
-			blockAU.style.display = "block";
+			alterBlockClient.style.display = "none";
+			alterBlockAdmin.style.display = "block";
 		}
 
 		//Display selection
 		if (radioAlterClient.checked == true){
+
+			//
 			labelAlterClient.style.visibility = "visible";
 			selectAlterClient.style.visibility = "visible";
-			submitAlterClient.style.visibility = "visible";
+			buttonAlterClient.style.visibility = "visible";
 
 			labelAlterAdmin.style.display = "none";
 			selectAlterAdmin.style.display = "none";
@@ -124,7 +123,7 @@
 		} else {
 			labelAlterClient.style.visibility = "hidden";
 			selectAlterClient.style.visibility = "hidden";
-			submitAlterClient.style.visibility = "hidden";
+			buttonAlterClient.style.visibility = "hidden";
 
 			labelAlterClientUser.style.display = "none";
 			selectAlterClientUser.style.display = "none";

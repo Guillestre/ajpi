@@ -1,6 +1,6 @@
 <?php include "ext/common.php"; ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	
 	<?php include 'ext/header.php'; ?>
 

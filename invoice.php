@@ -2,7 +2,7 @@
 <?php include 'ext/search/fetchData.php'?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 	<?php include 'ext/header.php'; ?>
 
@@ -16,15 +16,17 @@
 				<?php include 'ext/info/invoiceInfo.php';?>
 			</div>
 
-			<button onclick="history.back()" class="footerButton">
-				Retour
-			</button>
-			
 		</div>
 
 		<?php include 'ext/table/line.php';?>
 
-		
+		<div class="backInvoicelineButton">
+			
+			<button onclick="history.back()" class="footerButton">
+				Retour
+			</button>
+
+		</div>
 
 	</body>
 

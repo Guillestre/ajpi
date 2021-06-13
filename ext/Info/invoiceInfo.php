@@ -25,17 +25,6 @@
 <p>Montant TTC : <?php print($TTC);?> €</p>
 <p>Montant HT : <?php print($HT);?> €</p>
 
-
-<?php if(trim($description) != ""){ ?>
-
-	<h2>Description : </h2>
-
-	<div id="boxDescriptionInvoice">
-		<?php print("" . $description . ""); ?>
-	</div>
-
-<?php } ?>
-
 <?php
 
 	$number = substr($invoiceCode, 2);
@@ -45,7 +34,6 @@
 	{
         if ($handle = opendir($log_directory))
         {
-            //Notice the parentheses I added:
             while(($file = readdir($handle)) !== FALSE)
             {
             	$pattern = "/([\D])${number}([\D])/";
@@ -59,5 +47,15 @@
 if(isset($url)){
 ?>
 	<p> <a target="_blank" href= "<?php echo $url; ?>" > Voir fichier PDF </a> </p>
+<?php } ?>
+
+<?php if(trim($description) != ""){ ?>
+
+	<h2>Description : </h2>
+
+	<div id="boxDescriptionInvoice">
+		<?php print("" . $description . ""); ?>
+	</div>
+
 <?php } ?>
 

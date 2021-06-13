@@ -13,11 +13,53 @@ class InvoiceMySQLDao
 	}
 
 	
-	public function fetchInvoices($filters, $start)
+	public function fetchInvoices($filters, $start, $column, $direction)
 	{
-		$clause = "";
+
+		/* PREPARE DIRECTION */
+
+		switch($direction)
+		{
+			case "up" :
+				$order = " ASC ";
+				break;
+			default :
+				$order = " DESC "; 
+				break;
+		}
+
+		/* PREPARE COLUMN */
+
+		switch($column)
+		{
+			case "invoiceCode" :
+				$colOrder = " ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, LENGTH(invoices.code)), UNSIGNED INTEGER) ";
+				break;
+
+			case "clientCode" :
+				$colOrder = " ORDER BY invoices.clientCode ";
+				break;
+
+			case "name" :
+				$colOrder = " ORDER BY clients.name ";
+				break;
+
+			case "date" :
+				$colOrder = " ORDER BY invoices.date ";
+				break;
+
+			case "HT" :
+				$colOrder = " ORDER BY totalExcludingTaxes ";
+				break;
+
+			case "TTC" :
+				$colOrder = " ORDER BY totalIncludingTaxes ";
+				break;
+		}
 
 		/* PREPARE FILTERS */
+
+		$clause = "";
 
 		if(isset($filters['clientCodeOwner'])){
 			$clause .= " AND clientCode LIKE :clientCodeOwner ";
@@ -41,10 +83,8 @@ class InvoiceMySQLDao
 		$query = "SELECT *, invoices.code AS invoiceCode, 
 		DATE_FORMAT(date, '%d/%m/%Y') AS date 
 		FROM invoices, clients WHERE 1 ${clause} AND 
-		invoices.clientCode = clients.code
-		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
-		LENGTH(invoices.code)), 
-		UNSIGNED INTEGER) DESC LIMIT 100 OFFSET ${start};";
+		invoices.clientCode = clients.code ${colOrder} ${order} 
+		LIMIT 100 OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 

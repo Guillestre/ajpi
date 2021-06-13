@@ -87,11 +87,23 @@
 				return NULL;
 		}
 
-		public function exist($username, $status)
+		public function existUsername($username, $status)
 		{
 			$query = "SELECT * FROM {$status}Users WHERE username = :username";
 			$step = $this->database->prepare($query);
 			$step->bindValue(":username", $username); 
+			$step->execute();
+			$nbResult = $step->rowCount();
+			return $nbResult != 0 ;
+		}
+
+		public function existPassword($username, $password, $status)
+		{
+			$query = "SELECT * FROM {$status}Users 
+			WHERE username = :username AND password = :password";
+			$step = $this->database->prepare($query);
+			$step->bindValue(":username", $username); 
+			$step->bindValue(":password", sha1($password)); 
 			$step->execute();
 			$nbResult = $step->rowCount();
 			return $nbResult != 0 ;

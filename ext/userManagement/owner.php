@@ -1,7 +1,8 @@
 <?php
-	$username = $user->getUsername();
-	$status = $user->getStatus();
+	$username = htmlspecialchars($user->getUsername());
+	$status = htmlspecialchars($user->getStatus());
 	$id = $user->getId();
+	$label = htmlspecialchars($secretDao->getLabel($user->getSecretId()));
 ?>
 
 <div class="grid-container-userFormGroup">
@@ -18,7 +19,7 @@
 			</div>
 
 			<div class="grid-item-text" id="ownerUsername">
-		 		<?php echo $user->getUsername(); ?>
+		 		<?php print($username); ?>
 			</div>
 
 			<div class="grid-item-label" >
@@ -26,7 +27,7 @@
 			</div>
 
 			<div class="grid-item-text" id="ownerLabel">
-		 		<?php echo $secretDao->getLabel($user->getSecretId()); ?>
+		 		<?php print($label); ?>
 			</div>
 
 		</div>

@@ -12,7 +12,7 @@
 		</div>
 
 		<div>
-			<input type="text" id="addLabel" name="label" required>
+			<input type="text" id="addLabel" name="label" required />
 		</div>
 
 		<div>
@@ -51,10 +51,19 @@
 		 	<select id="deleteLabel" name="label">
 				<?php
 					foreach($secrets as $secret){
-						$label = $secret->getLabel();
-						print("<option value='${label}'>");
-						print("${label}");
-						print("</option>");
+						$label = htmlspecialchars($secret->getLabel());
+						$secretId = $secretDao->getId($label);
+
+						if($secretId == $user->getSecretId())
+						{
+							print("<option value='${label}' selected>");
+							print("${label}");
+							print("</option>");
+						} else {
+							print("<option value='${label}'>");
+							print("${label}");
+							print("</option>");
+						}
 					}
 				?>
 			</select>

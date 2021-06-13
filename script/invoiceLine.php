@@ -38,7 +38,7 @@
 				UNION
 
 				#Select commentaries from each articleCode
-				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br/>') AS description
 				FROM ebp_invoiceline_result
 				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
@@ -65,7 +65,7 @@
 				UNION
 
 				#Select commentaries from each articleCode
-				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br/>') AS description
 				FROM sage2016_invoiceline_result
 				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
@@ -108,7 +108,7 @@
 				UNION
 
 				#Select commentaries from each articleCode
-				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br>') AS description
+				SELECT invoiceCode, articleCode, designation, amount, unitPrice, discount, totalPrice, GROUP_CONCAT(designation SEPARATOR '<br/>') AS description
 				FROM sage2019_invoiceline_result
 				WHERE TRIM(articleCode) != '' AND (totalPrice = 0 AND amount = 0 AND unitPrice = 0)
 				GROUP BY invoiceCode, articleCode
@@ -130,10 +130,10 @@
 
 	//Delete all '(' character from client name 
 
-	$step=$database->prepare("
+	/*$step=$database->prepare("
 		UPDATE clients SET name = REPLACE(name, '(', '');
 	");
-	$step->execute();
+	$step->execute();*/
 
 	//Add foreign key
 	$step=$database->prepare("ALTER TABLE invoiceline ADD FOREIGN KEY (invoiceCode) REFERENCES invoices(code);");

@@ -7,13 +7,13 @@
 		<label class="grid-item-label" for="inputAddUsername">Nom utilisateur : </label>
 
 		<div>
-			<input type="text" id="inputAddUsername" name="username" required>
+			<input type="text" id="inputAddUsername" name="username" required />
 		</div>
 
-		<label  class="grid-item-label" for="inputAddPassword">Mot de passe : </label>
+		<label  class="grid-item-label" for="inputAddPassword" >Mot de passe : </label>
 
 		<div>
-			<input type="password" id="inputAddPassword" name="password" required>
+			<input type="password" id="inputAddPassword" name="password" required />
 		</div>
 
 		<label  class="grid-item-label">Status : </label>
@@ -33,7 +33,7 @@
 				} else
 					print("checked");
 			?>
-			>
+			/>
 
 			<label for="radioAddClient">Client</label>
 
@@ -49,7 +49,7 @@
 				}
 			?>
 
-			>
+			/>
 			<label for="radioAddAdmin">Staff</label>
 			
 		</div>
@@ -60,7 +60,7 @@
 		 	<select id="selectAddLabel" name="label">
 				<?php
 					foreach($secrets as $secret){
-						$label = $secret->getLabel();
+						$label = htmlspecialchars($secret->getLabel());
 
 						if(isset($_GET['selectAddLabel'])){
 							if(strcmp($_GET['selectAddLabel'], $label) == 0)
@@ -83,14 +83,16 @@
 			</select>
 		</div>
 
-		<label class="grid-item-label" for="selectAddClient" id="labelClient">Nom Client : </label>
+		<label class="grid-item-label" for="selectAddClient" id="labelClient">
+			Nom Client : 
+		</label>
 
 		<div>
 		 	<select id="selectAddClient" name="clientCode">
 				<?php
 					foreach($clients as $client){
-						$name = $client->getName();
-						$code = $client->getCode(); 
+						$name = htmlspecialchars($client->getName());
+						$code = htmlspecialchars($client->getCode()); 
 
 						if(isset($_GET['selectAddClient']))
 						{

@@ -2,7 +2,7 @@
 <?php include 'ext/search/fetchData.php'?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 	<?php include 'ext/header.php'; ?>
 
@@ -17,13 +17,17 @@
 				<?php include 'ext/info/clientInfo.php';?>
 			</div>
 
+		</div>
+
+		<?php include 'ext/table/client.php';?>
+
+		<div style="position: fixed; bottom: 10pt;">
+			
 			<button onclick="history.back()" class="footerButton">
 				Retour
 			</button>
 
 		</div>
-
-		<?php include 'ext/table/client.php';?>
 
 	</body>
 

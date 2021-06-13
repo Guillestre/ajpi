@@ -21,7 +21,7 @@
 				} else
 					print("checked");
 			?>
-			>
+			/>
 
 			<label for="radioDeleteClient">Client</label>
 
@@ -35,7 +35,7 @@
 						print("checked");
 				}
 			?>
-			>
+			/>
 
 			<label for="radioDeleteAdmin">Staff</label>
 		
@@ -58,9 +58,9 @@
 								foreach($adminUsers as $admin){
 
 									//Retrieve user data
-									$username = $admin->getUsername();
+									$username = htmlspecialchars($admin->getUsername());
 									$status = $admin->getStatus();
-									$id = $admin->getId();
+									$id = htmlspecialchars($admin->getId());
 
 									//Check if admin is the owner
 									if($user->getId() == $id)
@@ -107,10 +107,10 @@
 							<?php
 
 								foreach($clientUsers as $client){
-									$username = $client->getUsername();
-									$id = $client->getId();
+									$username = htmlspecialchars($client->getUsername());
+									$id = htmlspecialchars($client->getId());
 									$status = $client->getStatus();
-									$clientCode = $client->getClientCode();
+									$clientCode = htmlspecialchars($client->getClientCode());
 									print("<option value='${id}'>");
 									print("${username} (${clientCode})");
 									print("</option>");

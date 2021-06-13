@@ -6,6 +6,48 @@ switch($currentPage)
 {
 	case "dashboard.php" :
 
+		/* TITLE COLUMN SORT */
+
+		$changePage = 
+		isset($_GET['nextButton']) || 
+		isset($_GET['previousButton']) ||
+		isset($_GET['searchButton']);
+
+		if(isset($_GET['column']))
+			$column = $_GET['column'];
+		else
+			$column = "invoiceCode";
+
+		if(!$changePage){
+			if(isset($_GET['prevColumn']))
+			{
+				$prevColumn = $_GET['prevColumn'];
+
+				if(isset($_GET['direction']))
+				{
+					$direction = $_GET['direction'];
+					if(strcmp($column, $prevColumn) == 0)
+					{
+						if(strcmp($direction, "down") == 0) 
+							$direction = "up";
+						else
+							$direction = "down";
+					} else
+						$direction = "down";
+				} else
+					$direction = "down";
+			} else
+				$direction = "down";
+		} else {
+			$column = $_GET['prevColumn'];
+			if(isset($_GET['direction']))
+				$direction = $_GET['direction'];
+			else
+				$direction = "down";
+		}
+
+		/* FOOTER PAGES */
+
 		if(isset($_GET['start']))
 			$start = (int) $_GET['start'];
 		else
@@ -26,6 +68,8 @@ switch($currentPage)
 
 		if($start < 0)
 			$start = 0;
+
+		/* FILTERS */
 
 		//Set variables
 		$clause = "";
@@ -56,7 +100,7 @@ switch($currentPage)
 			$filters['endPeriod'] = $_GET['endPeriod'];
 
 		//Fetch invoices
-		$invoices = $invoiceDao->fetchInvoices($filters, $start);
+		$invoices = $invoiceDao->fetchInvoices($filters, $start, $column, $direction);
 
 		//Check if invoices are available next and previously
 		$nextAvailable = $invoiceDao->countFetchInvoices($filters, $start + 100) != 0;

@@ -26,11 +26,16 @@ if(!$emptyResult){
 		$totp = TOTP::create($secret->getCode());
 		$totp->setLabel($secret->getLabel());
 		
+		$label = htmlspecialchars($secret->getLabel());
+		$code = htmlspecialchars($secret->getCode());
+		$period = htmlspecialchars($totp->getPeriod());
+
+
 		print("
 			<tr>
-				<td>{$secret->getLabel()}</td>
-				<td>{$secret->getCode()}</td>
-				<td>{$totp->getPeriod()}</td>
+				<td>{$label}</td>
+				<td>{$code}</td>
+				<td>{$period}</td>
 			</tr>	
 		");
 	}

@@ -2,23 +2,21 @@
 
 	<!---- ADMIN SELECTION ----->
 
-
-	<div  id="labelAlterAdmin">
-	<label class="grid-item-label" for="selectAlterAdmin">
+	<label class="grid-item-label" for="selectAlterAdmin" id="labelAlterAdmin">
 		Choisir utilisateur admin : 
 	</label>
-</div>
 
-	<div id="selectAlterAdmin">
-	 	<select name="adminId" >
+	<div>
+	 	<select name="adminId" id="selectAlterAdmin">
 			<?php
 
 				foreach($adminUsers as $admin){
-					$username = $admin->getUsername();
+					$username = htmlspecialchars($admin->getUsername());
 					$status = $admin->getStatus();
-					$id = $admin->getId();
+					$id = htmlspecialchars($admin->getId());
 
-					if(isset($_GET['selectAlterAdmin']) && strcmp($_GET['selectAlterAdmin'], $id) == 0)
+					if(isset($_GET['selectAlterUser']) && (int)$_GET['selectAlterUser'] == $id && 
+						isset($_GET['radioAlter']) && strcmp($_GET['radioAlter'], "admin") == 0)
 					{
 						print("<option value='${id}' selected>");
 						print("${username}");
@@ -37,47 +35,48 @@
 				}
 			?>
 		</select>
+
 	</div>
+
+</div>
 
 	<!---- CLIENT SELECTION ----->
 
-	<div id="labelAlterClient">
-		<label class="grid-item-label" for="selectAlterClient">
-			Choisir utilisateur client : 
-		</label>
-	</div>
+<div class="grid-container-two-item">
 
-	<div id="selectAlterClient">
-	 	<select name="clientId" >
+	<label class="grid-item-label" for="selectAlterClientUser" id="labelAlterClientUser">
+		Choisir utilisateur client : 
+	</label>
+
+	<div>
+
+	 	<select name="clientId" id="selectAlterClientUser">
 			<?php
 
 				foreach($clientUsers as $client){
-					$username = $client->getUsername();
+					$username = htmlspecialchars($client->getUsername());
 					$status = $client->getStatus();
-					$clientCode = $client->getClientCode();
-					$id = $client->getId();
+					$clientCode = htmlspecialchars($client->getClientCode());
+					$id = htmlspecialchars($client->getId());
 
-					if(isset($_GET['selectAlterClient']) && strcmp($_GET['selectAlterClient'], $id) == 0)
+					if(isset($_GET['selectAlterUser']) && (int)$_GET['selectAlterUser'] == $id && 
+						isset($_GET['radioAlter']) && strcmp($_GET['radioAlter'], "client") == 0)
 					{
-						print("<option value='${id}'>");
+						print("<option value='${id}'selected>");
 						print("${username} (${clientCode})");
 						print("</option>");
 					} else {
-						if($user->getId() == $id){
-							print("<option value='${id}'>");
-							print("${username} (${clientCode})");
-							print("</option>");
-						} else {
-							print("<option value='${id}'>");
-							print("${username} (${clientCode})");
-							print("</option>");
-						}
+						print("<option value='${id}'>");
+						print("${username} (${clientCode})");
+						print("</option>");
 					}
 				}
 
 			?>
 		</select>
+
 	</div>
+
 </div>
 
 <div></div>
@@ -91,11 +90,11 @@
 	</label>
 
 	<div>
-		<input type="text" id="inputUsername" name="newUsername">
+		<input type="text" id="inputUsername" name="newUsername" />
 	</div>
 
 	<div>
-		<button name="action" value="alterUsername">
+		<button type="submit" name="action" value="alterUsername">
 			Changer nom
 		</button>
 	</div>
@@ -107,55 +106,56 @@
 	</label>
 
 	<div>
-		<input type="password" id="inputPassword" name="newPassword">
+		<input type="password" id="inputPassword" name="newPassword" />
 	</div>
 
 	<div>
-		<button name="action" value="alterPassword">
+		<button type="submit" name="action" value="alterPassword">
 			Changer mot de passe
 		</button>
 	</div>
 
 	<!---- SECRET SELECTION ----->
 
-	<div class="grid-item-label">
-		<label for="selectAlterLabel">Clé : </label>
-	</div>
+	<label class="grid-item-label" for="selectAlterLabel">
+		Clé : 
+	</label>
 
- 	<select id="selectAlterLabel" name="newLabel">
-		<?php
-			foreach($secrets as $secret)
-			{
-				$label = $secret->getLabel();
+	<div>
+	 	<select id="selectAlterLabel" name="newLabel">
+			<?php
+				foreach($secrets as $secret)
+				{
+					$label = $secret->getLabel();
 
-				if(isset($_GET['selectAlterLabel']) && strcmp($_GET['selectAlterLabel'], $label) == 0){
-					print("<option value='${label}' selected>");
-					print("${label}");
-					print("</option>");	
-				} else {
-					print("<option value='${label}'>");
-					print("${label}");
-					print("</option>");	
+					if(isset($_GET['selectAlterLabel']) && strcmp($_GET['selectAlterLabel'], $label) == 0){
+						print("<option value='${label}' selected>");
+						print("${label}");
+						print("</option>");	
+					} else {
+						print("<option value='${label}'>");
+						print("${label}");
+						print("</option>");	
+					}
 				}
-			}
-		?>
-	</select>
+			?>
+		</select>
+	</div>
 		
 	<div>
-		<button name="action" value="alterSecret">
+		<button type="submit" name="action" value="alterSecret">
 			Changer la clé
 		</button>
 	</div>
 
 </div>
 
-<div></div>
 
 <div class="grid-container-three-item">
 
 	<!---- CLIENT SELECTION ----->
-
-	<label class="grid-item-label" for="selectAlterClient">
+	
+	<label class="grid-item-label" for="selectAlterClient" id="labelAlterClient">
 		Nom Client : 
 	</label>
 
@@ -184,7 +184,7 @@
 	</div>
 
 	<div>
-		<button name="action" value="alterClient" >
+		<button type="submit" name="action" value="alterClient" id="buttonAlterClient">
 			Changer client
 		</button>
 	</div>
