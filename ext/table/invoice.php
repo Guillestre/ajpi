@@ -7,7 +7,7 @@ if(!$emptyResult)
 
 ?>
 
-<table id="myTable">
+<table>
 
 	<thead>
 		

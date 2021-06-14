@@ -117,23 +117,24 @@
 
 	<!---- SECRET SELECTION ----->
 
-	<label class="grid-item-label" for="selectAlterLabel">
+	<label class="grid-item-label" for="selectAlterSecret">
 		Clé : 
 	</label>
 
 	<div>
-	 	<select id="selectAlterLabel" name="newLabel">
+	 	<select id="selectAlterSecret" name="newSecretId">
 			<?php
 				foreach($secrets as $secret)
 				{
 					$label = $secret->getLabel();
+					$secretId = $secret->getId();
 
-					if(isset($_GET['selectAlterLabel']) && strcmp($_GET['selectAlterLabel'], $label) == 0){
-						print("<option value='${label}' selected>");
+					if(isset($_GET['selectAlterSecret']) && strcmp($_GET['selectAlterSecret'], $secretId) == 0){
+						print("<option value='${secretId}' selected>");
 						print("${label}");
 						print("</option>");	
 					} else {
-						print("<option value='${label}'>");
+						print("<option value='${secretId}'>");
 						print("${label}");
 						print("</option>");	
 					}

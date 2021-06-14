@@ -54,27 +54,28 @@
 			
 		</div>
 		
-		<label class="grid-item-label" for="selectAddLabel">Clé (A2F) : </label>
+		<label class="grid-item-label" for="selectAddSecret">Clé (A2F) : </label>
 
 		<div>
-		 	<select id="selectAddLabel" name="label">
+		 	<select id="selectAddSecret" name="secretId">
 				<?php
 					foreach($secrets as $secret){
 						$label = htmlspecialchars($secret->getLabel());
+						$secretId = $secret->getId();
 
-						if(isset($_GET['selectAddLabel'])){
-							if(strcmp($_GET['selectAddLabel'], $label) == 0)
+						if(isset($_GET['selectAddSecret'])){
+							if(strcmp($_GET['selectAddSecret'], $label) == 0)
 							{
-								print("<option value='${label}' selected>");
+								print("<option value='${secretId}' selected>");
 								print("${label}");
 								print("</option>");	
 							} else {
-								print("<option value='${label}'>");
+								print("<option value='${secretId}'>");
 								print("${label}");
 								print("</option>");	
 							}
 						} else {
-							print("<option value='${label}'>");
+							print("<option value='${secretId}'>");
 							print("${label}");
 							print("</option>");	
 						}

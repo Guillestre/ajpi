@@ -16,7 +16,7 @@
 		{
 			$query = "SELECT id FROM secrets WHERE label = :label";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":label", $label); 
+			$step->bindValue(":label", utf8_decode($label)); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
 			return $row['id'];
@@ -39,7 +39,7 @@
 			$step->bindValue(":id", $id); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
-			return $row['label'];
+			return utf8_encode($row['label']);
 		}
 
 		public function getAllSecret()
@@ -56,7 +56,7 @@
 				$secret = new Secret(
 					$row['id'],
 					$row['code'],
-					$row['label']
+					utf8_encode($row['label'])
 				);
 				array_push($secrets, $secret);
 			}
@@ -68,7 +68,7 @@
 		{
 			$query = "SELECT * FROM secrets WHERE label = :label";
 			$step = $this->database->prepare($query);
-			$step->bindValue(":label", $label); 
+			$step->bindValue(":label", utf8_decode($label)); 
 			$step->execute();
 			$nbResult = $step->rowCount();
 			return $nbResult != 0 ;
@@ -88,7 +88,7 @@
 			$step = $this->database->prepare($query);
 			$step->bindValue(":id", $secret->getId());
 			$step->bindValue(":code", $secret->getCode());
-			$step->bindValue(":label", $secret->getLabel());
+			$step->bindValue(":label", utf8_decode($secret->getLabel()));
 			$step->execute();
 			return $step->rowCount();
 		}

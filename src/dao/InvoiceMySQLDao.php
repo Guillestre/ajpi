@@ -97,7 +97,7 @@ class InvoiceMySQLDao
 			$step->bindValue(":clientCode", "%{$clientCode}%");
 		} 
 		if(isset($filters['name'])){
-			$name = $filters['name'];
+			$name = utf8_decode($filters['name']);
 			$step->bindValue(":name", "%{$name}%");
 		} 
 		if(isset($filters['startPeriod'])){
@@ -186,7 +186,7 @@ class InvoiceMySQLDao
 			$step->bindValue(":clientCode", "%{$clientCode}%");
 		} 
 		if(isset($filters['name'])){
-			$name = $filters['name'];
+			$name = utf8_decode($filters['name']);
 			$step->bindValue(":name", "%{$name}%");
 		} 
 		if(isset($filters['startPeriod'])){
@@ -257,7 +257,7 @@ class InvoiceMySQLDao
 
 			foreach($rows as $row)
 			{
-				$articleCode = $row['articleCode'];
+				$articleCode = utf8_encode($row['articleCode']);
 				$designation = utf8_encode($row['designation']);
 				$amount = $row['amount'];
 				$unitPrice = $row['unitPrice'];

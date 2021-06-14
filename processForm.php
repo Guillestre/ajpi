@@ -100,7 +100,7 @@ switch($action)
 		$password = $_POST['password'];
 		$status = $_POST['status'];
 		$clientCode = $_POST['clientCode'];
-		$label = $_POST['label'];
+		$secretId = $_POST['secretId'];
 		$isAdmin = $status == "admin";
 
 		//Check if entered username is not empty
@@ -113,7 +113,7 @@ switch($action)
 
 			//Redirection
 			$params = 
-			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
@@ -128,7 +128,7 @@ switch($action)
 
 			//Redirection
 			$params = 
-			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
@@ -143,14 +143,13 @@ switch($action)
 
 			//Redirection
 			$params = 
-			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
 		}
 
 		//Get next id
-		$secretId = $secretDao->getId($label);
 		$id = $userDao->getLastId($status) + 1;
 
 		//Adapt according status
@@ -172,7 +171,7 @@ switch($action)
 
 				//Redirect
 				$params = 
-				"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+				"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
@@ -209,7 +208,7 @@ switch($action)
 
 			//Redirection
 			$params = 
-			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+			"addUserError=${errorMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 			$url = "Location: userManagement.php?${params}";
 			header($url);
 			break;
@@ -217,7 +216,7 @@ switch($action)
 
 		//Redirection
 		$params = 
-		"addUserSuccess=${successMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddLabel=${label}";
+		"addUserSuccess=${successMessage}&radioAdd=${status}&selectAddClient=${clientCode}&selectAddSecret=${label}";
 
 		$url = "Location: userManagement.php?${params}";
 		header($url);
@@ -339,6 +338,9 @@ switch($action)
 
 		//Set username according the status and id
 		$username = $userDao->getUser($id, $status)->getUsername();
+
+		//Set secret id according the status and id
+		$secretId = $userDao->getUser($id, $status)->getSecretId();
 		
 		/* ALTER USERNAME */
 
@@ -441,11 +443,8 @@ switch($action)
 				break;
 			}
 
-			//Hash password
-			$newPassword = sha1($newPassword);
-
 			//Verify if it is the password that selected user has
-			if(strcmp($newPassword, $password) == 0)
+			if($userDao->existPassword($username, $newPassword, $status))
 			{
 				//Prepare error message
 				if($isOwner && strcmp($user->getPassword(), $newPassword) == 0){
@@ -503,13 +502,10 @@ switch($action)
 		} else if(strcmp($action, "alterSecret") == 0){
 
 			//Get new label from POST
-			$newLabel = $_POST['newLabel'];
+			$newSecretId = $_POST['newSecretId'];
 
-			//Set secretId according the status
-			$secretId = $userDao->getSecretId($id, $status);
-
-			//Get new secret Id
-			$newSecretId = $secretDao->getId($newLabel);
+			//Set new label according the new secret id
+			$newLabel = $secretDao->getLabel($newSecretId);
 
 			//Verify if it is the secret that user has
 			if(strcmp($newSecretId, $secretId) == 0)
@@ -525,7 +521,7 @@ switch($action)
 
 				//Redirection
 				$params = 
-				"alterUserError=${errorMessage}&radioAlter=${status}&selectAlterLabel=${newLabel}&selectAlterUser=${id}";
+				"alterUserError=${errorMessage}&radioAlter=${status}&selectAlterSecret=${newSecretId}&selectAlterUser=${id}";
 				$url = "Location: userManagement.php?${params}";
 				header($url);
 				break;
@@ -542,7 +538,7 @@ switch($action)
 				$errorMessage = $text;
 
 				//Redirection
-				$params = "alterUserError=${errorMessage}&radioAlter=${status}&selectAlterLabel=${newLabel}&selectAlterUser=${id}";
+				$params = "alterUserError=${errorMessage}&radioAlter=${status}&selectAlterSecret=${newSecretId}&selectAlterUser=${id}";
 				$url = "Location: userManagement.php?${params}";
 				header($url);
 			}
@@ -562,7 +558,7 @@ switch($action)
 
 			//Prepare redirection
 			$params = 
-			"alterUserSuccess=${successMessage}&radioAlter=${status}&selectAlterLabel=${newLabel}&selectAlterUser=${id}";
+			"alterUserSuccess=${successMessage}&radioAlter=${status}&selectAlterSecret=${newSecretId}&selectAlterUser=${id}";
 			$url = "Location: userManagement.php?${params}";
 			header($url);
 
@@ -628,10 +624,10 @@ switch($action)
 
 	case "addSecret" : case "deleteSecret" : 
 
-		//Get label from POST
-		$label = $_POST['label'];
-
 		if(strcmp($action, "addSecret") == 0){
+
+			//Get label from POST
+			$label = $_POST['label'];
 
 			//Check if entered label is not empty
 			if(strcmp(trim($label), "") == 0) 
@@ -695,11 +691,14 @@ switch($action)
 
 		} else if(strcmp($action, "deleteSecret") == 0){
 
-			//Get secret id
-			$id = $secretDao->getId($label);
+			//Get label from POST
+			$secretId = $_POST['secretId'];
+
+			//Set label
+			$label = $secretDao->getLabel($secretId);
 
 			//Check if users are using this key
-			if($secretDao->secretToken($id) >= 1)
+			if($secretDao->secretToken($secretId) >= 1)
 			{
 				//Prepare error message
 				$text = "Cette clé est utilisée par des utilisateurs";
@@ -712,7 +711,7 @@ switch($action)
 			}
 
 			//delete secret
-			$result = $secretDao->deleteSecret($id);
+			$result = $secretDao->deleteSecret($secretId);
 	
 			//Check if secret has been deleted
 			if(!$result)

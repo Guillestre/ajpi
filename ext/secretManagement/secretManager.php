@@ -48,19 +48,19 @@
 		</div>
 
 		<div>
-		 	<select id="deleteLabel" name="label">
+		 	<select id="deleteSecret" name="secretId">
 				<?php
 					foreach($secrets as $secret){
 						$label = htmlspecialchars($secret->getLabel());
-						$secretId = $secretDao->getId($label);
+						$secretId = $secret->getId();
 
 						if($secretId == $user->getSecretId())
 						{
-							print("<option value='${label}' selected>");
+							print("<option value='${secretId}' selected>");
 							print("${label}");
 							print("</option>");
 						} else {
-							print("<option value='${label}'>");
+							print("<option value='${secretId}'>");
 							print("${label}");
 							print("</option>");
 						}

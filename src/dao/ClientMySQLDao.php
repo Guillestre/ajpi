@@ -82,7 +82,7 @@ class ClientMySQLDao
 		
 		$row = $step->fetch(PDO::FETCH_ASSOC);
 	
-		return $row['name'];
+		return utf8_encode($row['name']);
 	}
 
 }
