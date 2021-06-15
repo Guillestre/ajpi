@@ -71,8 +71,7 @@ switch($currentPage)
 
 		/* FILTERS */
 
-		//Set variables
-		$clause = "";
+		//Set filter array
 		$filters = [];
 	
 		//Verify and adapt if user is a client. Client can just see his own invoices
@@ -165,6 +164,92 @@ switch($currentPage)
 
 	case "secretManagement.php" :
 
+		/* TITLE COLUMN SORT */
+
+		$changePage = 
+		isset($_GET['nextButton']) || 
+		isset($_GET['previousButton']) ||
+		isset($_GET['searchButton']);
+
+		if(isset($_GET['column']))
+			$column = $_GET['column'];
+		else
+			$column = "label";
+
+		if(!$changePage){
+			if(isset($_GET['prevColumn']))
+			{
+				$prevColumn = $_GET['prevColumn'];
+
+				if(isset($_GET['direction']))
+				{
+					$direction = $_GET['direction'];
+					if(strcmp($column, $prevColumn) == 0)
+					{
+						if(strcmp($direction, "down") == 0) 
+							$direction = "up";
+						else
+							$direction = "down";
+					} else
+						$direction = "down";
+				} else
+					$direction = "down";
+			} else
+				$direction = "down";
+		} else {
+			$column = $_GET['prevColumn'];
+			if(isset($_GET['direction']))
+				$direction = $_GET['direction'];
+			else
+				$direction = "down";
+		}
+
+		/* FOOTER PAGES */
+
+		if(isset($_GET['start']))
+			$start = (int) $_GET['start'];
+		else
+			$start = 0;
+
+		if(isset($_GET['searchButton']))
+			$start = 0;
+
+		if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
+		{
+			$start -= 5;
+		}
+
+		if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
+		{
+			$start += 5;
+		}
+
+		if($start < 0)
+			$start = 0;
+
+		/* FILTERS */
+
+		//Set filter array
+		$filters = [];
+	
+		//Verify and adapt if user is a client. Client can just see his own secret
+		if(!$isAdmin)
+			$filters['clientCodeOwner'] = $user->getClientCode();
+
+		//Verify if user has added label filter
+		if(isset($_GET['label']) && strcmp(trim($_GET['label']), "") != 0){
+			$filters['label'] = trim($_GET['label']);
+			print($filters['label'] . "dd");
+		}
+
+		//Fetch secrets
+		$fetchedSecrets = $secretDao->fetchSecrets($filters, $start, $column, $direction);
+
+		//Check if secrets are available next and previously
+		$nextAvailable = $secretDao->countFetchSecrets($filters, $start + 5) != 0;
+		$previousAvailable = $secretDao->countFetchSecrets($filters, $start - 5) != 0;
+		
+		//Get all secret
 		$secrets = $secretDao->getAllSecret();
 		
 		break;

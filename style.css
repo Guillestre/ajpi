@@ -147,8 +147,6 @@ img
     padding: 0;
 }
 
-#secretBox table tr td{font-size: 18pt;}
-
 .backInvoicelineButton
 {
 	position: fixed;
@@ -183,19 +181,9 @@ img
 
 	table thead th {top: 28.5pt;}
 
-	#secretBox table tr td{font-size: 15pt;}
-
-}
-
-
-@media (max-width:1150pt) {
-
-	#secretBox table tr td{font-size: 12pt;}
 }
 
 @media (max-width:950pt) {
-
-	#secretBox table tr td{font-size: 7.5pt;}
 
 	label, p, input, button, a, select, th, td, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 14pt;
@@ -222,11 +210,6 @@ img
 
 
 @media (max-width:600pt) {
-
-	#secretBox
-	{
-	 display: none;
-	}
 
 	.navBar{
 	  grid-template-columns: 130pt 140pt 90pt 80pt;
@@ -278,7 +261,7 @@ img
 		padding: 0pt 0pt;
 	}
 
-	table thead th {top: 40pt;}
+	table thead th {top: 25pt;}
 
 }
 

@@ -12,6 +12,130 @@
 			$this->database = MySQLConnection::getInstance()->getConnection();
 		}
 
+		public function fetchSecrets($filters, $start, $column, $direction)
+		{
+
+			$owner = $_SESSION['user'];
+			$status = $owner->getStatus();
+
+			/* PREPARE DIRECTION */
+
+			switch($direction)
+			{
+				case "up" :
+					$order = " ASC ";
+					break;
+				default :
+					$order = " DESC "; 
+					break;
+			}
+
+			/* PREPARE COLUMN */
+
+			switch($column)
+			{
+				case "label" :
+					$colOrder = " ORDER BY label";
+					break;
+			}
+
+			/* PREPARE FILTERS */
+
+			$clause = "";
+
+			if(isset($filters['clientCodeOwner']))
+				$clause .= " AND clientCode LIKE :clientCodeOwner ";
+
+			if(isset($filters['label']))
+				$clause .= " AND label LIKE :label ";
+
+			if(strcmp($status, "client") == 0)
+				$query = "SELECT * 
+				FROM ${status}Users, secrets WHERE 1 ${clause} AND 
+				${status}Users.secretId = secrets.id ${colOrder} ${order} 
+				LIMIT 5 OFFSET ${start};";
+			else
+				$query = "SELECT * 
+				FROM secrets WHERE 1 ${clause} ${colOrder} ${order} 
+				LIMIT 5 OFFSET ${start};";
+
+			print($query);
+			$step=$this->database->prepare($query);
+
+			if(isset($filters['label'])){
+				$label = utf8_decode($filters['label']);
+				print($label);
+				$step->bindValue(":label", "%{$label}%");
+			} 
+			
+			if(isset($filters['clientCodeOwner']))
+				$step->bindValue(":clientCodeOwner", $filters['clientCodeOwner']);
+
+			$step->execute();
+			$rows = $step->fetchAll();
+			$nbResult = $step->rowCount();
+			print($nbResult);
+			if($nbResult == 0)
+				return NULL;
+
+			$secrets = [];
+
+			foreach($rows as $row)
+			{
+				$id = $row['id'];
+				$code = $row['code'];
+				$label = $row['label'];
+				$secret = new Secret(
+					$id, 
+					$code, 
+					$label
+				);
+				array_push($secrets, $secret);
+			}
+
+			return $secrets;
+		}
+
+		public function countFetchSecrets($filters, $start)
+		{
+			$owner = $_SESSION['user'];
+			$status = $owner->getStatus();
+
+			$clause = "";
+
+			/* PREPARE FILTERS */
+
+			if(isset($filters['clientCodeOwner'])){
+				$clause .= " AND clientCode LIKE :clientCodeOwner ";
+			}
+
+			if(isset($filters['label']))
+				$clause .= " AND label LIKE :label ";
+
+			if(strcmp($status, "client") == 0)
+				$query = "SELECT * 
+				FROM ${status}Users, secrets WHERE 1 ${clause} AND 
+				${status}Users.secretId = secrets.id LIMIT 5 OFFSET ${start};";
+			else
+				$query = 
+				"SELECT * FROM secrets WHERE 1 ${clause} LIMIT 5 OFFSET ${start};";
+				print($query);
+			$step=$this->database->prepare($query);
+
+			if(isset($filters['label'])){
+				$label = $filters['label'];
+				$step->bindValue(":label", "%{$label}%");
+			}
+
+			if(isset($filters['clientCodeOwner']))
+				$step->bindValue(":clientCodeOwner", $filters['clientCodeOwner']);
+
+			$step->execute();
+			$rows = $step->fetchAll();
+			$nbResult = $step->rowCount();
+			return $nbResult;
+		}
+
 		public function getId($label)
 		{
 			$query = "SELECT id FROM secrets WHERE label = :label";
@@ -39,7 +163,11 @@
 			$step->bindValue(":id", $id); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
-			return utf8_encode($row['label']);
+
+			if($step->rowCount() == 1)
+				return utf8_encode($row['label']);
+			else 
+				return NULL;
 		}
 
 		public function getAllSecret()

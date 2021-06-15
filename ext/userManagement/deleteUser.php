@@ -89,7 +89,7 @@
 				</div>
 
 			<?php 
-				} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à supprimer"); 
+				} else messageHandler::sendInfoMessage("Il n'y a aucun administrateur à supprimer"); 
 			?>
 		</div>
 
@@ -129,7 +129,7 @@
 				</div>
 
 			<?php 
-				}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à supprimer");
+				}else messageHandler::sendInfoMessage("Il n'y a aucun utilisateur client à supprimer");
 			?>
 		</div>
 

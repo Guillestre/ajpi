@@ -16,8 +16,6 @@
 	include "src/class/Client.php";
 	include "src/class/Invoice.php";
 	include "src/class/Line.php";
-	include "src/interface/UserDao.php";
-	include "src/interface/SecretDao.php";
 	include "src/dao/UserMySQLDao.php";
 	include "src/dao/SecretMySQLDao.php";
 	include "src/dao/InvoiceMySQLDao.php";
@@ -35,7 +33,7 @@
 	//Set session pages
 	$loggedPages = array(
 		"dashboard.php", "client.php", "invoice.php", 
-		"userManagement.php", "secretManagement.php", "processForm.php"
+		"userManagement.php", "secretManagement.php", "processForm.php", "showSecretCode.php"
 	);
 
 	$logOffPages = array(
@@ -63,7 +61,7 @@
 
 		$clientPages =  array(
 		"dashboard.php", "client.php", "invoice.php", 
-		"secretManagement.php", "processForm.php"
+		"secretManagement.php", "processForm.php", "showSecretCode.php"
 		);
 
 		if(!$isAdmin && !in_array($currentPage, $clientPages))

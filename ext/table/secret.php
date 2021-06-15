@@ -1,30 +1,44 @@
-<?php if($isAdmin){ ?>
-	<h2>Clés enregistrées : </h2>
-<?php } else { ?>
-	<h2>Votre clé : </h2>
-<?php } ?>
-
 <?php 
 
 //We use TOTP
 use OTPHP\TOTP;
 
-$emptyResult = $secrets == NULL;
+$emptyResult = $fetchedSecrets == NULL;
 
-if(!$emptyResult){
-	print("<table>");
+if(!$emptyResult){ ?>
 
-	print("
+	<table>
+
 		<thead>
 			<tr>
-				<th>Label</th>
-				<th>Code</th>
-				<th>Période</th>
+				<th>
+					<button class="col-button-title" name="column" value="label">
+						<?php if(strcmp($column, "label") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Label
+							</i>
+						<?php } else { ?>
+							Label
+						<?php } ?>
+					</button>
+				</th>
+
+				<th>
+					<button class="col-button-title" name="column" value="code">
+						<?php if(strcmp($column, "code") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Code
+							</i>
+						<?php } else { ?>
+							Code
+						<?php } ?>
+					</button>
+				</th>
 			</tr>
 		</thead>
-	");
+<?php 
 
-	foreach($secrets as $secret)
+	foreach($fetchedSecrets as $secret)
 	{
 		//Prepare TOTP
 		$totp = TOTP::create($secret->getCode());
@@ -33,22 +47,34 @@ if(!$emptyResult){
 		$label = htmlspecialchars($secret->getLabel());
 		$code = htmlspecialchars($secret->getCode());
 		$period = htmlspecialchars($totp->getPeriod());
+		$secretId = $secret->getId();
+		$refSecretCode = "showSecretCode.php?secretId={$secretId}";
 
-		if($isAdmin)
+		if($isAdmin){
 			print("
 				<tr>
-					<td>{$label}</td>
-					<td>{$code}</td>
-					<td>{$period}</td>
+					<td>
+						{$label}
+					</td>
+					<td style='font-size: 11pt;'>
+						${code}
+					</td>
 				</tr>	
 			");
+		}
 		else if($user->getSecretId() == $secret->getId())
 			print("
 				<tr>
-					<td>{$label}</td>
-					<td>{$code}</td>
-					<td>{$period}</td>
-				</tr>	
+					<td>
+						{$label}
+						<a href='{$refSecretCode}'> 
+							Voir code 
+						</a>
+					</td>
+					<td>
+						${code}
+					</td>
+				</tr>		
 			");
 	}
 

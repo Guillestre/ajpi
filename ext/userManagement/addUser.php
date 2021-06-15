@@ -16,7 +16,7 @@
 			<input type="password" id="inputAddPassword" name="password" required />
 		</div>
 
-		<label  class="grid-item-label">Status : </label>
+		<label  class="grid-item-label">Statut : </label>
 
 		<div>
 

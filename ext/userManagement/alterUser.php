@@ -46,7 +46,7 @@
 		<?php if($availableAdminUsers){
 				if($availableAdminUsers && !$availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
-			} else messageHandler::sendInfoMessage("Il n y'a aucun administrateurs à modifier"); 
+			} else messageHandler::sendInfoMessage("Il n y'a aucun administrateur à modifier"); 
 		?>
 	</div>
 
@@ -56,7 +56,7 @@
 		<?php if($availableClientUsers){
 				if(!$availableAdminUsers && $availableClientUsers)
 					include_once "ext/userManagement/alterSelection.php";
-			}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateurs client à modifier");
+			}else messageHandler::sendInfoMessage("Il n y'a aucun utilisateur client à modifier");
 		?>
 	</div>
 
