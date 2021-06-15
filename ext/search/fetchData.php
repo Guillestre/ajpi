@@ -122,6 +122,9 @@ switch($currentPage)
 		if(is_null($client))
 			header($redirection);
 
+		if(!$isAdmin && strcmp($client->getCode(), $user->getClientCode()) != 0)
+			header($redirection);
+
 		$clientUser = $userDao->getClientUser($client->getCode(), "Client");
 
 		break;
@@ -144,6 +147,9 @@ switch($currentPage)
 		$client = $clientDao->getClient($invoice->getClientCode());
 
 		if(is_null($client))
+			header($redirection);
+
+		if(!$isAdmin && strcmp($client->getCode(), $user->getClientCode()) != 0)
 			header($redirection);
 
 		break;

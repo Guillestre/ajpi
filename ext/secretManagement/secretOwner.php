@@ -50,14 +50,6 @@
 		</div>
 
 		<div></div>
-
-		<!-- SECRET CODE ----------------------->
-
-		<?php if(!$isAdmin){ ?>
-
-			code de la clé : <?php print($code); ?> 
-
-		<?php } ?>
 			
 	</div>
 

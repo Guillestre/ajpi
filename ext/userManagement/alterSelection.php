@@ -134,9 +134,16 @@
 						print("${label}");
 						print("</option>");	
 					} else {
-						print("<option value='${secretId}'>");
-						print("${label}");
-						print("</option>");	
+						if($secretId == $user->getSecretId())
+						{
+							print("<option value='${secretId}' selected>");
+							print("${label}");
+							print("</option>");
+						} else {
+							print("<option value='${secretId}'>");
+							print("${label}");
+							print("</option>");
+						}
 					}
 				}
 			?>

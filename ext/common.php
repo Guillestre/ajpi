@@ -61,6 +61,17 @@
 		//Set status
 		$isAdmin = strcmp($user->getStatus(), "admin") == 0 ;
 
+		$clientPages =  array(
+		"dashboard.php", "client.php", "invoice.php", 
+		"secretManagement.php", "processForm.php"
+		);
+
+		if(!$isAdmin && !in_array($currentPage, $clientPages))
+		{
+			$redirection = "Location: dashboard.php";
+			header($redirection);
+		}
+
 	} else if(!in_array($currentPage, $logOffPages)) {
 		header("Location: index.php");
 	}

@@ -24,7 +24,7 @@
 		CREATE TABLE secrets (
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 			code VARCHAR(500) NOT NULL,
-			label VARCHAR(255) NOT NULL UNIQUE
+			label VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin UNIQUE NOT NULL
 		);
 
 	");
@@ -35,8 +35,8 @@
 
 		CREATE TABLE adminUsers (
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-			username VARCHAR(255) NOT NULL,
-			password VARCHAR(255) NOT NULL,
+			username VARCHAR(255)  CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+			password VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 			secretId INT NOT NULL,
 			FOREIGN KEY (secretId) REFERENCES secrets(id)
 		);
@@ -50,8 +50,8 @@
 		CREATE TABLE clientUsers (
 
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-			username VARCHAR(255),
-			password VARCHAR(255) NOT NULL,
+			username VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+			password VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
 			secretId INT NOT NULL,
 			clientCode VARCHAR(50) NOT NULL UNIQUE,
 			FOREIGN KEY (clientCode) REFERENCES clients(code),

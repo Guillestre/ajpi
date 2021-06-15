@@ -1,4 +1,8 @@
-<h2>Clés enregistrées : </h2>
+<?php if($isAdmin){ ?>
+	<h2>Clés enregistrées : </h2>
+<?php } else { ?>
+	<h2>Votre clé : </h2>
+<?php } ?>
 
 <?php 
 
@@ -30,14 +34,22 @@ if(!$emptyResult){
 		$code = htmlspecialchars($secret->getCode());
 		$period = htmlspecialchars($totp->getPeriod());
 
-
-		print("
-			<tr>
-				<td>{$label}</td>
-				<td>{$code}</td>
-				<td>{$period}</td>
-			</tr>	
-		");
+		if($isAdmin)
+			print("
+				<tr>
+					<td>{$label}</td>
+					<td>{$code}</td>
+					<td>{$period}</td>
+				</tr>	
+			");
+		else if($user->getSecretId() == $secret->getId())
+			print("
+				<tr>
+					<td>{$label}</td>
+					<td>{$code}</td>
+					<td>{$period}</td>
+				</tr>	
+			");
 	}
 
 	print("</table>");

@@ -25,11 +25,9 @@
 					
 		</div>
 
-		<?php if($isAdmin) { ?>
-			<div id='secretBox'>
-				<?php include "ext/table/secret.php"; ?>
-			</div>
-		<?php } ?>
+		<div id='secretBox'>
+			<?php include "ext/table/secret.php"; ?>
+		</div>
 
 	</body>
 
