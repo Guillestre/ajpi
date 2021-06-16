@@ -26,6 +26,7 @@
 		</div>
 
 		<div class="secretBox">
+			
 			<?php if($isAdmin){ ?>
 				<h1>Clés enregistrées : </h1>
 			<?php } else { ?>
@@ -33,7 +34,7 @@
 			<?php } ?>
 
 			<?php if($isAdmin){ ?>
-				<div class="LeftPart">
+				<div class="leftPart">
 					<div class="infoArea">
 						<?php include 'ext/search/searchFilter.php';?>
 					</div>

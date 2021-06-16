@@ -8,10 +8,13 @@
 
 	<body>
 	
+		<!-- MENU -->
 		
 		<?php include 'ext/menu.php';?>
 
-		<div class='LeftPart'>
+		<!-- CLIENT INFO -->
+
+		<div class='leftPart'>
 
 			<div class="infoArea">
 				<?php include 'ext/info/clientInfo.php';?>
@@ -19,7 +22,11 @@
 
 		</div>
 
+		<!-- RESULT -->
+
 		<?php include 'ext/table/client.php';?>
+
+		<!-- FOOTER -->
 
 		<div class="footer">
 

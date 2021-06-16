@@ -151,6 +151,8 @@ switch($currentPage)
 		if(!$isAdmin && strcmp($client->getCode(), $user->getClientCode()) != 0)
 			header($redirection);
 
+		$emptyResult = $lines == NULL;
+
 		break;
 
 	case "userManagement.php" :

@@ -1,6 +1,4 @@
-<?php 
-
-$emptyResult = $lines == NULL;
+<?php
 
 if(!$emptyResult){
 	print("<table>");
@@ -48,6 +46,6 @@ if(!$emptyResult){
 
 	print("</table>");
 } else
-	messageHandler::sendInfoMessage("Aucun résultats pour cette recherche");
+	messageHandler::sendInfoMessage("Aucune lignes est présente pour cette facture");
 
 ?>
