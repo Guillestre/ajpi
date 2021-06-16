@@ -21,12 +21,14 @@
 
 		<?php include 'ext/table/client.php';?>
 
-		<div style="position: fixed; bottom: 10pt;">
-			
-			<button onclick="history.back()" class="footerButton">
-				Retour
-			</button>
+		<div class="footer">
 
+			<div>
+				<button onclick="history.back()">
+					Retour
+				</button>
+			</div>
+			
 		</div>
 
 	</body>

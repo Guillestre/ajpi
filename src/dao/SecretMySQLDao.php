@@ -35,7 +35,10 @@
 			switch($column)
 			{
 				case "label" :
-					$colOrder = " ORDER BY label";
+					$colOrder = " ORDER BY label ";
+					break;
+				case "code" :
+					$colOrder = " ORDER BY code ";
 					break;
 			}
 
@@ -47,7 +50,7 @@
 				$clause .= " AND clientCode LIKE :clientCodeOwner ";
 
 			if(isset($filters['label']))
-				$clause .= " AND label LIKE :label ";
+				$clause .= " AND label COLLATE utf8mb4_general_ci LIKE :label ";
 
 			if(strcmp($status, "client") == 0)
 				$query = "SELECT * 
@@ -59,12 +62,11 @@
 				FROM secrets WHERE 1 ${clause} ${colOrder} ${order} 
 				LIMIT 5 OFFSET ${start};";
 
-			print($query);
+			
 			$step=$this->database->prepare($query);
 
 			if(isset($filters['label'])){
 				$label = utf8_decode($filters['label']);
-				print($label);
 				$step->bindValue(":label", "%{$label}%");
 			} 
 			
@@ -74,7 +76,7 @@
 			$step->execute();
 			$rows = $step->fetchAll();
 			$nbResult = $step->rowCount();
-			print($nbResult);
+			
 			if($nbResult == 0)
 				return NULL;
 
@@ -110,7 +112,7 @@
 			}
 
 			if(isset($filters['label']))
-				$clause .= " AND label LIKE :label ";
+				$clause .= " AND label COLLATE utf8mb4_general_ci LIKE :label ";
 
 			if(strcmp($status, "client") == 0)
 				$query = "SELECT * 
@@ -119,7 +121,7 @@
 			else
 				$query = 
 				"SELECT * FROM secrets WHERE 1 ${clause} LIMIT 5 OFFSET ${start};";
-				print($query);
+
 			$step=$this->database->prepare($query);
 
 			if(isset($filters['label'])){

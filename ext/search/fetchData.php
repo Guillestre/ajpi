@@ -251,6 +251,8 @@ switch($currentPage)
 		
 		//Get all secret
 		$secrets = $secretDao->getAllSecret();
+
+		$emptyResult = $fetchedSecrets == NULL;
 		
 		break;
 

@@ -18,7 +18,7 @@
 
 			</div>
 			
-			<form action="dashboard.php" method="get">
+			<form action="dashboard.php" method="get" id="invoiceTableForm">
 
 				<?php include 'ext/table/invoice.php';?>
 
@@ -65,19 +65,29 @@
 					}
 				?>
 
-				<?php if($previousAvailable && !$emptyResult) { ?>
-					<button class="footerButton" name="previousButton" style="float: left; position: sticky; bottom: 10pt;">
+			</form>
+
+			<!-- FOOTER -->
+
+			<div class="footer">
+
+				<div>
+				<?php  if($previousAvailable && !$emptyResult) { ?>
+					<button type="submit" name="previousButton" form="invoiceTableForm">
 						Page précédente
 					</button>
 				<?php } ?>
+				</div>
 
+				<div style="text-align: right;">
 				<?php if($nextAvailable && !$emptyResult) { ?>
-					<button class="footerButton" name="nextButton" style="float: right; position: sticky; bottom: 10pt;">
+					<button type="submit" name="nextButton" form="invoiceTableForm">
 						Page suivante
 					</button>
 				<?php } ?>
+				</div>
 
-			</form>
+			</div>
 
 	</body>
 

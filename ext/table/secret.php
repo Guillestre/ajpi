@@ -3,14 +3,13 @@
 //We use TOTP
 use OTPHP\TOTP;
 
-$emptyResult = $fetchedSecrets == NULL;
-
 if(!$emptyResult){ ?>
 
-	<table>
+	<table class="secretTable">
 
 		<thead>
 			<tr>
+
 				<th>
 					<button class="col-button-title" name="column" value="label">
 						<?php if(strcmp($column, "label") == 0) { ?>
@@ -34,6 +33,7 @@ if(!$emptyResult){ ?>
 						<?php } ?>
 					</button>
 				</th>
+
 			</tr>
 		</thead>
 <?php 
@@ -56,7 +56,7 @@ if(!$emptyResult){ ?>
 					<td>
 						{$label}
 					</td>
-					<td style='font-size: 11pt;'>
+					<td>
 						${code}
 					</td>
 				</tr>	
@@ -67,9 +67,6 @@ if(!$emptyResult){ ?>
 				<tr>
 					<td>
 						{$label}
-						<a href='{$refSecretCode}'> 
-							Voir code 
-						</a>
 					</td>
 					<td>
 						${code}

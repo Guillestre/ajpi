@@ -1,13 +1,20 @@
 /* MAIN PART ***************************************************/
 
-body{ background-color: rgba(200, 222, 206, 0.6); }
+body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;}
+
+.footer{position: fixed; bottom: 0pt; width: 100%;
+	display: grid; 
+	grid-template-columns: auto auto;}
 
 .navBar{
-	position: sticky;
-	top: 0;
+	position: fixed;
+	top: 0pt;
+	left: 0pt;
 	background-color: rgb(100, 200, 100);
 	display: grid;
-  grid-template-columns: 200pt 200pt 200pt 200pt;
+ 	grid-template-columns: 200pt 200pt 200pt 200pt;
+ 	width: 150%;
+ 	z-index: 1;
 }
 
 .item-menu:hover { background-color: rgb(50, 180, 50); }
@@ -147,12 +154,6 @@ img
     padding: 0;
 }
 
-.backInvoicelineButton
-{
-	position: fixed;
-	bottom: 10pt;
-}
-
 /* ADAPTATION PART ***************************************************/
 
 @media (max-width:1350pt) {
@@ -167,7 +168,7 @@ img
 		font-size: 16pt;
 	}
 
-	#boxDescriptionInvoice, select {font-size: 12pt;}
+	#boxDescriptionInvoice, select {font-size: 14pt;}
 
 	h1
 	{
@@ -181,13 +182,19 @@ img
 
 	table thead th {top: 28.5pt;}
 
+	.secretTable tr td{font-size: 10pt;}
+
 }
 
 @media (max-width:950pt) {
 
+	.footer{position: sticky; bottom: 0pt;}
+
 	label, p, input, button, a, select, th, td, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 14pt;
 	}
+
+	.secretTable tr td{font-size: 8pt;}
 
 	.grid-container-userBoxGroup
 	{
@@ -203,8 +210,6 @@ img
 	{
 		grid-template-columns: 300pt;
 	}
-
-	.backInvoicelineButton{position: sticky;}
 
 }
 
@@ -236,12 +241,16 @@ img
 
 	select{font-size: 11pt;}
 
-	table thead th {top: 25pt;}
+	table thead th {top: 45pt;}
+
+	.secretTable tr td{font-size: 7pt;}
 
 }
 
 
 @media (max-width:500pt) {
+
+	.secretBox{display: none;}
 
 	.navBar{grid-template-columns: 90pt 120pt 75pt 75pt;}
 
@@ -265,7 +274,7 @@ img
 
 }
 
-@media (min-width:950pt) {
+@media (min-width:951pt) {
 
 	.LeftPart
 	{

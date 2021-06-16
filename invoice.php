@@ -20,12 +20,14 @@
 
 		<?php include 'ext/table/line.php';?>
 
-		<div class="backInvoicelineButton">
-			
-			<button onclick="history.back()" class="footerButton">
-				Retour
-			</button>
+		<div class="footer">
 
+			<div>
+				<button onclick="history.back()">
+					Retour
+				</button>
+			</div>
+			
 		</div>
 
 	</body>
@@ -33,4 +35,3 @@
 	<?php include "ext/footer.php" ?>
 
 </html>
-
