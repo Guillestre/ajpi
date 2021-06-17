@@ -1,9 +1,6 @@
 <?php
 
 	//Get owner data
-	$username = $user->getUsername();
-	$status = $user->getStatus();
-	$id = $user->getId();
 	$secretId = $user->getSecretId();
 	$code = htmlspecialchars($secretDao->getCode($secretId));
 	$label = htmlspecialchars($secretDao->getLabel($secretId));

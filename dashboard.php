@@ -24,7 +24,7 @@
 		
 		<form action="dashboard.php" method="get" id="invoiceTableForm">
 
-			<?php include 'ext/table/invoice.php';?>
+			<?php include 'ext/table/dashboard.php';?>
 
 			<?php 
 				print("<input type='number' name='start' value='${start}' hidden/>");
@@ -36,6 +36,12 @@
 	
 
 				print("<input type='text' name='direction' value='${direction}' hidden/>");
+
+				//Put client type in GET method
+				print
+				("
+					<input type='text' name='clientType' value='${clientType}' hidden/>
+				");
 
 
 				if(isset($_GET['name']))
@@ -94,8 +100,6 @@
 		</div>
 
 	</body>
-
-
 
 	<?php include "ext/footer.php" ?>
 

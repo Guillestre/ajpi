@@ -1,6 +1,6 @@
 /* MAIN PART ***************************************************/
 
-body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;}
+body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;margin-bottom: 40pt;}
 
 .footer
 {
@@ -9,8 +9,10 @@ body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;}
 	left: 0pt; 
 	width: 100%;
 	display: grid; 
-	grid-template-columns: auto auto; 
+	grid-template-columns: auto auto;
 }
+
+	
 
 .navBar{
 	position: fixed;
@@ -147,10 +149,7 @@ img
 
 @media (max-width:1350pt) {
 
-	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
-	{
-		margin: 8pt;
-	}
+	.secretTable tr td{font-size: 12pt;}
 
 	td, th,
 	label, p, input, button, a, .item-menu, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
@@ -165,8 +164,6 @@ img
 
 	table thead th {top: 28.5pt;}
 
-	.secretTable tr td{font-size: 10pt;}
-
 }
 
 @media (max-width:1100pt) {.footer{position: sticky; bottom: 0pt;}}
@@ -176,8 +173,6 @@ img
 	label, p, input, button, a, select, th, td, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
 		font-size: 14pt;
 	}
-
-	.secretTable tr td{font-size: 8pt;}
 
 	.grid-container-userBoxGroup
 	{
@@ -194,7 +189,7 @@ img
 
 @media (max-width:600pt) {
 
-	.navBar{grid-template-columns: 130pt 140pt 90pt 80pt;}
+	.navBar{grid-template-columns: 120pt 120pt 120pt 120pt;}
 
 	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
 	{
@@ -213,16 +208,12 @@ img
 
 	table thead th {top: 29pt;}
 
-	.secretTable tr td{font-size: 7pt;}
-
 }
 
 
 @media (max-width:500pt) {
 
-	.secretBox{display: none;}
-
-	.navBar{grid-template-columns: 90pt 120pt 75pt 75pt;}
+	.navBar{grid-template-columns: 90pt 90pt 90pt 90pt;}
 
 	.item-menu{font-size: 13pt;}
 
@@ -236,8 +227,8 @@ img
 
 	th, td
 	{
-		font-size: 9pt;
-		padding: 0pt 0pt;
+		font-size: 10pt;
+		padding: 2pt 2pt;
 	}
 
 	table thead th {top: 24pt;}

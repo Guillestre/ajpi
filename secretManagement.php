@@ -24,8 +24,6 @@
 			<?php } ?>
 					
 		</div>
-
-		<div class="secretBox">
 			
 			<?php if($isAdmin){ ?>
 				<h1>Clés enregistrées : </h1>
@@ -90,8 +88,6 @@
 				</div>
 
 			</div>
-
-		</div>
 		
 	</body>
 

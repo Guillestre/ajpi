@@ -14,10 +14,10 @@ if(!$emptyResult){ ?>
 					<button class="col-button-title" name="column" value="label">
 						<?php if(strcmp($column, "label") == 0) { ?>
 							<i class='fas fa-caret-<?php print $direction; ?>'> 
-								Label
+								Nom clé
 							</i>
 						<?php } else { ?>
-							Label
+							Nom clé
 						<?php } ?>
 					</button>
 				</th>
@@ -40,15 +40,13 @@ if(!$emptyResult){ ?>
 
 	foreach($fetchedSecrets as $secret)
 	{
-		//Prepare TOTP
+		//Prepare Secret
 		$totp = TOTP::create($secret->getCode());
 		$totp->setLabel($secret->getLabel());
 		
+		//Set label and code
 		$label = htmlspecialchars($secret->getLabel());
 		$code = htmlspecialchars($secret->getCode());
-		$period = htmlspecialchars($totp->getPeriod());
-		$secretId = $secret->getId();
-		$refSecretCode = "showSecretCode.php?secretId={$secretId}";
 
 		if($isAdmin){
 			print("
