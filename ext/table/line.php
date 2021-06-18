@@ -4,19 +4,25 @@ if(!$emptyResult){
 	print("<table>");
 
 	print("
+
 		<tbody>
-		<thead>
-			<tr>
-				<th>Code article</th>
-				<th>Désignation</th>
-				<th>Quantité</th>
-				<th>Prix unitaire</th>
-				<th>Remise</th>
-				<th>Prix total</th>
-				<th class='thDescription'>Description</th>
-			</tr>
-		</thead>
+
+			<thead>
+
+				<tr>
+					<th>Code article</th>
+					<th>Désignation</th>
+					<th>Quantité</th>
+					<th>Prix unitaire</th>
+					<th>Remise</th>
+					<th>Prix total</th>
+					<th class='thDescription'>Description</th>
+				</tr>
+
+			</thead>
+
 		</tbody>
+		
 	");
 
 	foreach($lines as $line)

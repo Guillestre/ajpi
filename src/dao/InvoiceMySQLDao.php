@@ -13,7 +13,7 @@ class InvoiceMySQLDao
 	}
 
 	
-	public function fetchInvoices($filters, $start, $column, $direction)
+	public function fetchInvoices($filters, $start, $column, $direction, $pageOffset)
 	{
 
 		/* PREPARE DIRECTION */
@@ -55,6 +55,8 @@ class InvoiceMySQLDao
 			case "TTC" :
 				$colOrder = " ORDER BY totalIncludingTaxes ";
 				break;
+
+		
 		}
 
 		/* PREPARE FILTERS */
@@ -84,7 +86,7 @@ class InvoiceMySQLDao
 		DATE_FORMAT(date, '%d/%m/%Y') AS date 
 		FROM invoices, clients WHERE 1 ${clause} AND 
 		invoices.clientCode = clients.code ${colOrder} ${order} 
-		LIMIT 100 OFFSET ${start};";
+		LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
@@ -142,7 +144,7 @@ class InvoiceMySQLDao
 		return $invoices;
 	}
 
-	public function countFetchInvoices($filters, $start)
+	public function countFetchInvoices($filters, $start, $pageOffset)
 	{
 		$clause = "";
 
@@ -170,10 +172,7 @@ class InvoiceMySQLDao
 		$query = "SELECT *, invoices.code AS invoiceCode, 
 		DATE_FORMAT(date, '%d/%m/%Y') AS date 
 		FROM invoices, clients WHERE 1 ${clause} AND 
-		invoices.clientCode = clients.code
-		ORDER BY CONVERT(SUBSTR( invoices.code, POSITION('F' IN invoices.code) + 2, 
-		LENGTH(invoices.code)), 
-		UNSIGNED INTEGER) DESC LIMIT 100 OFFSET ${start};";
+		invoices.clientCode = clients.code LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 

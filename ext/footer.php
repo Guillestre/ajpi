@@ -1,5 +1,12 @@
 <!-- REFRESH CURRENT PAGE JUST ONCE -->
  
+<?php
+  
+  //Pages authorized to be reload to be sure to display correct refreshed data
+  $reloadPages = array("userManagement.php", "secretManagement.php");
+  if(in_array($currentPage, $reloadPages)){
+?>
+
 <script type='text/javascript'>
  (function()
  {
@@ -13,6 +20,8 @@
   }
  })();
 </script>
+
+<?php } ?>
 
 <!-- IMPORT AWESOME FONT ------->
 

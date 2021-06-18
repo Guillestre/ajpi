@@ -12,7 +12,7 @@ class ClientMySQLDao
 		$this->database = MySQLConnection::getInstance()->getConnection();
 	}
 
-	public function fetchProspects($filters, $start, $column, $direction)
+	public function fetchProspects($filters, $start, $column, $direction, $pageOffset)
 	{
 
 		/* PREPARE DIRECTION */
@@ -32,11 +32,11 @@ class ClientMySQLDao
 		switch($column)
 		{
 
-			case "code" :
+			case "prospectCode" :
 				$colOrder = " ORDER BY code ";
 				break;
 
-			case "name" :
+			case "prospectName" :
 				$colOrder = " ORDER BY name ";
 				break;
 
@@ -49,25 +49,25 @@ class ClientMySQLDao
 
 		$clause = "";
 
-		if(isset($filters['code']))
-			$clause .= " AND code LIKE :code ";
+		if(isset($filters['prospectCode']))
+			$clause .= " AND code LIKE :prospectCode ";
 
-		if(isset($filters['name']))
-			$clause .= " AND name LIKE :name ";
+		if(isset($filters['prospectName']))
+			$clause .= " AND name LIKE :prospectName ";
 
 		$query = "SELECT * FROM clients WHERE code 
 		NOT IN (SELECT clientCode FROM invoices) 
-		${clause} ${colOrder} ${order} LIMIT 100 OFFSET ${start};";
+		${clause} ${colOrder} ${order} LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
-		if(isset($filters['code'])){
-			$clientCode = $filters['code'];
-			$step->bindValue(":code", "%{$code}%");
+		if(isset($filters['prospectCode'])){
+			$prospectCode = $filters['prospectCode'];
+			$step->bindValue(":prospectCode", "%{$prospectCode}%");
 		} 
-		if(isset($filters['name'])){
-			$name = utf8_decode($filters['name']);
-			$step->bindValue(":name", "%{$name}%");
+		if(isset($filters['prospectName'])){
+			$prospectName = utf8_decode($filters['prospectName']);
+			$step->bindValue(":prospectName", "%{$prospectName}%");
 		} 
 
 		$step->execute();
@@ -104,32 +104,32 @@ class ClientMySQLDao
 		return $clients;
 	}
 
-	public function countFetchProspects($filters, $start)
+	public function countFetchProspects($filters, $start, $pageOffset)
 	{
 
 		/* PREPARE FILTERS */
 
 		$clause = "";
 
-		if(isset($filters['code']))
-			$clause .= " AND code LIKE :code ";
+		if(isset($filters['prospectCode']))
+			$clause .= " AND code LIKE :prospectCode ";
 
-		if(isset($filters['name']))
-			$clause .= " AND name LIKE :name ";
+		if(isset($filters['prospectName']))
+			$clause .= " AND name LIKE :prospectName ";
 
 		$query = "SELECT * FROM clients WHERE code 
 		NOT IN (SELECT clientCode FROM invoices) 
-		${clause} LIMIT 100 OFFSET ${start};";
+		${clause} LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
-		if(isset($filters['code'])){
-			$clientCode = $filters['code'];
-			$step->bindValue(":clientCode", "%{$code}%");
+		if(isset($filters['prospectCode'])){
+			$prospectCode = $filters['prospectCode'];
+			$step->bindValue(":prospectCode", "%{$prospectCode}%");
 		} 
-		if(isset($filters['name'])){
-			$name = utf8_decode($filters['name']);
-			$step->bindValue(":name", "%{$name}%");
+		if(isset($filters['prospectName'])){
+			$prospectName = utf8_decode($filters['prospectName']);
+			$step->bindValue(":prospectName", "%{$prospectName}%");
 		} 
 
 		$step->execute();

@@ -7,24 +7,52 @@ switch($currentPage)
 	case "dashboard.php" :
 
 		//Get client type
-		if(isset($_GET['clientType']))
-			$clienType = $_GET['clientType'];
+		if(isset($_GET['searchType']))
+			$searchType = $_GET['searchType'];
 		else
-			$clienType = "client";
+			$searchType = "client";
 
-		if(strcmp($clienType, "prospect") == 0 && $isAdmin){
+		//Set number of lines displayed per page
+		$pageOffset = 20;
+
+		//Check if user has changed page
+		$changePage = 
+		isset($_GET['nextButton']) || 
+		isset($_GET['previousButton']) ||
+		isset($_GET['searchButton']);
+
+		//get sorted column if selected
+		if(isset($_GET['column']))
+				$column = $_GET['column'];
+
+		//Declare invoice columns
+		$invoiceColumn = 
+		array("invoiceCode", "clientCode", "name", "date", "HT", "TTC");
+
+		//Declare client prospect columns
+		$prospectColumn = 
+		array("prospectCode", "prospectName");
+
+		$invoiceSearch = true;
+		$prospectSearch = false;
+
+		//Verify if selected column is present in the search type
+
+
+		if(strcmp($searchType, "invoice") == 0 || !isset($searchType))
+		{
+			
+		}
+
+		//if admin chose prospect, fetch them
+		if(strcmp($searchType, "prospect") == 0 && $isAdmin){
 
 			/* TITLE COLUMN SORT */
-
-			$changePage = 
-			isset($_GET['nextButton']) || 
-			isset($_GET['previousButton']) ||
-			isset($_GET['searchButton']);
 
 			if(isset($_GET['column']))
 				$column = $_GET['column'];
 			else
-				$column = "clientCode";
+				$column = "prospectCode";
 
 			if(!$changePage){
 				if(isset($_GET['prevColumn']))
@@ -68,8 +96,6 @@ switch($currentPage)
 			//If search button is clicked, show invoices at the beginning
 			if(isset($_GET['searchButton']))
 				$start = 0;
-
-			$pageOffset = 100;
 
 			if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
 				$start -= $pageOffset;
@@ -86,41 +112,41 @@ switch($currentPage)
 			$filters = [];
 
 			//Verify if user has added client code filter
-			if(isset($_GET['clientCode']) && strcmp(trim($_GET['clientCode']), "") != 0)
-				$filters['clientCode'] = trim($_GET["clientCode"]);
+			if(isset($_GET['prospectCode']) && strcmp(trim($_GET['prospectCode']), "") != 0)
+				$filters['prospectCode'] = trim($_GET["prospectCode"]);
 
 			//Verify if user has added client name filter
-			if(isset($_GET['name']) && strcmp(trim($_GET['name']), "") != 0)
-				$filters['name'] = trim($_GET["name"]);
+			if(isset($_GET['prospectName']) && strcmp(trim($_GET['prospectName']), "") != 0)
+				$filters['prospectName'] = trim($_GET["prospectName"]);
 
 			//Fetch clients
 			$prospects = 
-			$clientDao->fetchProspects($filters, $start, $column, $direction);
+			$clientDao->fetchProspects($filters, $start, $column, $direction, $pageOffset);
 
 			//Check if empty result
 			$emptyResult = $prospects == NULL;
 
 			//Check if clients are available next and previously
 			$nextAvailable = 
-			$clientDao->countFetchProspects($filters, $start + $pageOffset) != 0;
+			$clientDao->countFetchProspects($filters, $start + $pageOffset, $pageOffset) != 0;
 			$previousAvailable = 
-			$clientDao->countFetchProspects($filters, $start - $pageOffset) != 0;
+			$clientDao->countFetchProspects($filters, $start - $pageOffset, $pageOffset) != 0;
 
 
+		//Otherwise, fetch invoices
 		} else {
 
 			/* TITLE COLUMN SORT */
 
-			$changePage = 
-			isset($_GET['nextButton']) || 
-			isset($_GET['previousButton']) ||
-			isset($_GET['searchButton']);
-
+			//Verify column for sort. 
+			//If user hasn't chose a column
+			//Then we set default column 
 			if(isset($_GET['column']))
 				$column = $_GET['column'];
 			else
 				$column = "invoiceCode";
 
+			//Handle direction sort ASC or DESC
 			if(!$changePage){
 				if(isset($_GET['prevColumn']))
 				{
@@ -163,8 +189,6 @@ switch($currentPage)
 			//If search button is clicked, show invoices at the beginning
 			if(isset($_GET['searchButton']))
 				$start = 0;
-
-			$pageOffset = 100;
 
 			if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
 				$start -= $pageOffset;
@@ -205,14 +229,17 @@ switch($currentPage)
 				$filters['endPeriod'] = $_GET['endPeriod'];
 
 			//Fetch invoices
-			$invoices = $invoiceDao->fetchInvoices($filters, $start, $column, $direction);
+			$invoices = 
+			$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
 
 			//Check if empty result
 			$emptyResult = $invoices == NULL;
 
 			//Check if invoices are available next and previously
-			$nextAvailable = $invoiceDao->countFetchInvoices($filters, $start + $pageOffset) != 0;
-			$previousAvailable = $invoiceDao->countFetchInvoices($filters, $start - $pageOffset) != 0;
+			$nextAvailable = 
+			$invoiceDao->countFetchInvoices($filters, $start + $pageOffset, $pageOffset) != 0;
+			$previousAvailable = 
+			$invoiceDao->countFetchInvoices($filters, $start - $pageOffset, $pageOffset) != 0;
 
 		}
 

@@ -1,17 +1,23 @@
-<?php
+<table>
 
+<?php
+//Verify if there are result before too display
+//Column titles
 if(!$emptyResult)
 {
 
 ?>
 
-<table>
-
 	<thead>
 		
 		<tr>
 
-			<?php if(isset($invoices)){ ?>
+			<?php 
+			//if user chose invoice search
+			//then we display invoice column titles
+			if(strcmp($searchType, "invoice") == 0){ ?>
+
+				<!-- INVOICE CODE COLUMN -->
 
 				<th>
 					<button class="col-button-title" name="column" value="invoiceCode">
@@ -25,33 +31,35 @@ if(!$emptyResult)
 					</button>
 				</th>
 
-			<?php } ?>
+				<!-- CLIENT CODE COLUMN -->
 
-			<th>
-				<button class="col-button-title" name="column" value="clientCode">
-					<?php if(strcmp($column, "clientCode") == 0) { ?>
-						<i class='fas fa-caret-<?php print $direction; ?>'> 
+				<th>
+					<button class="col-button-title" name="column" value="clientCode">
+						<?php if(strcmp($column, "clientCode") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Code client
+							</i>
+						<?php } else { ?>
 							Code client
-						</i>
-					<?php } else { ?>
-						Code client
-					<?php } ?>
-				</button>
-			</th>
-		
-			<th>
-				<button class="col-button-title" name="column" value="name">
-					<?php if(strcmp($column, "name") == 0) { ?>
-						<i class='fas fa-caret-<?php print $direction; ?>'> 
+						<?php } ?>
+					</button>
+				</th>
+
+				<!-- CLIENT NAME COLUMN -->
+			
+				<th>
+					<button class="col-button-title" name="column" value="name">
+						<?php if(strcmp($column, "name") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Nom
+							</i>
+						<?php } else { ?>
 							Nom
-						</i>
-					<?php } else { ?>
-						Nom
-					<?php } ?>
-				</button>
-			</th>
-	
-			<?php if(isset($invoices)){ ?>
+						<?php } ?>
+					</button>
+				</th>
+
+				<!-- DATE COLUMN -->
 
 				<th>
 					<button class="col-button-title" name="column" value="date">
@@ -64,7 +72,9 @@ if(!$emptyResult)
 						<?php } ?>
 					</button>
 				</th>
-		
+
+				<!-- TOTAL EXCLUDING TAXES COLUMN -->
+			
 				<th>
 					<button class="col-button-title" name="column" value="HT">
 						<?php if(strcmp($column, "HT") == 0) { ?>
@@ -76,6 +86,8 @@ if(!$emptyResult)
 						<?php } ?>
 					</button>
 				</th>
+
+				<!-- TOTAL INCLUDING TAXES COLUMN -->
 
 				<th>
 					<button class="col-button-title" name="column" value="TTC">
@@ -89,6 +101,39 @@ if(!$emptyResult)
 					</button>
 				</th>
 
+			<?php } 
+			//if user chose prospect search
+			//then we display prospect column titles
+			else if(strcmp($searchType, "prospect") == 0) { ?>
+
+				<!-- PROSPECT CODE COLUMN -->
+
+				<th>
+					<button class="col-button-title" name="column" value="prospectCode">
+						<?php if(strcmp($column, "prospectCode") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Code client
+							</i>
+						<?php } else { ?>
+							Code client
+						<?php } ?>
+					</button>
+				</th>
+
+				<!-- PROSPECT NAME COLUMN -->
+			
+				<th>
+					<button class="col-button-title" name="column" value="prospectName">
+						<?php if(strcmp($column, "prospectName") == 0) { ?>
+							<i class='fas fa-caret-<?php print $direction; ?>'> 
+								Nom
+							</i>
+						<?php } else { ?>
+							Nom
+						<?php } ?>
+					</button>
+				</th>
+
 			<?php } ?>
 
 		</tr>
@@ -96,10 +141,17 @@ if(!$emptyResult)
 	</thead>
 
 <?php
+}
 
-	if(isset($prospects)){
+/* PROSPECT PART */
 
-		//Fetch each prospect
+if(strcmp($searchType, "prospect") == 0){
+
+	//Verify if there are result
+	if(!$emptyResult)
+	{
+
+		//Fetch each prospect and display them
 		foreach($prospects as $prospect)
 		{
 			$code = htmlspecialchars($prospect->getCode());
@@ -120,8 +172,19 @@ if(!$emptyResult)
 		}
 
 		print("</table>");
-	} else {
 
+	} else
+		messageHandler::sendInfoMessage("Aucun prospect est présent");
+
+} else if(strcmp($searchType, "invoice") == 0) {
+
+	/* INVOICE PART */
+
+	//Verify if there are result
+	if(!$emptyResult)
+	{
+
+		//Fetch each invoice and display them
 		foreach($invoices as $invoice)
 		{
 			$code = htmlspecialchars($invoice->getCode());
@@ -155,8 +218,10 @@ if(!$emptyResult)
 		}
 
 		print("</table>");
-	} 
 
-}else
-	messageHandler::sendInfoMessage("Aucun résultats pour cette recherche");
+	} else
+		messageHandler::sendInfoMessage("Aucune facture est présente");
+
+} 
+
 ?>

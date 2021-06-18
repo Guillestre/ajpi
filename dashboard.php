@@ -40,7 +40,7 @@
 				//Put client type in GET method
 				print
 				("
-					<input type='text' name='clientType' value='${clientType}' hidden/>
+					<input type='text' name='searchType' value='${searchType}' hidden/>
 				");
 
 

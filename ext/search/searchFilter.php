@@ -12,19 +12,19 @@
 		<!-- RADIO CLIENT -->
 
 		<input 
-		type="radio" id="radioClient" name="clientType" value="client" 
-		onclick="clientTypeManager()" 
+		type="radio" id="radioClient" name="searchType" value="invoice" 
+		onclick="searchTypeManager()" 
 		<?php 
-			if(isset($_GET['clientType']))
+			if(isset($_GET['searchType']))
 			{
-				$clientType = $_GET['clientType'];
-				if(strcmp($clientType, "client") == 0)
+				$searchType = $_GET['searchType'];
+				if(strcmp($searchType, "invoice") == 0)
 					print("checked");
 			} 
 			else
 			{
 				print("checked");
-				$clientType = "client";
+				$searchType = "invoice";
 			}
 		?>
 		/>
@@ -34,13 +34,13 @@
 		<!-- RADIO PROSPECT -->
 
 		<input 
-		type="radio" id="radioProspect" name="clientType" value="prospect" 
-		onclick="clientTypeManager()" 
+		type="radio" id="radioProspect" name="searchType" value="prospect" 
+		onclick="searchTypeManager()" 
 		<?php 
-			if(isset($_GET['clientType']))
+			if(isset($_GET['searchType']))
 			{
-				$clientType = $_GET['clientType'];
-				if(strcmp($clientType, "prospect") == 0)
+				$searchType = $_GET['searchType'];
+				if(strcmp($searchType, "prospect") == 0)
 					print("checked");
 			}
 		?>
@@ -85,12 +85,12 @@
 
 			<div class="filter">
 				<label for="clientCode">Code client :</label><br/>
-				<input type="text" name="clientCode" />
+				<input type="text" name="prospectCode" />
 			</div>
 
 			<div class="filter">
 				<label for="name">Nom client :</label><br/>
-				<input type="text" name="name" />
+				<input type="text" name="prospectName" />
 			</div>
 
 		</div>
@@ -129,7 +129,7 @@
 
 <script type="text/javascript">
 	
-	function clientTypeManager()
+	function searchTypeManager()
 	{
 		//radio
 		
@@ -149,6 +149,6 @@
 
 	}
 
-	clientTypeManager();
+	searchTypeManager();
 
 </script>
