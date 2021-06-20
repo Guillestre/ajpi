@@ -1,5 +1,3 @@
-<!-- FETCH DATA FROM DATABASE ----------->
-
 <?php
 
 switch($currentPage)
@@ -10,10 +8,10 @@ switch($currentPage)
 		if(isset($_GET['searchType']))
 			$searchType = $_GET['searchType'];
 		else
-			$searchType = "client";
+			$searchType = "invoice";
 
 		//Set number of lines displayed per page
-		$pageOffset = 20;
+		$pageOffset = 100;
 
 		//Check if user has changed page
 		$changePage = 
@@ -33,78 +31,101 @@ switch($currentPage)
 		$prospectColumn = 
 		array("prospectCode", "prospectName");
 
-		$invoiceSearch = true;
-		$prospectSearch = false;
-
 		//Verify if selected column is present in the search type
+		if(strcmp($searchType, "prospect") == 0) {
 
+			//Check if column is set
+			if(!isset($column))
+				$column = "prospectCode";
 
-		if(strcmp($searchType, "invoice") == 0 || !isset($searchType))
-		{
-			
-		}
-
-		//if admin chose prospect, fetch them
-		if(strcmp($searchType, "prospect") == 0 && $isAdmin){
-
-			/* TITLE COLUMN SORT */
-
-			if(isset($_GET['column']))
+			//Check if selected column is in prospecteColumn
+			if(!in_array($column, $prospectColumn))
+				$column = "prospectCode";
+			else if(isset($_GET['column']))
 				$column = $_GET['column'];
+			//set default selected column if column not exist
 			else
 				$column = "prospectCode";
 
-			if(!$changePage){
-				if(isset($_GET['prevColumn']))
-				{
-					$prevColumn = $_GET['prevColumn'];
+		} else {
 
-					if(isset($_GET['direction']))
-					{
-						$direction = $_GET['direction'];
-						if(strcmp($column, $prevColumn) == 0)
-						{
-							if(strcmp($direction, "down") == 0) 
-								$direction = "up";
-							else
-								$direction = "down";
-						} else
-							$direction = "down";
-					} else
-						$direction = "down";
-				} else
-					$direction = "down";
-			} else {
+			//Check if column is set
+			if(!isset($column))
+				$column = "invoiceCode";
 
-				//Get previous column
-				$column = $_GET['prevColumn'];
+			//Check if selected column is in invoiceColumn
+			if(!in_array($column, $invoiceColumn))
+				$column = "invoiceCode";
+			else if(isset($_GET['column']))
+				$column = $_GET['column'];
+			//set default selected column if column not exist
+			else 
+				$column = "invoiceCode";
 
-				//If direction exist, get it
+		}
+
+		/* TITLE COLUMN SORT */
+
+		if(!$changePage){
+			if(isset($_GET['prevColumn']))
+			{
+				$prevColumn = $_GET['prevColumn'];
 				if(isset($_GET['direction']))
+				{
 					$direction = $_GET['direction'];
-				else
-					$direction = "down";
+					if(strcmp($column, $prevColumn) == 0)
+						if(strcmp($direction, "down") == 0) 
+							$direction = "up";
+						else
+							$direction = "down";
+				}
 			}
+		} else {
 
-			/* FOOTER PAGES */
+			//Get previous column
+			$column = $_GET['prevColumn'];
 
-			if(isset($_GET['start']))
-				$start = (int) $_GET['start'];
-			else
-				$start = 0;
+			//Set column according to search type
+			if(strcmp($searchType, "prospect") == 0)
+			{
+				if(!in_array($column, $prospectColumn))
+					$column = "prospectCode";
+			} else
+				if(!in_array($column, $invoiceColumn))
+					$column = "invoiceCode";
 
-			//If search button is clicked, show invoices at the beginning
-			if(isset($_GET['searchButton']))
-				$start = 0;
+			//If direction exist, get it
+			if(isset($_GET['direction']))
+				$direction = $_GET['direction'];
+		}
 
-			if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
-				$start -= $pageOffset;
+		//If sort direction not exist, then set down by default
+		if(!isset($direction))
+			$direction = "down";
 
-			if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
-				$start += $pageOffset;
+		/* FOOTER PAGES */
 
-			if($start < 0)
-				$start = 0;
+		//If search button is clicked, show invoices at the beginning
+		if(isset($_GET['searchButton']))
+			$start = 0;
+		//Otherwise, get start value if exist
+		else if(isset($_GET['start']))
+			$start = (int) $_GET['start'];
+		//If not exist, then set start at 0 (beginning result)
+		else
+			$start = 0;
+
+		if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
+			$start -= $pageOffset;
+
+		if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
+			$start += $pageOffset;
+
+		if($start < 0)
+			$start = 0;
+
+		//if admin chose prospect, fetch them
+		if(strcmp($searchType, "prospect") == 0 && $isAdmin){
 
 			/* FILTERS */
 
@@ -135,69 +156,6 @@ switch($currentPage)
 
 		//Otherwise, fetch invoices
 		} else {
-
-			/* TITLE COLUMN SORT */
-
-			//Verify column for sort. 
-			//If user hasn't chose a column
-			//Then we set default column 
-			if(isset($_GET['column']))
-				$column = $_GET['column'];
-			else
-				$column = "invoiceCode";
-
-			//Handle direction sort ASC or DESC
-			if(!$changePage){
-				if(isset($_GET['prevColumn']))
-				{
-					$prevColumn = $_GET['prevColumn'];
-
-					if(isset($_GET['direction']))
-					{
-						$direction = $_GET['direction'];
-						if(strcmp($column, $prevColumn) == 0)
-						{
-							if(strcmp($direction, "down") == 0) 
-								$direction = "up";
-							else
-								$direction = "down";
-						} else
-							$direction = "down";
-					} else
-						$direction = "down";
-				} else
-					$direction = "down";
-			} else {
-
-				//Get previous column
-				$column = $_GET['prevColumn'];
-
-				//If direction exist, get it
-				if(isset($_GET['direction']))
-					$direction = $_GET['direction'];
-				else
-					$direction = "down";
-			}
-
-			/* FOOTER PAGES */
-
-			if(isset($_GET['start']))
-				$start = (int) $_GET['start'];
-			else
-				$start = 0;
-
-			//If search button is clicked, show invoices at the beginning
-			if(isset($_GET['searchButton']))
-				$start = 0;
-
-			if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
-				$start -= $pageOffset;
-
-			if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
-				$start += $pageOffset;
-
-			if($start < 0)
-				$start = 0;
 
 			/* FILTERS */
 
