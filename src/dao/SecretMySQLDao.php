@@ -37,7 +37,7 @@
 				case "label" :
 					$colOrder = " ORDER BY label ";
 					break;
-				case "code" :
+				case "secretCode" :
 					$colOrder = " ORDER BY code ";
 					break;
 			}

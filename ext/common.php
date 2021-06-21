@@ -1,3 +1,5 @@
+<!-- FILE THAT CONTAINS COMMON REQUIRED RESOURCE FOR SEVERAL FILES -->
+
 <?php 
 
 	//Set current page
@@ -59,13 +61,16 @@
 		//Set status
 		$isAdmin = strcmp($user->getStatus(), "admin") == 0 ;
 
+		//Declare available files for an user client
 		$clientPages =  array(
 		"dashboard.php", "client.php", "invoice.php", 
 		"secretManagement.php", "processForm.php", "showSecretCode.php"
 		);
 
+		//If user is not admin and is on a prohibited page
 		if(!$isAdmin && !in_array($currentPage, $clientPages))
 		{
+			//Then redirect him toward dashboard
 			$redirection = "Location: dashboard.php";
 			header($redirection);
 		}

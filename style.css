@@ -166,8 +166,6 @@ img
 
 }
 
-@media (max-width:1100pt) {.footer{position: sticky; bottom: 0pt;}}
-
 @media (max-width:950pt) {
 
 	label, p, input, button, a, select, th, td, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
@@ -231,7 +229,7 @@ img
 		padding: 2pt 2pt;
 	}
 
-	table thead th {top: 24pt;}
+	table thead th {top: 40pt;}
 
 }
 

@@ -23,8 +23,8 @@ if(!$emptyResult){ ?>
 				</th>
 
 				<th>
-					<button class="col-button-title" name="column" value="code">
-						<?php if(strcmp($column, "code") == 0) { ?>
+					<button class="col-button-title" name="column" value="secretCode">
+						<?php if(strcmp($column, "secretCode") == 0) { ?>
 							<i class='fas fa-caret-<?php print $direction; ?>'> 
 								Code
 							</i>
@@ -75,6 +75,6 @@ if(!$emptyResult){ ?>
 
 	print("</table>");
 } else
-	messageHandler::sendInfoMessage("Aucune clés est présente");
+	messageHandler::sendInfoMessage("Aucune clé est présente");
 
 ?>

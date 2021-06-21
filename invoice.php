@@ -1,8 +1,12 @@
+<!-- FILE THAT DISPLAY LINES ABOUT AN SPECIFIC INVOICE -->
+
 <?php include "ext/common.php"; ?>
 <?php include 'ext/search/fetchData.php'?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
+	<!-- HEADER -->
 
 	<?php include 'ext/header.php'; ?>
 
@@ -12,7 +16,7 @@
 
 		<?php include 'ext/menu.php';?>
 
-		<!-- INVOICE INFO -->
+		<!-- INVOICE INFO LEFT PART -->
 
 		<div class='leftPart'>
 

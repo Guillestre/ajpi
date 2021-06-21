@@ -1,17 +1,30 @@
 <?php
-
 switch($currentPage)
 {
-	case "dashboard.php" :
 
-		//Get client type
-		if(isset($_GET['searchType']))
-			$searchType = $_GET['searchType'];
-		else
-			$searchType = "invoice";
+	//Common code for dashboard.php and secretManagement.php
+	case "dashboard.php" : case "secretManagement.php" :
 
-		//Set number of lines displayed per page
-		$pageOffset = 100;
+		//Set search type and page offset according the page we are
+		switch($currentPage)
+		{
+			case "dashboard.php" :
+
+				if(isset($_GET['searchType']) && $isAdmin)
+					$searchType = $_GET['searchType'];
+				else
+					$searchType = "invoice";
+
+				$pageOffset = 50;
+
+				break;
+			case "secretManagement.php" :
+
+				$searchType = "secret";
+				$pageOffset = 5;
+
+				break;
+		}
 
 		//Check if user has changed page
 		$changePage = 
@@ -24,49 +37,56 @@ switch($currentPage)
 				$column = $_GET['column'];
 
 		//Declare invoice columns
-		$invoiceColumn = 
+		$invoiceColumns = 
 		array("invoiceCode", "clientCode", "name", "date", "HT", "TTC");
 
 		//Declare client prospect columns
-		$prospectColumn = 
-		array("prospectCode", "prospectName");
+		$prospectColumns = array("prospectCode", "prospectName");
+
+		//Declare secret columns
+		$secretColumns = array("label", "secretCode");
+
+		//Declare default column and column list
+		switch ($searchType) {
+			case "prospect":
+				$defaultColumn = "prospectCode";
+				$columnList = $prospectColumns;
+				break;
+			
+			case "invoice":
+				$defaultColumn = "invoiceCode";
+				$columnList = $invoiceColumns;
+				break;
+
+			case "secret":
+				$defaultColumn = "label";
+				$columnList = $secretColumns;
+				break;
+		}
 
 		//Verify if selected column is present in the search type
-		if(strcmp($searchType, "prospect") == 0) {
+		//according the page we are on
 
-			//Check if column is set
-			if(!isset($column))
-				$column = "prospectCode";
+		//Check if column is set
+		if(!isset($column))
+			$column = $defaultColumn;
 
-			//Check if selected column is in prospecteColumn
-			if(!in_array($column, $prospectColumn))
-				$column = "prospectCode";
-			else if(isset($_GET['column']))
-				$column = $_GET['column'];
-			//set default selected column if column not exist
-			else
-				$column = "prospectCode";
-
-		} else {
-
-			//Check if column is set
-			if(!isset($column))
-				$column = "invoiceCode";
-
-			//Check if selected column is in invoiceColumn
-			if(!in_array($column, $invoiceColumn))
-				$column = "invoiceCode";
-			else if(isset($_GET['column']))
-				$column = $_GET['column'];
-			//set default selected column if column not exist
-			else 
-				$column = "invoiceCode";
-
-		}
+		//Check if selected column is in columnList
+		if(!in_array($column, $columnList))
+			$column = $defaultColumn;
+		else if(isset($_GET['column']))
+			$column = $_GET['column'];
+		//set default selected column if column not exist
+		else
+			$column = $defaultColumn;
 
 		/* TITLE COLUMN SORT */
 
-		if(!$changePage){
+		//Verify if user change the page
+		if(!$changePage)
+		{
+
+			//If so, then set current direction from the column
 			if(isset($_GET['prevColumn']))
 			{
 				$prevColumn = $_GET['prevColumn'];
@@ -80,19 +100,16 @@ switch($currentPage)
 							$direction = "down";
 				}
 			}
+
 		} else {
+
+			//Otherwise, get current direction
 
 			//Get previous column
 			$column = $_GET['prevColumn'];
 
-			//Set column according to search type
-			if(strcmp($searchType, "prospect") == 0)
-			{
-				if(!in_array($column, $prospectColumn))
-					$column = "prospectCode";
-			} else
-				if(!in_array($column, $invoiceColumn))
-					$column = "invoiceCode";
+			if(!in_array($column, $columnList))
+				$column = $defaultColumn;
 
 			//If direction exist, get it
 			if(isset($_GET['direction']))
@@ -124,81 +141,114 @@ switch($currentPage)
 		if($start < 0)
 			$start = 0;
 
-		//if admin chose prospect, fetch them
-		if(strcmp($searchType, "prospect") == 0 && $isAdmin){
+		//If we are on the dashboard page
+		if(strcmp($currentPage, "dashboard.php") == 0)
+		{
+			//if admin chose prospect, fetch them
+			if(strcmp($searchType, "prospect") == 0 && $isAdmin){
 
-			/* FILTERS */
+				/* FILTERS */
 
-			//Set filter array
-			$filters = [];
+				//Set filter array
+				$filters = [];
 
-			//Verify if user has added client code filter
-			if(isset($_GET['prospectCode']) && strcmp(trim($_GET['prospectCode']), "") != 0)
-				$filters['prospectCode'] = trim($_GET["prospectCode"]);
+				//Verify if user has added client code filter
+				if(isset($_GET['prospectCode']) && strcmp(trim($_GET['prospectCode']), "") != 0)
+					$filters['prospectCode'] = trim($_GET["prospectCode"]);
 
-			//Verify if user has added client name filter
-			if(isset($_GET['prospectName']) && strcmp(trim($_GET['prospectName']), "") != 0)
-				$filters['prospectName'] = trim($_GET["prospectName"]);
+				//Verify if user has added client name filter
+				if(isset($_GET['prospectName']) && strcmp(trim($_GET['prospectName']), "") != 0)
+					$filters['prospectName'] = trim($_GET["prospectName"]);
 
-			//Fetch clients
-			$prospects = 
-			$clientDao->fetchProspects($filters, $start, $column, $direction, $pageOffset);
+				//Fetch clients
+				$prospects = 
+				$clientDao->fetchProspects($filters, $start, $column, $direction, $pageOffset);
 
-			//Check if empty result
-			$emptyResult = $prospects == NULL;
+				//Check if empty result
+				$emptyResult = $prospects == NULL;
 
-			//Check if clients are available next and previously
-			$nextAvailable = 
-			$clientDao->countFetchProspects($filters, $start + $pageOffset, $pageOffset) != 0;
-			$previousAvailable = 
-			$clientDao->countFetchProspects($filters, $start - $pageOffset, $pageOffset) != 0;
+				//Check if clients are available next and previously
+				$nextAvailable = 
+				$clientDao->countFetchProspects($filters, $start + $pageOffset, $pageOffset) != 0;
+				$previousAvailable = 
+				$clientDao->countFetchProspects($filters, $start - $pageOffset, $pageOffset) != 0;
 
 
-		//Otherwise, fetch invoices
-		} else {
+			//Otherwise, fetch invoices
+			} else {
+
+				/* FILTERS */
+
+				//Set filter array
+				$filters = [];
+			
+				//Verify and adapt if user is a client. Client can just see his own invoices
+				if(!$isAdmin)
+					$filters['clientCodeOwner'] = $user->getClientCode();
+
+				//Verify if user has added invoiceCode filter
+				if(isset($_GET['invoiceCode']) && strcmp(trim($_GET['invoiceCode']), "") != 0)
+					$filters['invoiceCode'] = trim($_GET['invoiceCode']);
+
+				//Verify if user has added client code filter
+				if(isset($_GET['clientCode']) && strcmp(trim($_GET['clientCode']), "") != 0)
+					$filters['clientCode'] = trim($_GET["clientCode"]);
+
+				//Verify if user has added client name filter
+				if(isset($_GET['name']) && strcmp(trim($_GET['name']), "") != 0)
+					$filters['name'] = trim($_GET["name"]);
+
+				//Verify if user has added start date filter
+				if(isset($_GET['startPeriod']) && strcmp(trim($_GET['startPeriod']), "") != 0)
+					$filters['startPeriod'] = $_GET['startPeriod'];
+
+				//Verify if user has added end date filter
+				if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
+					$filters['endPeriod'] = $_GET['endPeriod'];
+
+				//Fetch invoices
+				$invoices = 
+				$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
+
+				//Check if empty result
+				$emptyResult = $invoices == NULL;
+
+				//Check if invoices are available next and previously
+				$nextAvailable = 
+				$invoiceDao->countFetchInvoices($filters, $start + $pageOffset, $pageOffset) != 0;
+				$previousAvailable = 
+				$invoiceDao->countFetchInvoices($filters, $start - $pageOffset, $pageOffset) != 0;
+			}
+
+		//If we are on secretManagement page
+		} else if(strcmp($currentPage, "secretManagement.php") == 0) {
 
 			/* FILTERS */
 
 			//Set filter array
 			$filters = [];
 		
-			//Verify and adapt if user is a client. Client can just see his own invoices
+			//Verify and adapt if user is a client. Client can just see his own secret
 			if(!$isAdmin)
 				$filters['clientCodeOwner'] = $user->getClientCode();
 
-			//Verify if user has added invoiceCode filter
-			if(isset($_GET['invoiceCode']) && strcmp(trim($_GET['invoiceCode']), "") != 0)
-				$filters['invoiceCode'] = trim($_GET['invoiceCode']);
+			//Verify if user has added label filter
+			if(isset($_GET['label']) && strcmp(trim($_GET['label']), "") != 0){
+				$filters['label'] = trim($_GET['label']);
+			}
 
-			//Verify if user has added client code filter
-			if(isset($_GET['clientCode']) && strcmp(trim($_GET['clientCode']), "") != 0)
-				$filters['clientCode'] = trim($_GET["clientCode"]);
+			//Fetch secrets
+			$fetchedSecrets = $secretDao->fetchSecrets($filters, $start, $column, $direction);
 
-			//Verify if user has added client name filter
-			if(isset($_GET['name']) && strcmp(trim($_GET['name']), "") != 0)
-				$filters['name'] = trim($_GET["name"]);
+			//Check if secrets are available next and previously
+			$nextAvailable = $secretDao->countFetchSecrets($filters, $start + 5) != 0;
+			$previousAvailable = $secretDao->countFetchSecrets($filters, $start - 5) != 0;
+			
+			//Get all secret
+			$secrets = $secretDao->getAllSecret();
 
-			//Verify if user has added start date filter
-			if(isset($_GET['startPeriod']) && strcmp(trim($_GET['startPeriod']), "") != 0)
-				$filters['startPeriod'] = $_GET['startPeriod'];
-
-			//Verify if user has added end date filter
-			if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
-				$filters['endPeriod'] = $_GET['endPeriod'];
-
-			//Fetch invoices
-			$invoices = 
-			$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
-
-			//Check if empty result
-			$emptyResult = $invoices == NULL;
-
-			//Check if invoices are available next and previously
-			$nextAvailable = 
-			$invoiceDao->countFetchInvoices($filters, $start + $pageOffset, $pageOffset) != 0;
-			$previousAvailable = 
-			$invoiceDao->countFetchInvoices($filters, $start - $pageOffset, $pageOffset) != 0;
-
+			//Check for empty result
+			$emptyResult = $fetchedSecrets == NULL;
 		}
 
 		break;
@@ -262,100 +312,6 @@ switch($currentPage)
 		$secrets = $secretDao->getAllSecret();
 		$clientUsers = $userDao->getAllClientUser();
 		$adminUsers = $userDao->getAllAdminUser();
-		
-		break;
-
-	case "secretManagement.php" :
-
-		/* TITLE COLUMN SORT */
-
-		$changePage = 
-		isset($_GET['nextButton']) || 
-		isset($_GET['previousButton']) ||
-		isset($_GET['searchButton']);
-
-		if(isset($_GET['column']))
-			$column = $_GET['column'];
-		else
-			$column = "label";
-
-		if(!$changePage){
-			if(isset($_GET['prevColumn']))
-			{
-				$prevColumn = $_GET['prevColumn'];
-
-				if(isset($_GET['direction']))
-				{
-					$direction = $_GET['direction'];
-					if(strcmp($column, $prevColumn) == 0)
-					{
-						if(strcmp($direction, "down") == 0) 
-							$direction = "up";
-						else
-							$direction = "down";
-					} else
-						$direction = "down";
-				} else
-					$direction = "down";
-			} else
-				$direction = "down";
-		} else {
-			$column = $_GET['prevColumn'];
-			if(isset($_GET['direction']))
-				$direction = $_GET['direction'];
-			else
-				$direction = "down";
-		}
-
-		/* FOOTER PAGES */
-
-		if(isset($_GET['start']))
-			$start = (int) $_GET['start'];
-		else
-			$start = 0;
-
-		if(isset($_GET['searchButton']))
-			$start = 0;
-
-		if(isset($_GET['previousButton']) && !isset($_GET['nextButton']))
-		{
-			$start -= 5;
-		}
-
-		if(!isset($_GET['previousButton']) && isset($_GET['nextButton']))
-		{
-			$start += 5;
-		}
-
-		if($start < 0)
-			$start = 0;
-
-		/* FILTERS */
-
-		//Set filter array
-		$filters = [];
-	
-		//Verify and adapt if user is a client. Client can just see his own secret
-		if(!$isAdmin)
-			$filters['clientCodeOwner'] = $user->getClientCode();
-
-		//Verify if user has added label filter
-		if(isset($_GET['label']) && strcmp(trim($_GET['label']), "") != 0){
-			$filters['label'] = trim($_GET['label']);
-		}
-
-		//Fetch secrets
-		$fetchedSecrets = $secretDao->fetchSecrets($filters, $start, $column, $direction);
-
-		//Check if secrets are available next and previously
-		$nextAvailable = $secretDao->countFetchSecrets($filters, $start + 5) != 0;
-		$previousAvailable = $secretDao->countFetchSecrets($filters, $start - 5) != 0;
-		
-		//Get all secret
-		$secrets = $secretDao->getAllSecret();
-
-		//Check for empty result
-		$emptyResult = $fetchedSecrets == NULL;
 		
 		break;
 

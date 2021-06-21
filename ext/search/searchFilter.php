@@ -9,44 +9,46 @@
 			print("<input type='text' name='direction' value='${direction}' hidden/>");
 		?>
 
-		<!-- RADIO CLIENT -->
-
-		<input 
-		type="radio" id="radioClient" name="searchType" value="invoice" 
-		onclick="searchTypeManager()" 
-		<?php 
-			if(isset($_GET['searchType']))
-			{
-				$searchType = $_GET['searchType'];
-				if(strcmp($searchType, "invoice") == 0)
-					print("checked");
-			} 
-			else
-			{
-				print("checked");
-				$searchType = "invoice";
-			}
+		<?php
+			//Just admin have access on it
+			if($isAdmin){
 		?>
-		/>
 
-		<label for="radioClient">Factures</label>
+			<!-- RADIO CLIENT -->
 
-		<!-- RADIO PROSPECT -->
-
-		<input 
-		type="radio" id="radioProspect" name="searchType" value="prospect" 
-		onclick="searchTypeManager()" 
-		<?php 
-			if(isset($_GET['searchType']))
-			{
-				$searchType = $_GET['searchType'];
-				if(strcmp($searchType, "prospect") == 0)
+			<input 
+			type="radio" id="radioClient" name="searchType" value="invoice" 
+			onclick="searchTypeManager()" 
+			<?php 
+				if(isset($_GET['searchType']))
+				{
+					if(strcmp($_GET['searchType'], "invoice") == 0)
+						print("checked");
+				} 
+				else
 					print("checked");
-			}
-		?>
-		/>
+			?>
+			/>
 
-		<label for="radioProspect">Prospects</label>
+			<label for="radioClient">Factures</label>
+
+			<!-- RADIO PROSPECT -->
+
+			<input 
+			type="radio" id="radioProspect" name="searchType" value="prospect" 
+			onclick="searchTypeManager()" 
+			<?php 
+				if(isset($_GET['searchType']))
+				{
+					if(strcmp($_GET['searchType'], "prospect") == 0)
+						print("checked");
+				}
+			?>
+			/>
+
+			<label for="radioProspect">Prospects</label>
+
+		<?php } ?>
 
 		<!-- CLIENT FILTERS -->
 
@@ -80,7 +82,10 @@
 		</div>
 
 		<!-- PROSPECT FILTERS -->
-
+		<?php
+			//Just admin have access on it
+			if($isAdmin){
+		?>
 		<div id="blockProspectFilter">
 
 			<div class="filter">
@@ -94,6 +99,8 @@
 			</div>
 
 		</div>
+
+		<?php } ?>
 
 		<!-- BUTTON -->
 
