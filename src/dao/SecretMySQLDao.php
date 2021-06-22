@@ -37,9 +37,6 @@
 				case "label" :
 					$colOrder = " ORDER BY label ";
 					break;
-				case "secretCode" :
-					$colOrder = " ORDER BY code ";
-					break;
 			}
 
 			/* PREPARE FILTERS */
@@ -145,7 +142,11 @@
 			$step->bindValue(":label", utf8_decode($label)); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
-			return $row['id'];
+
+			if($step->rowCount() == 1)
+				return $row['id'];
+			else
+				return NULL;
 		}
 
 		public function getCode($id)
@@ -155,7 +156,11 @@
 			$step->bindValue(":id", $id); 
 			$step->execute();
 			$row = $step->fetch(PDO::FETCH_ASSOC);
-			return $row['code'];
+			
+			if($step->rowCount() == 1)
+				return $row['code'];
+			else
+				return NULL;
 		}
 
 		public function getLabel($id)

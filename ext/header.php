@@ -35,6 +35,11 @@
 				$username = $_GET['username'];
 				$title = "Modification utilisateur ${username}";
 				break;
+
+			case 'secret.php':
+				$secretId = $_GET['secretId'];
+				$title = "Clé " . $secretDao->getLabel($secretId);
+				break;
 		}
 		print("<title>${title}</title>");
 	?>

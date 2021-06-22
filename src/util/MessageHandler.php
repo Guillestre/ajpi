@@ -7,24 +7,24 @@
 
 		public static function sendErrorMessage($message)
 		{
-			print("<div class='errorMessageBox'><span class='errorMessage'>");
+			print("<p class='errorMessage'>");
 			print(htmlspecialchars($message));
-			print("</div><span/>");
+			print("<p/>");
 		}
 
 		public static function sendSuccessMessage($message)
 		{
-			print("<div class='successMessageBox'><span class='successMessage'>");
+			print("<p class='successMessage'>");
 			print(htmlspecialchars($message));
-			print("<span/></div>");
+			print("<p/>");
 		}
 
 
 		public static function sendInfoMessage($message)
 		{
-			print("<div class='infoMessageBox'><p class='infoMessage'>");
+			print("<p class='infoMessage'>");
 			print(htmlspecialchars($message));
-			print("</p></div>");
+			print("<p/>");
 		}
 
 	}

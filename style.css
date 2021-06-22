@@ -1,6 +1,6 @@
 /* MAIN PART ***************************************************/
 
-body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;margin-bottom: 40pt;}
+body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;margin-bottom: 50pt;}
 
 .footer
 {
@@ -10,9 +10,9 @@ body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;margin-bottom
 	width: 100%;
 	display: grid; 
 	grid-template-columns: auto auto;
-}
+	background-color: rgb(100, 150, 100);
 
-	
+}
 
 .navBar{
 	position: fixed;
@@ -50,7 +50,7 @@ th{background: rgb(240, 250, 230);}
 
 table, .infoArea{background-color: rgb(200, 220, 200);}
 
-table, .infoArea, #descriptionBox, .footer, #boxDescriptionInvoice, .userBox
+table, .infoArea, #descriptionBox, #boxDescriptionInvoice, .userBox
 {margin: 5pt;}
 
 table thead th 
@@ -59,26 +59,15 @@ table thead th
 	top: 33pt;
 }
 
-h1, h2, label,
-p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
-{
-	margin: 10pt;
-}
+h1, h2, label, input, button, p, select, .grid-item-text, .grid-item-label {margin: 10pt;}
 
 h1{font-size: 30pt;}
 
 h2{font-size: 25pt;}
 
-td, th,
-label, p, input, button, a, .item-menu, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
-	font-size: 20pt;
-}
+td, th, label, input, button, a, p, .item-menu, .grid-item-text {font-size: 20pt;}
 
-img
-{
-	width: 150pt;
-	height: 150pt;
-}
+img{width: 150pt; height: 150pt;}
 
 .tdDescription{text-align: left;}
 
@@ -129,10 +118,9 @@ img
   	grid-template-columns: auto auto;
 }
 
-
-.errorMessageBox, .successMessageBox{margin: 10pt;}
 .successMessage{color: rgb(20, 80, 20);}
 .errorMessage{color: red;}
+.infoMessage{padding: 10pt;}
 
 .col-button-title
 {
@@ -143,16 +131,13 @@ img
     padding: 0;
 }
 
-.secretTable tr td{font-size: 14pt;}
+.secretTable tr td{font-size: 20pt;}
 
 /* ADAPTATION PART ***************************************************/
 
 @media (max-width:1350pt) {
 
-	.secretTable tr td{font-size: 12pt;}
-
-	td, th,
-	label, p, input, button, a, .item-menu, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
+	td, th, label, p, input, button, a, .item-menu, .grid-item-text {
 		font-size: 16pt;
 	}
 
@@ -168,7 +153,7 @@ img
 
 @media (max-width:950pt) {
 
-	label, p, input, button, a, select, th, td, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
+	label, p, input, button, a, select, th, td, .grid-item-text{
 		font-size: 14pt;
 	}
 
@@ -189,16 +174,14 @@ img
 
 	.navBar{grid-template-columns: 120pt 120pt 120pt 120pt;}
 
-	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select, #descriptionBox, #infoMessageBox
-	{
-		margin: 5pt;
-	}
+	h1, h2, label, p, input, button, .grid-item-text, .grid-item-label, select
+	{ margin: 5pt; }
 
 	h1{font-size: 18pt;}
 
 	h2{font-size: 16pt;}
 
-	label, p, input, a, button, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
+	label, p, input, a, button, .grid-item-text {
 		font-size: 13pt;
 	}
 
@@ -215,7 +198,7 @@ img
 
 	.item-menu{font-size: 13pt;}
 
-	label, p, input, a, button, .grid-item-text, #infoMessage, .errorMessageBox, .successMessageBox {
+	label, p, input, a, button, .grid-item-text {
 		font-size: 12pt;
 	}
 

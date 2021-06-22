@@ -22,18 +22,6 @@ if(!$emptyResult){ ?>
 					</button>
 				</th>
 
-				<th>
-					<button class="col-button-title" name="column" value="secretCode">
-						<?php if(strcmp($column, "secretCode") == 0) { ?>
-							<i class='fas fa-caret-<?php print $direction; ?>'> 
-								Code
-							</i>
-						<?php } else { ?>
-							Code
-						<?php } ?>
-					</button>
-				</th>
-
 			</tr>
 		</thead>
 <?php 
@@ -44,32 +32,35 @@ if(!$emptyResult){ ?>
 		$totp = TOTP::create($secret->getCode());
 		$totp->setLabel($secret->getLabel());
 		
-		//Set label and code
+		//Set label and id
 		$label = htmlspecialchars($secret->getLabel());
-		$code = htmlspecialchars($secret->getCode());
+		$secretId = htmlspecialchars($secret->getId());
 
+		//Set link to secret page
+		$refSecret = "secret.php?secretId={$secretId}";
+
+		//If we are an admin
 		if($isAdmin){
 			print("
 				<tr>
 					<td>
-						{$label}
-					</td>
-					<td>
-						${code}
+						<a href='{$refSecret}'>
+							{$label}
+						</a>
 					</td>
 				</tr>	
 			");
 		}
+		//If we are an user client
 		else if($user->getSecretId() == $secret->getId())
 			print("
 				<tr>
 					<td>
-						{$label}
+						<a href='{$refSecret}'>
+							{$label}
+						</a>
 					</td>
-					<td>
-						${code}
-					</td>
-				</tr>		
+				</tr>
 			");
 	}
 

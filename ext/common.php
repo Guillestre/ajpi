@@ -34,7 +34,7 @@
 
 	//Set session pages
 	$loggedPages = array(
-		"dashboard.php", "client.php", "invoice.php", 
+		"dashboard.php", "client.php", "invoice.php", "secret.php",
 		"userManagement.php", "secretManagement.php", "processForm.php", "showSecretCode.php"
 	);
 

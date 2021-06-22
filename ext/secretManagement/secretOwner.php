@@ -17,42 +17,38 @@
 
     //set link
     $link = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${uri}";
+
+    //Set link to secret page
+	$refSecret = "secret.php?secretId={$secretId}";
 ?>
 
-<div class="grid-container-userFormGroup">
 
-	<!-- OWNER SECRET ----------------------->
 
-	<div>
-		<h2>Ma clé : </h2>
+<!-- OWNER SECRET ----------------------->
 
-		<div class="grid-container-userForm">
 
-			<div class="grid-item-label" >
-				<label for="ownerLabel">Votre clé actuelle : </label>
-			</div>
+<h2>Ma clé : </h2>
 
-			<div class="grid-item-text" id="ownerLabel">
-		 		<?php print($label); ?>
-			</div>
+<div class="grid-container-userForm">
 
-			<div class="grid-item-label">
-				<label for="ownerQRCode">QR CODE de la clé : </label>
-			</div>
-
-			<div class="grid-item-text" id="ownerQRCode">
-		 		<img alt="<?php echo "QR CODE clé ${label}"; ?>" src="<?php echo $link; ?>">
-			</div>
-
-		</div>
-
-		<div></div>
-			
+	<div class="grid-item-label" >
+		<label for="ownerLabel">Votre clé actuelle : </label>
 	</div>
 
+	<div class="grid-item-text" id="ownerLabel">
+ 		<a href="<?php print($refSecret);?>">
+ 			<?php print($label); ?>
+ 		</a>
+	</div>
+
+	<div class="grid-item-label">
+		<label for="ownerQRCode">QR CODE de la clé : </label>
+	</div>
+
+	<div class="grid-item-text" id="ownerQRCode">
+ 		<img alt="<?php echo "QR CODE clé ${label}"; ?>" src="<?php echo $link; ?>">
+	</div>
+
+
 </div>
-			
-
-	
-
-	
+		
