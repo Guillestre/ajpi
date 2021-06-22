@@ -32,18 +32,8 @@
 
 		<!-- FOOTER -->
 
-		<div class="footer">
-
-			<div>
-				<button onclick="history.back()">
-					Retour
-				</button>
-			</div>
-			
-		</div>
+		<?php include "ext/footer.php"; ?>
 
 	</body>
-
-	<?php include "ext/footer.php" ?>
 
 </html>

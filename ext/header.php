@@ -37,7 +37,7 @@
 				break;
 
 			case 'secret.php':
-				$secretId = $_GET['secretId'];
+				$secretId = $_POST['secretId'];
 				$title = "Clé " . $secretDao->getLabel($secretId);
 				break;
 		}

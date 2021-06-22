@@ -2,8 +2,8 @@
 
 	/*
 	 *Class that bring correction to the database
-	 * algo_1 and alogo_2 are used to correct EBP and SAGE
-	 * algo_3 is used to correct ODOO
+	 * algo_1 and algo_2 are used to fix EBP and SAGE invoiceline tables
+	 * algo_3 is used to fix ODOO invoiceline tables
 	 */
 
 	class CorrectionAlgorithm

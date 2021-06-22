@@ -633,7 +633,7 @@ switch($action)
 			if(strcmp(trim($label), "") == 0) 
 			{
 				//Prepare error message
-				$text = "Vous ne pouvez pas ajouter un label vide";
+				$text = "Vous ne pouvez pas ajouter un nom vide";
 				$errorMessage = $text;
 
 				//Redirection

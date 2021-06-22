@@ -27,12 +27,16 @@
 			//Set redirection to previous page
 			$redirection = "location:javascript://history.go(-1)";
 
-			//Check if secret id from url exist
-			if(!isset($_GET['secretId']))
+			//Check if user is a client
+			if(!$isAdmin)
 				header($redirection);
 
-			//Get secretId from GET
-			$secretId = $_GET['secretId'];
+			//Check if secret id from url exist
+			if(!isset($_POST['secretId']))
+				header($redirection);
+
+			//Get secretId from POST
+			$secretId = $_POST['secretId'];
 
 			//Check if secret id is not empty
 			if(strcmp(trim($secretId), "") == 0)
@@ -86,18 +90,8 @@
 
 		<!-- FOOTER -->
 
-		<div class="footer">
-
-			<div>
-				<button onclick="history.back()">
-					Retour
-				</button>
-			</div>
-			
-		</div>
+		<?php include "ext/footer.php"; ?>
 
 	</body>
-
-	<?php include "ext/footer.php" ?>
 
 </html>

@@ -19,8 +19,7 @@
 	<?php } ?>
 
 	<!-- SECRET MANAGEMENT -->
-	<?php $availablePages = array("secretManagement.php", "secret.php"); ?>
-	<?php if(!in_array($currentPage, $availablePages)){ ?>
+	<?php if(strcmp($currentPage, "secretManagement.php") != 0){ ?>
 		<?php if($isAdmin) { ?>
 			<a  class="item-menu" href="secretManagement.php">Gérer clés</a>
 		<?php } else { ?>

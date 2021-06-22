@@ -103,28 +103,8 @@
 
 		<!-- FOOTER -->
 
-		<div class="footer">
-
-			<div>
-				<?php  if($previousAvailable && !$emptyResult) { ?>
-					<button type="submit" name="previousButton" form="invoiceTableForm">
-						Page précédente
-					</button>
-				<?php } ?>
-			</div>
-
-			<div style="text-align: right;">
-				<?php if($nextAvailable && !$emptyResult) { ?>
-					<button type="submit" name="nextButton" form="invoiceTableForm">
-						Page suivante
-					</button>
-				<?php } ?>
-			</div>
-
-		</div>
+		<?php include "ext/footer.php"; ?>
 
 	</body>
-
-	<?php include "ext/footer.php" ?>
 
 </html>

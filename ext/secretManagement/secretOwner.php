@@ -36,9 +36,7 @@
 	</div>
 
 	<div class="grid-item-text" id="ownerLabel">
- 		<a href="<?php print($refSecret);?>">
- 			<?php print($label); ?>
- 		</a>
+		<?php print($label); ?>
 	</div>
 
 	<div class="grid-item-label">
@@ -49,6 +47,18 @@
  		<img alt="<?php echo "QR CODE clé ${label}"; ?>" src="<?php echo $link; ?>">
 	</div>
 
-
 </div>
-		
+
+<div></div>
+
+<?php
+
+//If user is a client, then display his secret code here
+if(!$isAdmin){
+?>
+
+<!-- SECRET -->
+<p>Code de la clé : </p>
+<?php print("<p>" . $code . "</p>") ?>
+
+<?php } ?>
