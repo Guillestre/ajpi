@@ -48,13 +48,6 @@
 					<input type='text' name='searchType' value='${searchType}' hidden/>
 				");
 
-				//Set name as input if exist
-				if(isset($_GET['name']))
-				{
-					$name = $_GET['name'];
-					print("<input type='text' name='name' value='${name}' hidden/>");
-				}
-
 				//Set invoiceCode as input if exist
 				if(isset($_GET['invoiceCode']))
 				{
@@ -62,11 +55,18 @@
 					print("<input type='text' name='invoiceCode' value='${invoiceCode}' hidden/>");
 				}
 
-				//Set clientCode as input if exist
-				if(isset($_GET['clientCode']))
+				//Set client as input if exist
+				if(isset($_GET['client']))
 				{
-					$clientCode = $_GET['clientCode'];
-					print("<input type='text' name='clientCode' value='${clientCode}' hidden/>");
+					$client = $_GET['client'];
+					print("<input type='text' name='client' value='${client}' hidden/>");
+				}
+
+				//Set article as input if exist
+				if(isset($_GET['article']))
+				{
+					$client = $_GET['article'];
+					print("<input type='text' name='article' value='${article}' hidden/>");
 				}
 
 				//Set startPeriod as input if exist

@@ -1,3 +1,5 @@
+<!-- CLASS THAT DESCRIBE A LINE ITEM -->
+
 <?php
 
 class Line

@@ -50,33 +50,83 @@
 
 		<?php } ?>
 
-		<!-- CLIENT FILTERS -->
+		<!-- INVOICE FILTERS -->
 
 		<div id="blockClientFilter">
 
 			<div class="filter">
 				<label for="invoiceCode">Numéro de facture :</label><br/>
-				<input type="text" name="invoiceCode" />
+				<input type="text" name="invoiceCode" 
+				<?php
+
+				if(isset($_GET['invoiceCode']))
+				{
+					$invoiceCode = $_GET['invoiceCode'];
+					print("value='${invoiceCode}'");
+				}
+
+				?>
+				/>
 			</div>
 
 			<div class="filter">
-				<label for="clientCode">Code client :</label><br/>
-				<input type="text" name="clientCode" />
+				<label for="client">Client :</label><br/>
+				<input type="text" id="client" name="client" placeholder="Code / Nom" 
+				<?php
+
+				if(isset($_GET['client']))
+				{
+					$client = $_GET['client'];
+					print("value='${client}'");
+				}
+
+				?>
+				/>
 			</div>
 
 			<div class="filter">
-				<label for="name">Nom client :</label><br/>
-				<input type="text" name="name" />
+				<label for="article">Article :</label><br/>
+				<input type="text" id="article" name="article" placeholder="Code / Designation" 
+				<?php
+
+				if(isset($_GET['article']))
+				{
+					$article = $_GET['article'];
+					print("value='${article}'");
+				}
+
+				?>
+				/>
 			</div>
 
 			<div class="filter">
 				<label for="startPeriod">A partir du :</label><br/>
-				<input type="date" name="startPeriod" />
+				<input type="date" name="startPeriod" 
+				<?php
+
+				if(isset($_GET['startPeriod']))
+				{
+					$startPeriod = $_GET['startPeriod'];
+					print("value='${startPeriod}'");
+				}
+
+				?>
+				/>
 			</div>
 
 			<div class="filter">
 				<label for="endPeriod">Au :</label><br/>
-				<input type="date" name="endPeriod" />
+				<input type="date" name="endPeriod" 
+				<?php
+
+				if(isset($_GET['endPeriod']))
+				{
+					$endPeriod = $_GET['endPeriod'];
+					print("value='${endPeriod}'");
+				}
+
+				?>
+				/>
 			</div>
 
 		</div>

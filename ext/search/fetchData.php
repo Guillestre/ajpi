@@ -10,11 +10,6 @@ switch($currentPage)
 		else
 			$searchType = "invoice";
 
-		//Check if search type has a correct value
-		$correctSearchType = array("prospect", "invoice");
-		if(!in_array($searchType, $correctSearchType))
-			$searchType = "invoice";
-
 		$pageOffset = 50;
 
 		//Check if user has changed page
@@ -23,19 +18,12 @@ switch($currentPage)
 		isset($_GET['previousButton']) ||
 		isset($_GET['searchButton']);
 
-		//get sorted column if selected
-		if(isset($_GET['column']))
-				$column = $_GET['column'];
-
 		//Declare invoice columns
 		$invoiceColumns = 
 		array("invoiceCode", "clientCode", "name", "date", "HT", "TTC");
 
 		//Declare client prospect columns
 		$prospectColumns = array("prospectCode", "prospectName");
-
-		//Declare secret columns
-		$secretColumns = array("label", "secretCode");
 
 		//Declare default column and column list
 		switch ($searchType) {
@@ -49,18 +37,18 @@ switch($currentPage)
 				$columnList = $invoiceColumns;
 				break;
 
-			case "secret":
-				$defaultColumn = "label";
-				$columnList = $secretColumns;
+			default :
+				$defaultColumn = "invoiceCode";
+				$columnList = $invoiceColumns;
+				$searchType = "invoice";
 				break;
 		}
 
-		//Verify if selected column is present in the search type
-		//according the page we are on
-
-		//Check if column is set
-		if(!isset($column))
+		//Set column variable
+		if(!isset($_GET['column']))
 			$column = $defaultColumn;
+		else
+			$column = $_GET['column'];
 
 		//Check if selected column is in columnList
 		if(!in_array($column, $columnList))
@@ -97,7 +85,8 @@ switch($currentPage)
 			//Otherwise, get current direction
 
 			//Get previous column
-			$column = $_GET['prevColumn'];
+			if(isset($_GET['prevColumn']))
+				$column = $_GET['prevColumn'];
 
 			if(!in_array($column, $columnList))
 				$column = $defaultColumn;
@@ -155,14 +144,13 @@ switch($currentPage)
 			//Check if empty result
 			$emptyResult = $prospects == NULL;
 
-			//Check if clients are available next and previously
+			//Check if prospects are available next and previously
 			$nextAvailable = 
 			$clientDao->countFetchProspects($filters, $start + $pageOffset, $pageOffset) != 0;
 			$previousAvailable = 
 			$clientDao->countFetchProspects($filters, $start - $pageOffset, $pageOffset) != 0;
 
-
-		//Otherwise, fetch invoices
+		//if admin chose invoice, fetch them
 		} else {
 
 			/* FILTERS */
@@ -178,13 +166,13 @@ switch($currentPage)
 			if(isset($_GET['invoiceCode']) && strcmp(trim($_GET['invoiceCode']), "") != 0)
 				$filters['invoiceCode'] = trim($_GET['invoiceCode']);
 
-			//Verify if user has added client code filter
-			if(isset($_GET['clientCode']) && strcmp(trim($_GET['clientCode']), "") != 0)
-				$filters['clientCode'] = trim($_GET["clientCode"]);
+			//Verify if user has added client filter
+			if(isset($_GET['client']) && strcmp(trim($_GET['client']), "") != 0)
+				$filters['client'] = trim($_GET["client"]);
 
-			//Verify if user has added client name filter
-			if(isset($_GET['name']) && strcmp(trim($_GET['name']), "") != 0)
-				$filters['name'] = trim($_GET["name"]);
+			//Verify if user has added article filter
+			if(isset($_GET['article']) && strcmp(trim($_GET['article']), "") != 0)
+				$filters['article'] = trim($_GET["article"]);
 
 			//Verify if user has added start date filter
 			if(isset($_GET['startPeriod']) && strcmp(trim($_GET['startPeriod']), "") != 0)
@@ -193,6 +181,8 @@ switch($currentPage)
 			//Verify if user has added end date filter
 			if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
 				$filters['endPeriod'] = $_GET['endPeriod'];
+
+			/* SEARCH */
 
 			//Fetch invoices
 			$invoices = 

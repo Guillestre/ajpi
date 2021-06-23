@@ -63,18 +63,17 @@ class InvoiceMySQLDao
 
 		$clause = "";
 
-		if(isset($filters['clientCodeOwner'])){
+		if(isset($filters['clientCodeOwner']))
 			$clause .= " AND clientCode LIKE :clientCodeOwner ";
-		}
 
 		if(isset($filters['invoiceCode']))
 			$clause .= " AND invoices.code LIKE :invoiceCode ";
 
-		if(isset($filters['clientCode']))
-			$clause .= " AND clientCode LIKE :clientCode ";
+		if(isset($filters['client']))
+			$clause .= " AND ( clientCode LIKE :client OR name LIKE :client )";
 
-		if(isset($filters['name']))
-			$clause .= " AND name LIKE :name ";
+		if(isset($filters['article']))
+			$clause .= " AND ( articleCode LIKE :article OR designation LIKE :article ) ";
 
 		if(isset($filters['startPeriod']))
 			$clause .= " AND date >= :startPeriod ";
@@ -82,11 +81,17 @@ class InvoiceMySQLDao
 		if(isset($filters['endPeriod']))
 			$clause .= " AND date <= :endPeriod ";
 
-		$query = "SELECT *, invoices.code AS invoiceCode, 
-		DATE_FORMAT(date, '%d/%m/%Y') AS date 
-		FROM invoices, clients WHERE 1 ${clause} AND 
-		invoices.clientCode = clients.code ${colOrder} ${order} 
-		LIMIT ${pageOffset} OFFSET ${start};";
+		/* MAKE QUERY */
+
+		$query = "SELECT DISTINCT
+		invoices.code AS invoiceCode, clientCode, name, 
+		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+		DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+		FROM invoices, clients, invoiceline 
+		WHERE 1 ${clause} AND invoices.clientCode = clients.code 
+		AND invoices.code = invoiceline.invoiceCode
+		${colOrder} ${order} LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
@@ -94,13 +99,9 @@ class InvoiceMySQLDao
 			$invoiceCode = $filters['invoiceCode'];
 			$step->bindValue(":invoiceCode", "%{$invoiceCode}%");
 		}
-		if(isset($filters['clientCode'])){
-			$clientCode = $filters['clientCode'];
-			$step->bindValue(":clientCode", "%{$clientCode}%");
-		} 
-		if(isset($filters['name'])){
-			$name = utf8_decode($filters['name']);
-			$step->bindValue(":name", "%{$name}%");
+		if(isset($filters['client'])){
+			$client = $filters['client'];
+			$step->bindValue(":client", "%{$client}%");
 		} 
 		if(isset($filters['startPeriod'])){
 			$startPeriod = $filters['startPeriod'];
@@ -109,6 +110,10 @@ class InvoiceMySQLDao
 		if(isset($filters['endPeriod'])){
 			$endPeriod = $filters['endPeriod'];
 			$step->bindValue(":endPeriod", $endPeriod);
+		} 
+		if(isset($filters['article'])){
+			$article = utf8_decode($filters['article']);
+			$step->bindValue(":article", "%{$article}%");
 		} 
 
 		if(isset($filters['clientCodeOwner']))
@@ -150,18 +155,19 @@ class InvoiceMySQLDao
 
 		/* PREPARE FILTERS */
 
-		if(isset($filters['clientCodeOwner'])){
+		$clause = "";
+
+		if(isset($filters['clientCodeOwner']))
 			$clause .= " AND clientCode LIKE :clientCodeOwner ";
-		}
 
 		if(isset($filters['invoiceCode']))
 			$clause .= " AND invoices.code LIKE :invoiceCode ";
 
-		if(isset($filters['clientCode']))
-			$clause .= " AND clientCode LIKE :clientCode ";
+		if(isset($filters['client']))
+			$clause .= " AND ( clientCode LIKE :client OR name LIKE :client )";
 
-		if(isset($filters['name']))
-			$clause .= " AND name LIKE :name ";
+		if(isset($filters['article']))
+			$clause .= " AND ( articleCode LIKE :article OR designation LIKE :article ) ";
 
 		if(isset($filters['startPeriod']))
 			$clause .= " AND date >= :startPeriod ";
@@ -169,10 +175,17 @@ class InvoiceMySQLDao
 		if(isset($filters['endPeriod']))
 			$clause .= " AND date <= :endPeriod ";
 
-		$query = "SELECT *, invoices.code AS invoiceCode, 
-		DATE_FORMAT(date, '%d/%m/%Y') AS date 
-		FROM invoices, clients WHERE 1 ${clause} AND 
-		invoices.clientCode = clients.code LIMIT ${pageOffset} OFFSET ${start};";
+		/* MAKE QUERY */
+
+		$query = "SELECT DISTINCT
+		invoices.code AS invoiceCode, clientCode, name, 
+		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+		DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+		FROM invoices, clients, invoiceline 
+		WHERE 1 ${clause} AND invoices.clientCode = clients.code 
+		AND invoices.code = invoiceline.invoiceCode 
+		LIMIT ${pageOffset} OFFSET ${start};";
 
 		$step=$this->database->prepare($query);
 
@@ -180,13 +193,9 @@ class InvoiceMySQLDao
 			$invoiceCode = $filters['invoiceCode'];
 			$step->bindValue(":invoiceCode", "%{$invoiceCode}%");
 		}
-		if(isset($filters['clientCode'])){
-			$clientCode = $filters['clientCode'];
-			$step->bindValue(":clientCode", "%{$clientCode}%");
-		} 
-		if(isset($filters['name'])){
-			$name = utf8_decode($filters['name']);
-			$step->bindValue(":name", "%{$name}%");
+		if(isset($filters['client'])){
+			$client = $filters['client'];
+			$step->bindValue(":client", "%{$client}%");
 		} 
 		if(isset($filters['startPeriod'])){
 			$startPeriod = $filters['startPeriod'];
@@ -195,6 +204,10 @@ class InvoiceMySQLDao
 		if(isset($filters['endPeriod'])){
 			$endPeriod = $filters['endPeriod'];
 			$step->bindValue(":endPeriod", $endPeriod);
+		} 
+		if(isset($filters['article'])){
+			$article = utf8_decode($filters['article']);
+			$step->bindValue(":article", "%{$article}%");
 		} 
 
 		if(isset($filters['clientCodeOwner']))
@@ -205,6 +218,7 @@ class InvoiceMySQLDao
 		$nbResult = $step->rowCount();
 		return $nbResult;
 	}
+
 
 	public function getInvoice($code)
 	{

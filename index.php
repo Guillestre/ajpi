@@ -1,3 +1,5 @@
+<!-- WELCOME PAGE WHERE USER LOG IN --> 
+
 <?php include "ext/common.php"; ?>
 
 <!DOCTYPE html>
@@ -20,6 +22,8 @@
 
 				<div>
 
+					<!-- USER IS A CLIENT -->
+
 					<input 
 					type="radio" id="clientConnection" name="action" value="clientConnection"
 					onclick="displayClientHandler()" 
@@ -34,6 +38,8 @@
 
 					<label for="clientConnection">Client</label>
 
+					<!-- USER IS AN ADMIN -->
+
 					<input type="radio" id="adminConnection" name="action" value="adminConnection"
 					onclick="displayClientHandler()"
 					<?php
@@ -47,7 +53,7 @@
 		
 				</div>
 
-				<!------------------------------------------------->
+				<!-- FORM WHERE USER ENTER HIS INFORMATIONS -->
 
 				<div class="grid-container-userForm">
 
@@ -94,6 +100,8 @@
 
 		</div>
 		
+		<!-- ALERT MESSAGES -->
+
 		<?php
 			if(isset($_GET['deleteOwnerSuccess']))
 					messageHandler::sendSuccessMessage($_GET['deleteOwnerSuccess']);
