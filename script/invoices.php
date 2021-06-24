@@ -9,7 +9,8 @@
 			date VARCHAR(50),
 			totalExcludingTaxes TEXT,
 			totalIncludingTaxes TEXT,
-			description TEXT
+			description TEXT,
+			INDEX (code)
 
 		);
 

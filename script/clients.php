@@ -44,7 +44,8 @@
 			capital VARCHAR(255),
 			city VARCHAR(255),
 			number VARCHAR(255),
-			mail VARCHAR(255)
+			mail VARCHAR(255),
+			INDEX (code)
 
 		);
 

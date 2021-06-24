@@ -7,7 +7,7 @@
 
 	<?php include 'ext/header.php'; ?>
 	<?php include 'script/scriptHandler.php'; ?>
-
+	
 	<body>
 
 		<h1>AJPI Records</h1>

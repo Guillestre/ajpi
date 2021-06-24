@@ -14,8 +14,9 @@
 			unitPrice DOUBLE,
 			discount DOUBLE,
 			totalPrice DOUBLE,
-			description TEXT
-				
+			description TEXT,
+			INDEX (invoiceCode),
+			FULLTEXT INDEX (articleCode, designation)
 		);
 
 	");

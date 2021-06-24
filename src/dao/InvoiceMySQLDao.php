@@ -100,7 +100,7 @@ class InvoiceMySQLDao
 			$step->bindValue(":invoiceCode", "%{$invoiceCode}%");
 		}
 		if(isset($filters['client'])){
-			$client = $filters['client'];
+			$client = utf8_decode($filters['client']);
 			$step->bindValue(":client", "%{$client}%");
 		} 
 		if(isset($filters['startPeriod'])){
@@ -151,8 +151,6 @@ class InvoiceMySQLDao
 
 	public function countFetchInvoices($filters, $start, $pageOffset)
 	{
-		$clause = "";
-
 		/* PREPARE FILTERS */
 
 		$clause = "";
@@ -186,7 +184,7 @@ class InvoiceMySQLDao
 		WHERE 1 ${clause} AND invoices.clientCode = clients.code 
 		AND invoices.code = invoiceline.invoiceCode 
 		LIMIT ${pageOffset} OFFSET ${start};";
-
+	
 		$step=$this->database->prepare($query);
 
 		if(isset($filters['invoiceCode'])){
@@ -308,8 +306,8 @@ class InvoiceMySQLDao
 
 		foreach($rows as $row)
 		{
-			$articleCode = utf8_encode($row['articleCode']);
-			$designation = utf8_encode($row['designation']);
+			$articleCode = trim(utf8_encode($row['articleCode']));
+			$designation = trim(utf8_encode($row['designation']));
 			$amount = $row['amount'];
 			$unitPrice = $row['unitPrice'];
 			$discount = $row['discount'];

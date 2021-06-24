@@ -56,14 +56,12 @@
 			<label for="invoiceCode">Numéro de facture :</label><br/>
 			<input type="search" name="invoiceCode" 
 			<?php
-
 			if(isset($_GET['invoiceCode']))
 			{
-				$invoiceCode = $_GET['invoiceCode'];
-				print("value='${invoiceCode}'");
-			}
-
+				$invoiceCode = htmlspecialchars($_GET['invoiceCode']);
 			?>
+				value="<?php print($invoiceCode); ?>"
+			<?php } ?>
 			/>
 		</div>
 
@@ -71,14 +69,12 @@
 			<label for="client">Client :</label><br/>
 			<input type="search" id="client" name="client" placeholder="Code / Nom" 
 			<?php
-
 			if(isset($_GET['client']))
 			{
-				$client = $_GET['client'];
-				print("value='${client}'");
-			}
-
+				$client = htmlspecialchars($_GET['client']);
 			?>
+				value="<?php print($client); ?>"
+			<?php } ?>
 			/>
 		</div>
 
@@ -87,30 +83,28 @@
 			<input type="search" id="article" name="article" placeholder="Code / Designation" 
 			list="articles" autocomplete="on"
 			<?php
-
 			if(isset($_GET['article']))
 			{
-				$article = $_GET['article'];
-				print("value='${article}'");
-			}
-
+				$article = htmlspecialchars($_GET['article']);
 			?>
+				value="<?php print($article); ?>"
+			<?php } ?>
 			/>
 			<datalist id="articles">  
 				<?php 
 				$usedWords = []; 
 				foreach($lines as $line) {
 
-					$articleCode = $line->getArticleCode();
-					$designation = $line->getDesignation();
+					$articleCode = htmlspecialchars($line->getArticleCode());
+					$designation = htmlspecialchars($line->getDesignation());
 
-					if(!in_array(trim($articleCode), $usedWords)){
-						print("<option value='$articleCode'>");
+					if(!in_array($articleCode, $usedWords)){
+						print("<option>$articleCode</option>");
 						array_push($usedWords, $articleCode);
 					}
 
-					if(!in_array(trim($designation), $usedWords)){
-						print("<option value='$designation'>");
+					if(!in_array($designation, $usedWords)){
+						print("<option>$designation</option>");
 						array_push($usedWords, $designation);
 					}
 
@@ -162,14 +156,12 @@
 			<label for="prospect">Client :</label><br/>
 			<input type="search" id="prospect" name="prospect" placeholder="Code / Nom" 
 			<?php
-
 			if(isset($_GET['prospect']))
 			{
-				$prospect = $_GET['prospect'];
-				print("value='${prospect}'");
-			}
-
+				$prospect = htmlspecialchars($_GET['prospect']);
 			?>
+				value="<?php print($prospect); ?>"
+			<?php } ?>
 			/>
 		</div>
 

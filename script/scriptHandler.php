@@ -10,7 +10,7 @@
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs
-	//(Create result tables into ajpi_dev database)
+	//(Create result tables into ajpi database)
 	$sage2016 = false;
 	$sage2019 = false;
 	$ebp = false;
