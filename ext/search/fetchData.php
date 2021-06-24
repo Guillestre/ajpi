@@ -22,7 +22,7 @@ switch($currentPage)
 			$searchType = "invoice";
 
 		//set number of pages to display in one page
-		$pageOffset = 100;
+		$pageOffset = 50;
 
 		//Check if user has changed page
 		$changePage = 
