@@ -293,5 +293,38 @@ class InvoiceMySQLDao
 			return $lines;
 		}
 
+	public function getAllArticle()
+	{
+		$query = "SELECT DISTINCT articleCode, designation FROM invoiceline";
+		$step=$this->database->prepare($query);
+		$step->execute();
+		$rows = $step->fetchAll();
+		$nbResult = $step->rowCount();
+
+		if($nbResult == 0)
+			return NULL;
+
+		$lines = [];
+
+		foreach($rows as $row)
+		{
+			$articleCode = utf8_encode($row['articleCode']);
+			$designation = utf8_encode($row['designation']);
+
+			$line = new Line(
+				$articleCode, 
+				$designation, 
+				0,
+				0, 
+				0, 
+				0, 
+				""
+			);
+			array_push($lines, $line);
+		}
+		
+		return $lines;
+	}
+
 }
 ?>

@@ -11,7 +11,7 @@ class MySQLConnection
 
   const USER = 'root';
   const HOST = 'localhost';
-  const PASSWORD = '';
+  const PASSWORD = 'root';
   const DATABASE = 'ajpi';
 
   private function __construct()

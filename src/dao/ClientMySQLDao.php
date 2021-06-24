@@ -49,11 +49,10 @@ class ClientMySQLDao
 
 		$clause = "";
 
-		if(isset($filters['prospectCode']))
-			$clause .= " AND code LIKE :prospectCode ";
+		if(isset($filters['prospect']))
+			$clause .= " AND ( code LIKE :prospect OR name LIKE :prospect ) ";
 
-		if(isset($filters['prospectName']))
-			$clause .= " AND name LIKE :prospectName ";
+		/* PREPARE QUERY */
 
 		$query = "SELECT * FROM clients WHERE code 
 		NOT IN (SELECT clientCode FROM invoices) 
@@ -61,15 +60,11 @@ class ClientMySQLDao
 
 		$step=$this->database->prepare($query);
 
-		if(isset($filters['prospectCode'])){
-			$prospectCode = $filters['prospectCode'];
-			$step->bindValue(":prospectCode", "%{$prospectCode}%");
+		if(isset($filters['prospect'])){
+			$prospect = $filters['prospect'];
+			$step->bindValue(":prospect", "%{$prospect}%");
 		} 
-		if(isset($filters['prospectName'])){
-			$prospectName = utf8_decode($filters['prospectName']);
-			$step->bindValue(":prospectName", "%{$prospectName}%");
-		} 
-
+	
 		$step->execute();
 		$rows = $step->fetchAll();
 		$nbResult = $step->rowCount();
@@ -111,25 +106,20 @@ class ClientMySQLDao
 
 		$clause = "";
 
-		if(isset($filters['prospectCode']))
-			$clause .= " AND code LIKE :prospectCode ";
+		if(isset($filters['prospect']))
+			$clause .= " AND ( code LIKE :prospect OR name LIKE :prospect ) ";
 
-		if(isset($filters['prospectName']))
-			$clause .= " AND name LIKE :prospectName ";
+		/* PREPARE QUERY */
 
 		$query = "SELECT * FROM clients WHERE code 
 		NOT IN (SELECT clientCode FROM invoices) 
 		${clause} LIMIT ${pageOffset} OFFSET ${start};";
 
-		$step=$this->database->prepare($query);
+		$step = $this->database->prepare($query);
 
-		if(isset($filters['prospectCode'])){
-			$prospectCode = $filters['prospectCode'];
-			$step->bindValue(":prospectCode", "%{$prospectCode}%");
-		} 
-		if(isset($filters['prospectName'])){
-			$prospectName = utf8_decode($filters['prospectName']);
-			$step->bindValue(":prospectName", "%{$prospectName}%");
+		if(isset($filters['prospect'])){
+			$prospect = $filters['prospect'];
+			$step->bindValue(":prospect", "%{$prospect}%");
 		} 
 
 		$step->execute();

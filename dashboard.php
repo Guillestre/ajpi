@@ -18,6 +18,14 @@
 				<?php include 'ext/search/searchFilter.php';?>
 			</div>
 
+			<!-- CLEAR FILTER BUTTON -->
+
+			<?php if($presentFilter){ ?>
+				<button type="submit" name="clearFilterButton" form="filterForm" class="clearFilterButton">
+					Annuler les filtres
+				</button>
+			<?php } ?>
+
 		</div>
 
 		<!-- RESULT ----------------------->
@@ -84,17 +92,10 @@
 				}
 
 				//Set prospect name as input if exist
-				if(isset($_GET['prospectName']))
+				if(isset($_GET['prospect']))
 				{
-					$prospectName = $_GET['prospectName'];
-					print("<input type='text' name='prospectName' value='${prospectName}' hidden/>");
-				}
-
-				//Set prospect code as input if exist
-				if(isset($_GET['prospectCode']))
-				{
-					$prospectCode = $_GET['prospectCode'];
-					print("<input type='text' name='prospectCode' value='${prospectCode}' hidden/>");
+					$prospect = $_GET['prospect'];
+					print("<input type='text' name='prospect' value='${prospect}' hidden/>");
 				}
 
 			?>

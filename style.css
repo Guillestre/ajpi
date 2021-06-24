@@ -2,6 +2,9 @@
 
 body{ background-color: rgba(200, 222, 206, 0.6); margin-top: 40pt;margin-bottom: 50pt;}
 
+.clearFilterButton  {background-color: rgb(200,220,200);}
+.clearFilterButton:hover  {background-color: rgb(190,210,190);}
+
 .footer
 {
 	position: fixed; 
@@ -79,7 +82,7 @@ img{width: 150pt; height: 150pt;}
 	display: grid;
 	grid-template-columns: 400pt;
 
-	margin-bottom: 40pt;
+	margin-bottom: 50pt;
 	padding: 5pt;
 }
 

@@ -1,8 +1,19 @@
+<!-- FILE THAT FETCH DATA INTO THE DATABASE -->
+
 <?php
+
 switch($currentPage)
 {
 
 	case "dashboard.php" :
+
+
+		//If user has perform clear filters button, remove all filters
+		if(isset($_GET['clearFilterButton']))
+			resetFilters();
+
+		//Set presentFilter to false by default
+		$presentFilter = false;
 
 		//Set search type
 		if(isset($_GET['searchType']) && $isAdmin)
@@ -10,13 +21,15 @@ switch($currentPage)
 		else
 			$searchType = "invoice";
 
-		$pageOffset = 50;
+		//set number of pages to display in one page
+		$pageOffset = 100;
 
 		//Check if user has changed page
 		$changePage = 
 		isset($_GET['nextButton']) || 
 		isset($_GET['previousButton']) ||
-		isset($_GET['searchButton']);
+		isset($_GET['searchButton']) ||
+		isset($_GET['clearFilterButton']);
 
 		//Declare invoice columns
 		$invoiceColumns = 
@@ -129,13 +142,13 @@ switch($currentPage)
 			//Set filter array
 			$filters = [];
 
-			//Verify if user has added client code filter
-			if(isset($_GET['prospectCode']) && strcmp(trim($_GET['prospectCode']), "") != 0)
-				$filters['prospectCode'] = trim($_GET["prospectCode"]);
+			//Verify if user has added prospect filter
+			if(isset($_GET['prospect']) && strcmp(trim($_GET['prospect']), "") != 0)
+				$filters['prospect'] = trim($_GET["prospect"]);
 
-			//Verify if user has added client name filter
-			if(isset($_GET['prospectName']) && strcmp(trim($_GET['prospectName']), "") != 0)
-				$filters['prospectName'] = trim($_GET["prospectName"]);
+			//If filters are set, display clear filter button
+			if(!empty($filters))
+				$presentFilter = true;
 
 			//Fetch clients
 			$prospects = 
@@ -182,11 +195,18 @@ switch($currentPage)
 			if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
 				$filters['endPeriod'] = $_GET['endPeriod'];
 
+			//If filters are set, display clear filter button
+			if(!empty($filters))
+				$presentFilter = true;
+
 			/* SEARCH */
 
 			//Fetch invoices
 			$invoices = 
 			$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
+
+			//Get all lines
+			$lines = $invoiceDao->getAllArticle();
 
 			//Check if empty result
 			$emptyResult = $invoices == NULL;
@@ -196,6 +216,7 @@ switch($currentPage)
 			$invoiceDao->countFetchInvoices($filters, $start + $pageOffset, $pageOffset) != 0;
 			$previousAvailable = 
 			$invoiceDao->countFetchInvoices($filters, $start - $pageOffset, $pageOffset) != 0;
+
 		}
 
 		break;
@@ -268,6 +289,22 @@ switch($currentPage)
 		$secrets = $secretDao->getAllSecret();
 
 		break;
+
+}
+
+//Function that reset filters that user has entered
+function resetFilters()
+{
+
+	//Prospect
+	$_GET['prospect'] = "";
+ 
+ 	//Invoice
+	$_GET['article'] = "";
+	$_GET['invoiceCode'] = "";
+	$_GET['client'] = "";
+	$_GET['startPeriod'] = "";
+	$_GET['endPeriod'] = "";
 
 }
 
