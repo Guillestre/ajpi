@@ -293,9 +293,9 @@ class InvoiceMySQLDao
 			return $lines;
 		}
 
-	public function getAllArticle()
+	public function getAllLine()
 	{
-		$query = "SELECT DISTINCT articleCode, designation FROM invoiceline";
+		$query = "SELECT DISTINCT * FROM invoiceline";
 		$step=$this->database->prepare($query);
 		$step->execute();
 		$rows = $step->fetchAll();
@@ -310,15 +310,20 @@ class InvoiceMySQLDao
 		{
 			$articleCode = utf8_encode($row['articleCode']);
 			$designation = utf8_encode($row['designation']);
+			$amount = $row['amount'];
+			$unitPrice = $row['unitPrice'];
+			$discount = $row['discount'];
+			$totalPrice = $row['totalPrice'];
+			$description = utf8_encode($row['description']);
 
 			$line = new Line(
 				$articleCode, 
 				$designation, 
-				0,
-				0, 
-				0, 
-				0, 
-				""
+				$amount,
+				$unitPrice, 
+				$discount, 
+				$totalPrice, 
+				$description
 			);
 			array_push($lines, $line);
 		}

@@ -54,7 +54,7 @@
 
 		<div class="filter">
 			<label for="invoiceCode">Numéro de facture :</label><br/>
-			<input type="text" name="invoiceCode" 
+			<input type="search" name="invoiceCode" 
 			<?php
 
 			if(isset($_GET['invoiceCode']))
@@ -69,7 +69,7 @@
 
 		<div class="filter">
 			<label for="client">Client :</label><br/>
-			<input type="text" id="client" name="client" placeholder="Code / Nom" 
+			<input type="search" id="client" name="client" placeholder="Code / Nom" 
 			<?php
 
 			if(isset($_GET['client']))
@@ -84,7 +84,7 @@
 
 		<div class="filter">
 			<label for="article">Article :</label><br/>
-			<input type="text" id="article" name="article" placeholder="Code / Designation" 
+			<input type="search" id="article" name="article" placeholder="Code / Designation" 
 			list="articles" autocomplete="on"
 			<?php
 
@@ -97,13 +97,22 @@
 			?>
 			/>
 			<datalist id="articles">  
-				<?php foreach($lines as $line) {
+				<?php 
+				$usedWords = []; 
+				foreach($lines as $line) {
 
 					$articleCode = $line->getArticleCode();
 					$designation = $line->getDesignation();
 
-					print("<option value='$articleCode'>");
-					print("<option value='$designation'>");
+					if(!in_array(trim($articleCode), $usedWords)){
+						print("<option value='$articleCode'>");
+						array_push($usedWords, $articleCode);
+					}
+
+					if(!in_array(trim($designation), $usedWords)){
+						print("<option value='$designation'>");
+						array_push($usedWords, $designation);
+					}
 
 				}
 				?>
@@ -151,7 +160,7 @@
 
 		<div class="filter">
 			<label for="prospect">Client :</label><br/>
-			<input type="text" id="prospect" name="prospect" placeholder="Code / Nom" 
+			<input type="search" id="prospect" name="prospect" placeholder="Code / Nom" 
 			<?php
 
 			if(isset($_GET['prospect']))
