@@ -10,9 +10,9 @@
 			totalExcludingTaxes TEXT,
 			totalIncludingTaxes TEXT,
 			description TEXT,
-			INDEX (code)
+			INDEX (clientCode)
 
-		);
+		) ENGINE=InnoDB ;
 
 	");
 	$step->execute();
@@ -158,4 +158,15 @@
 
 	$step=$database->prepare("ALTER TABLE invoices MODIFY COLUMN totalIncludingTaxes DOUBLE");
 	$step->execute();
+
+	//Add indexes
+	$step=$database->prepare("ALTER TABLE invoices ADD INDEX(date);");
+	$step->execute();
+
+	$step=$database->prepare("ALTER TABLE invoices ADD INDEX(totalIncludingTaxes);");
+	$step->execute();
+
+	$step=$database->prepare("ALTER TABLE invoices ADD INDEX(totalExcludingTaxes);");
+	$step->execute();
+
 ?>

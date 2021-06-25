@@ -32,16 +32,16 @@
 		CREATE TABLE clients (
 
 			code VARCHAR(50),
-			name VARCHAR(255),
+			name VARCHAR(250),
 			title VARCHAR(255),
 			address VARCHAR(255),
 			capital VARCHAR(255),
 			city VARCHAR(255),
 			number VARCHAR(255),
 			mail VARCHAR(255),
-			INDEX (code)
+			INDEX (name)
 
-		);
+		) ENGINE=InnoDB ;
 
 	");
 	$step->execute();

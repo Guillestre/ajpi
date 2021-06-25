@@ -56,13 +56,14 @@
 					<input type='text' name='searchType' value='${searchType}' hidden/>
 				");
 
+
 				//Set invoiceCode as input if exist
 				if(isset($_GET['invoiceCode']))
 				{
 					$invoiceCode = $_GET['invoiceCode'];
 					print("<input type='text' name='invoiceCode' value='${invoiceCode}' hidden/>");
 				}
-
+				
 				//Set client as input if exist
 				if(isset($_GET['client']))
 				{

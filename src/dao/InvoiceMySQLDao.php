@@ -84,7 +84,7 @@ class InvoiceMySQLDao
 		/* MAKE QUERY */
 
 		$query = "SELECT DISTINCT
-		invoices.code AS invoiceCode, clientCode, name, 
+		invoices.code AS invoiceCode, clientCode, 
 		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
 		DATE_FORMAT(date, '%d/%m/%Y') AS date
 
@@ -177,7 +177,7 @@ class InvoiceMySQLDao
 		/* MAKE QUERY */
 
 		$query = "SELECT DISTINCT
-		invoices.code AS invoiceCode, clientCode, name, 
+		invoices.code AS invoiceCode, clientCode, 
 		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
 		DATE_FORMAT(date, '%d/%m/%Y') AS date
 

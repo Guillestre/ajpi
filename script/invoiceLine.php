@@ -8,16 +8,17 @@
 
 			id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 			invoiceCode VARCHAR(50),
-			articleCode VARCHAR(255),
-			designation TEXT,
+			articleCode VARCHAR(250),
+			designation VARCHAR(250),
 			amount DOUBLE,
 			unitPrice DOUBLE,
 			discount DOUBLE,
 			totalPrice DOUBLE,
 			description TEXT,
 			INDEX (invoiceCode),
-			FULLTEXT INDEX (articleCode, designation)
-		);
+			INDEX (articleCode),
+			INDEX (designation)
+		) ENGINE=InnoDB ;
 
 	");
 	$step->execute();

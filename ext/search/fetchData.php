@@ -206,11 +206,12 @@ switch($currentPage)
 			$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
 
 			//Get all articles
-			$fetchedArticles = $invoiceDao->getDataListArticles();
+			if(!isset($_GET['fetchedArticles']))
+				$fetchedArticles = $invoiceDao->getDataListArticles();
 
 			//Check if empty result
 			$emptyResult = $invoices == NULL;
-
+			
 			//Check if invoices are available next and previously
 			$nextAvailable = 
 			$invoiceDao->countFetchInvoices($filters, $start + $pageOffset, $pageOffset) != 0;

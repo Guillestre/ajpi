@@ -6,7 +6,8 @@
 	set_time_limit(5000);
 
 	$deleteResults = false;
-	$createUserTables = false;
+	$deleteRawTables = false;
+	$createUserTables = true;
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs
@@ -18,12 +19,6 @@
 
 	//verify if we change data
 	$dataChanged = $sage2016 || $sage2019 || $ebp || $odoo;
-
-	if($createUserTables)
-		include 'script/users_tables.php';
-
-	if($deleteResults)
-		include 'script/delete_results.php';
 
 	if($loadRawTables)
 		include 'script/load_raw_tables.php';
@@ -57,5 +52,14 @@
 		include 'script/invoices.php';
 		include 'script/invoiceline.php';
 	}
+
+	if($createUserTables)
+		include 'script/users_tables.php';
+
+	if($deleteResults)
+		include 'script/delete_results.php';
+
+	if($deleteRawTables)
+		include 'script/delete_raw_tables.php';
 
 ?>
