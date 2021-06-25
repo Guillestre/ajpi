@@ -81,7 +81,7 @@
 		<div class="filter">
 			<label for="article">Article :</label><br/>
 			<input type="search" id="article" name="article" placeholder="Code / Designation" 
-			list="articles" autocomplete="on"
+			list="articles"
 			<?php
 			if(isset($_GET['article']))
 			{
@@ -92,22 +92,10 @@
 			/>
 			<datalist id="articles">  
 				<?php 
-				$usedWords = []; 
-				foreach($lines as $line) {
-
-					$articleCode = htmlspecialchars($line->getArticleCode());
-					$designation = htmlspecialchars($line->getDesignation());
-
-					if(!in_array($articleCode, $usedWords)){
-						print("<option>$articleCode</option>");
-						array_push($usedWords, $articleCode);
-					}
-
-					if(!in_array($designation, $usedWords)){
-						print("<option>$designation</option>");
-						array_push($usedWords, $designation);
-					}
-
+				
+				foreach($fetchedArticles as $fetchedArticle) {
+					$currentArticle = htmlspecialchars($fetchedArticle['article']);
+					print("<option>$currentArticle</option>");
 				}
 				?>
 			</datalist>  

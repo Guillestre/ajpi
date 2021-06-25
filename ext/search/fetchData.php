@@ -205,8 +205,8 @@ switch($currentPage)
 			$invoices = 
 			$invoiceDao->fetchInvoices($filters, $start, $column, $direction, $pageOffset);
 
-			//Get all lines
-			$lines = $invoiceDao->getAllLine();
+			//Get all articles
+			$fetchedArticles = $invoiceDao->getDataListArticles();
 
 			//Check if empty result
 			$emptyResult = $invoices == NULL;

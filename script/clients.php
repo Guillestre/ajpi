@@ -1,26 +1,20 @@
 <?php
 
-	//Drop userClient table if exist
+	//Drop clientUsers table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS userClient;
+		DROP TABLE IF EXISTS clientUsers;
 	");
 	$step->execute();
 
-	//Drop userSecret table if exist
+	//Drop adminUsers table if exist
 	$step=$database->prepare("
-		DROP TABLE IF EXISTS userSecret;
+		DROP TABLE IF EXISTS adminUsers;
 	");
 	$step->execute();
 
 	//Drop secrets table if exist
 	$step=$database->prepare("
 		DROP TABLE IF EXISTS secrets;
-	");
-	$step->execute();
-
-	//Drop users table if exist
-	$step=$database->prepare("
-		DROP TABLE IF EXISTS users;
 	");
 	$step->execute();
 

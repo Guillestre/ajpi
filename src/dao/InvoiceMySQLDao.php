@@ -122,6 +122,7 @@ class InvoiceMySQLDao
 		$step->execute();
 		$rows = $step->fetchAll();
 		$nbResult = $step->rowCount();
+		
 		if($nbResult == 0)
 			return NULL;
 
@@ -253,48 +254,10 @@ class InvoiceMySQLDao
 	}
 
 	public function getLines($invoiceCode)
-		{
-			$query = "SELECT * FROM invoiceline WHERE invoiceCode = :invoiceCode";
-			$step=$this->database->prepare($query);
-			$step->bindValue(":invoiceCode", $invoiceCode);
-			$step->execute();
-			$rows = $step->fetchAll();
-			$nbResult = $step->rowCount();
-
-			if($nbResult == 0)
-				return NULL;
-
-			$lines = [];
-
-			foreach($rows as $row)
-			{
-				$articleCode = utf8_encode($row['articleCode']);
-				$designation = utf8_encode($row['designation']);
-				$amount = $row['amount'];
-				$unitPrice = $row['unitPrice'];
-				$discount = $row['discount'];
-				$totalPrice = $row['totalPrice'];
-				$description = utf8_encode($row['description']);
-
-				$line = new Line(
-					$articleCode, 
-					$designation, 
-					$amount,
-					$unitPrice, 
-					$discount, 
-					$totalPrice, 
-					$description
-				);
-				array_push($lines, $line);
-			}
-			
-			return $lines;
-		}
-
-	public function getAllLine()
 	{
-		$query = "SELECT DISTINCT * FROM invoiceline";
+		$query = "SELECT * FROM invoiceline WHERE invoiceCode = :invoiceCode";
 		$step=$this->database->prepare($query);
+		$step->bindValue(":invoiceCode", $invoiceCode);
 		$step->execute();
 		$rows = $step->fetchAll();
 		$nbResult = $step->rowCount();
@@ -306,8 +269,8 @@ class InvoiceMySQLDao
 
 		foreach($rows as $row)
 		{
-			$articleCode = trim(utf8_encode($row['articleCode']));
-			$designation = trim(utf8_encode($row['designation']));
+			$articleCode = utf8_encode($row['articleCode']);
+			$designation = utf8_encode($row['designation']);
 			$amount = $row['amount'];
 			$unitPrice = $row['unitPrice'];
 			$discount = $row['discount'];
@@ -327,6 +290,22 @@ class InvoiceMySQLDao
 		}
 		
 		return $lines;
+	}
+
+	public function getDataListArticles()
+	{
+		$query = "SELECT DISTINCT articleCode AS article FROM invoiceline
+		UNION ALL SELECT DISTINCT designation AS article FROM invoiceline;";
+		$step=$this->database->prepare($query);
+		$step->execute();
+		$rows = $step->fetchAll();
+		$nbResult = $step->rowCount();
+
+		if($nbResult == 0)
+			return NULL;
+		else
+			return $rows;
+
 	}
 
 }
