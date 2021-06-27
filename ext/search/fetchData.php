@@ -112,6 +112,13 @@ switch($currentPage)
 		//If sort direction not exist, then set down by default
 		if(!isset($direction))
 			$direction = "down";
+		else
+		//Otherwise verify his validity
+		{
+			$directionValidity = array("up", "down");
+			if(!in_array($direction, $directionValidity))
+				$direction = "down";
+		}
 
 		/* FOOTER PAGES */
 
@@ -144,11 +151,10 @@ switch($currentPage)
 
 			//Verify if user has added prospect filter
 			if(isset($_GET['prospect']) && strcmp(trim($_GET['prospect']), "") != 0)
+			{
 				$filters['prospect'] = trim($_GET["prospect"]);
-
-			//If filters are set, display clear filter button
-			if(!empty($filters))
 				$presentFilter = true;
+			}
 
 			//Fetch clients
 			$prospects = 
@@ -177,27 +183,38 @@ switch($currentPage)
 
 			//Verify if user has added invoiceCode filter
 			if(isset($_GET['invoiceCode']) && strcmp(trim($_GET['invoiceCode']), "") != 0)
+			{
 				$filters['invoiceCode'] = trim($_GET['invoiceCode']);
+				$presentFilter = true;
+			}
 
 			//Verify if user has added client filter
 			if(isset($_GET['client']) && strcmp(trim($_GET['client']), "") != 0)
+			{
 				$filters['client'] = trim($_GET["client"]);
+				$presentFilter = true;
+			}
 
 			//Verify if user has added article filter
 			if(isset($_GET['article']) && strcmp(trim($_GET['article']), "") != 0)
+			{
 				$filters['article'] = trim($_GET["article"]);
+				$presentFilter = true;
+			}
 
 			//Verify if user has added start date filter
 			if(isset($_GET['startPeriod']) && strcmp(trim($_GET['startPeriod']), "") != 0)
+			{
 				$filters['startPeriod'] = $_GET['startPeriod'];
+				$presentFilter = true;
+			}
 
 			//Verify if user has added end date filter
 			if(isset($_GET['endPeriod']) && strcmp(trim($_GET['endPeriod']), "") != 0)
+			{
 				$filters['endPeriod'] = $_GET['endPeriod'];
-
-			//If filters are set, display clear filter button
-			if(!empty($filters))
 				$presentFilter = true;
+			}
 
 			/* SEARCH */
 

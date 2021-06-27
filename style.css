@@ -88,7 +88,7 @@ img{width: 150pt; height: 150pt;}
 
 #boxDescriptionInvoice {background-color: rgba(200, 200, 200, .2);}
 
-#boxDescriptionInvoice, select {font-size: 17pt;}
+#boxDescriptionInvoice, select {font-size: 16pt;}
 
 .userBox{
 	background-color: rgb(200, 222, 206);

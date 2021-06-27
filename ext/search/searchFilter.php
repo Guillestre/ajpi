@@ -52,6 +52,8 @@
 
 	<div id="blockClientFilter">
 
+		<!-- INVOICE CODE -->
+
 		<div class="filter">
 			<label for="invoiceCode">Numéro de facture :</label><br/>
 			<input type="search" name="invoiceCode" 
@@ -65,6 +67,8 @@
 			/>
 		</div>
 
+		<!-- CLIENT -->
+
 		<div class="filter">
 			<label for="client">Client :</label><br/>
 			<input type="search" id="client" name="client" placeholder="Code / Nom" 
@@ -77,6 +81,8 @@
 			<?php } ?>
 			/>
 		</div>
+
+		<!-- ARTICLE -->
 
 		<div class="filter">
 			<label for="article">Article :</label><br/>
@@ -101,6 +107,8 @@
 			</datalist>  
 		</div>
 
+		<!-- START PERIOD -->
+
 		<div class="filter">
 			<label for="startPeriod">A partir du :</label><br/>
 			<input type="date" name="startPeriod" 
@@ -115,6 +123,8 @@
 			?>
 			/>
 		</div>
+
+		<!-- END PERIOD -->
 
 		<div class="filter">
 			<label for="endPeriod">Au :</label><br/>
@@ -139,6 +149,8 @@
 		if($isAdmin){
 	?>
 	<div id="blockProspectFilter">
+
+		<!-- CLIENT -->
 
 		<div class="filter">
 			<label for="prospect">Client :</label><br/>
@@ -169,6 +181,8 @@
 
 <script type="text/javascript">
 	
+	//Handle search type display according invoice filters and prospects
+
 	function searchTypeManager()
 	{
 		//radio

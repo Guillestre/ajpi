@@ -7,7 +7,7 @@
 
 	$deleteResults = false;
 	$deleteRawTables = false;
-	$createUserTables = true;
+	$createUserTables = false;
 	$loadRawTables = false;
 
 	//Choose which database to bring repairs

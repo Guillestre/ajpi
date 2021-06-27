@@ -96,4 +96,9 @@
 	$step=$database->prepare("ALTER TABLE clients ADD PRIMARY KEY (code);");
 	$step->execute();
 
+	//Replace false by a void string
+	$step=$database->prepare("UPDATE clients SET title = '' WHERE title LIKE '%false%' ");
+	$step->execute();
+
+
 ?>

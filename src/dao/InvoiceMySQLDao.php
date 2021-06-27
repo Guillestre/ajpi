@@ -83,15 +83,30 @@ class InvoiceMySQLDao
 
 		/* MAKE QUERY */
 
-		$query = "SELECT DISTINCT
-		invoices.code AS invoiceCode, clientCode, 
-		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
-		DATE_FORMAT(date, '%d/%m/%Y') AS date
+		if(!isset($filters['article'])){
 
-		FROM invoices, clients, invoiceline 
-		WHERE 1 ${clause} AND invoices.clientCode = clients.code 
-		AND invoices.code = invoiceline.invoiceCode
-		${colOrder} ${order} LIMIT ${pageOffset} OFFSET ${start};";
+			$query = "SELECT DISTINCT
+			invoices.code AS invoiceCode, clientCode, 
+			totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+			DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+			FROM invoices, clients
+			WHERE 1 ${clause} AND invoices.clientCode = clients.code
+			${colOrder} ${order} LIMIT ${pageOffset} OFFSET ${start};";
+
+		} else {
+
+			$query = "SELECT DISTINCT
+			invoices.code AS invoiceCode, clientCode, 
+			totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+			DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+			FROM invoices, clients, invoiceline 
+			WHERE 1 ${clause} AND invoices.clientCode = clients.code 
+			AND invoices.code = invoiceline.invoiceCode
+			${colOrder} ${order} LIMIT ${pageOffset} OFFSET ${start};";
+
+		}
 
 		$step=$this->database->prepare($query);
 
@@ -176,15 +191,29 @@ class InvoiceMySQLDao
 
 		/* MAKE QUERY */
 
-		$query = "SELECT DISTINCT
-		invoices.code AS invoiceCode, clientCode, 
-		totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
-		DATE_FORMAT(date, '%d/%m/%Y') AS date
+		if(!isset($filters['article'])){
 
-		FROM invoices, clients, invoiceline 
-		WHERE 1 ${clause} AND invoices.clientCode = clients.code 
-		AND invoices.code = invoiceline.invoiceCode 
-		LIMIT ${pageOffset} OFFSET ${start};";
+			$query = "SELECT DISTINCT
+			invoices.code AS invoiceCode, clientCode, 
+			totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+			DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+			FROM invoices, clients
+			WHERE 1 ${clause} AND invoices.clientCode = clients.code
+			LIMIT ${pageOffset} OFFSET ${start};";
+
+		} else {
+
+			$query = "SELECT DISTINCT
+			invoices.code AS invoiceCode, clientCode, 
+			totalExcludingTaxes, totalIncludingTaxes, invoices.description AS description,
+			DATE_FORMAT(date, '%d/%m/%Y') AS date
+
+			FROM invoices, clients, invoiceline 
+			WHERE 1 ${clause} AND invoices.clientCode = clients.code 
+			AND invoices.code = invoiceline.invoiceCode
+			LIMIT ${pageOffset} OFFSET ${start};";
+		}
 	
 		$step=$this->database->prepare($query);
 
@@ -294,9 +323,40 @@ class InvoiceMySQLDao
 
 	public function getDataListArticles()
 	{
-		$query = "SELECT DISTINCT articleCode AS article FROM invoiceline
-		UNION ALL SELECT DISTINCT designation AS article FROM invoiceline;";
+
+		$user = $_SESSION['user'];
+		$isAdmin = $user->getStatus() == "admin";
+
+		//If user is an admin, then display all article data from database
+		if($isAdmin)
+			$query = "
+			SELECT DISTINCT designation AS article FROM invoiceline UNION ALL
+			SELECT DISTINCT articleCode AS article FROM invoiceline;";
+		//Otherwise, user is a client. Then display  just his articles
+		else
+		{
+			//Get his client code
+			$clientCode = $user->getClientCode();
+
+			//Fetch his articles
+			$query = "
+			SELECT DISTINCT designation AS article 
+			FROM invoiceline, invoices
+			WHERE invoices.code = invoiceline.invoiceCode AND invoices.clientCode = :clientCode
+
+			UNION ALL
+			SELECT DISTINCT articleCode AS article FROM invoiceline, invoices
+			WHERE invoices.code = invoiceline.invoiceCode AND invoices.clientCode = :clientCode;
+			";
+		}
+
+
 		$step=$this->database->prepare($query);
+
+		//Set client code if user is a client
+		if(!$isAdmin)
+			$step->bindValue(":clientCode", $clientCode);
+
 		$step->execute();
 		$rows = $step->fetchAll();
 		$nbResult = $step->rowCount();
