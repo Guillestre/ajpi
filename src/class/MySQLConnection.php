@@ -18,10 +18,10 @@ class MySQLConnection
   const HOST = 'localhost';
 
   //Password
-  const PASSWORD = 'root';
+  const PASSWORD = '';
 
   //Database
-  const DATABASE = 'ajpi_dev';
+  const DATABASE = 'ajpi';
 
   /**
    * Construct
