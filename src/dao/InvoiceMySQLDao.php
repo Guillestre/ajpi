@@ -1,18 +1,34 @@
 <?php
 
-/* CLASS THAT RETRIEVE DATA OF INVOICES FROM MYSQL DATABASE */
+/**
+ * CLASS THAT RETRIEVE DATA OF INVOICES FROM MYSQL DATABASE 
+ */
 
 class InvoiceMySQLDao
 {
 
 	private $database;
 
+	/**
+	 * Constructor that set database
+	 */
+
 	function __construct() {
 		//Get database instance
 		$this->database = MySQLConnection::getInstance()->getConnection();
 	}
 
-	
+	/**
+	 * Fetch invoices into database according to the filters
+	 *
+	 * @param array $filters array of filters
+	 * @param integer $start Beginning where we have to start into database
+ 	 * @param string $column where sort is applied
+ 	 * @param string $direction the sort has to be ordered
+ 	 * @param integer $pageOffset that correspond to how many lines have to be read
+	 * @return array of objects Invoice or NULL if no result
+	 */
+
 	public function fetchInvoices($filters, $start, $column, $direction, $pageOffset)
 	{
 
@@ -165,6 +181,15 @@ class InvoiceMySQLDao
 		return $invoices;
 	}
 
+	/**
+	 * Count invoices into database according to the filters
+	 *
+	 * @param array $filters array of filters
+	 * @param integer $start Beginning where we have to start into database
+ 	 * @param integer $pageOffset that correspond to how many lines have to be read
+	 * @return integer that correspond to the number of result
+	 */
+
 	public function countFetchInvoices($filters, $start, $pageOffset)
 	{
 		/* PREPARE FILTERS */
@@ -222,7 +247,7 @@ class InvoiceMySQLDao
 			$step->bindValue(":invoiceCode", "%{$invoiceCode}%");
 		}
 		if(isset($filters['client'])){
-			$client = $filters['client'];
+			$client = utf8_decode($filters['client']);
 			$step->bindValue(":client", "%{$client}%");
 		} 
 		if(isset($filters['startPeriod'])){
@@ -247,6 +272,11 @@ class InvoiceMySQLDao
 		return $nbResult;
 	}
 
+	/**
+	 * Get invoice according to his invoiceCode
+	 * @param string $code that correspond to the invoiceCode
+	 * @return Invoice
+	 */
 
 	public function getInvoice($code)
 	{
@@ -281,6 +311,12 @@ class InvoiceMySQLDao
 	
 		return $invoice;
 	}
+
+	/**
+	 * Get lines from an invoice according to his invoiceCode
+	 * @param string $invoiceCode
+	 * @return array of objects Line or null if no result
+	 */
 
 	public function getLines($invoiceCode)
 	{
@@ -320,6 +356,12 @@ class InvoiceMySQLDao
 		
 		return $lines;
 	}
+
+	/**
+	 * Fetch articles (code or designation) available according to
+	 * if use is an admin or user client
+	 * @return result from the database (faster than array of objects)
+	 */
 
 	public function getDataListArticles()
 	{

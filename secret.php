@@ -59,6 +59,7 @@
 
 		    //set link
     		$link = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${uri}";
+    		$label = htmlspecialchars($label);
 		?>
 
 		<h1> Clé <?php print($label);?> </h1>

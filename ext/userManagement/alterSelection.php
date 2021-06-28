@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY OPTIONS TO ALTER AN USER -->
+
 <div class="grid-container-two-item">
 
 	<!---- ADMIN SELECTION ----->
@@ -40,9 +42,9 @@
 
 </div>
 
-	<!---- CLIENT SELECTION ----->
-
 <div class="grid-container-two-item">
+
+	<!---- USER CLIENT SELECTION ----->
 
 	<label class="grid-item-label" for="selectAlterClientUser" id="labelAlterClientUser">
 		Choisir utilisateur client : 
@@ -126,7 +128,7 @@
 			<?php
 				foreach($secrets as $secret)
 				{
-					$label = $secret->getLabel();
+					$label = htmlspecialchars($secret->getLabel());
 					$secretId = $secret->getId();
 
 					if(isset($_GET['selectAlterSecret']) && strcmp($_GET['selectAlterSecret'], $secretId) == 0){

@@ -7,10 +7,22 @@
 
 		private $database;
 
+		/**
+		 * Constructor that set database
+		 */
+
 		function __construct() {
 			//Get database instance
 			$this->database = MySQLConnection::getInstance()->getConnection();
 		}
+
+		/**
+		 * Insert a user according to his status
+		 *
+		 * @param User $user
+		 * @param string $status
+		 * @return integer that correspond to the number of rows inserted
+		 */
 
 		public function insertUser($user, $status)
 		{
@@ -37,6 +49,14 @@
 			return $step->rowCount();
 		}
 
+		/**
+		 * Delete a user according to his status
+		 *
+		 * @param integer $id of the user
+		 * @param string $status of the user
+		 * @return integer that correspond to the number of rows deleted
+		 */
+
 		public function deleteUser($id, $status)
 		{	
 			$query = "DELETE FROM {$status}Users WHERE id = :id";
@@ -44,6 +64,14 @@
 			$step->bindValue(":id", $id);
 			return $step->execute();
 		}
+
+		/**
+		 * Verify if a given username already exist
+		 *
+		 * @param string $username
+		 * @param string $status of the user
+		 * @return boolean : true if username exist, false otherwise
+		 */
 
 
 		public function existUsername($username, $status)
@@ -56,6 +84,15 @@
 			return $nbResult != 0 ;
 		}
 
+		/**
+		 * Verify if a given password already exist
+		 *
+		 * @param string $username
+		 * @param string $password 
+		 * @param string $status of the user
+		 * @return boolean : true if password exist, false otherwise
+		 */
+
 		public function existPassword($username, $password, $status)
 		{
 			$query = "SELECT * FROM {$status}Users 
@@ -67,6 +104,13 @@
 			$nbResult = $step->rowCount();
 			return $nbResult != 0 ;
 		}
+
+		/**
+		 * Verify if a given client code belong to an user client
+		 *
+		 * @param string $clientCode
+		 * @return boolean : true if it belong to an user client, false otherwise
+		 */
 
 		public function takenClientCode($clientCode)
 		{
@@ -83,6 +127,13 @@
 			return $count != 0;
 		}
 
+		/**
+		 * Count the number of users according the status
+		 *
+		 * @param string $status
+		 * @return integer
+		 */
+
 		public function countUser($status)
 		{
 			$query = "SELECT COUNT(*) FROM {$status}Users";
@@ -90,6 +141,15 @@
 			$step->execute();
 			return $step->fetchColumn();
 		}
+
+		/**
+		 * Update an username from an user
+		 *
+		 * @param integer $id
+		 * @param string $newUsername
+		 * @param string $status
+		 * @return integer that correspond to the number of rows updated
+		 */
 
 		public function updateUsername($id, $newUsername, $status)
 		{
@@ -101,6 +161,15 @@
 			return $step->rowCount();
 		}
 
+		/**
+		 * Update a password from an user
+		 *
+		 * @param integer $id
+		 * @param string $newPassword
+		 * @param string $status
+		 * @return integer that correspond to the number of rows updated
+		 */
+
 		public function updatePassword($id, $newPassword, $status)
 		{
 			$query = "UPDATE ${status}Users SET password = :password WHERE id = :id";
@@ -110,6 +179,15 @@
 			$step->execute();
 			return $step->rowCount();
 		}
+
+		/**
+		 * Update a secret from an user
+		 *
+		 * @param integer $id
+		 * @param string $newSecretId
+		 * @param string $status
+		 * @return integer that correspond to the number of rows updated
+		 */
 
 		public function updateSecretId($id, $newSecretId, $status)
 		{
@@ -121,6 +199,14 @@
 			return $step->rowCount();
 		}
 
+		/**
+		 * Update a client code from an user
+		 *
+		 * @param integer $id
+		 * @param string $newClientCode
+		 * @return integer that correspond to the number of rows updated
+		 */
+
 		public function updateClientCode($id, $newClientCode)
 		{
 			$query = "UPDATE clientUsers SET clientCode = :clientCode 
@@ -131,6 +217,15 @@
 			$step->execute();
 			return $step->rowCount();
 		}
+
+		/**
+		 * Verify according an id and an username and a status, if an user exist
+		 *
+		 * @param integer $id
+		 * @param string $username
+		 * @param string $status
+		 * @return integer that correspond to the number of rows returned
+		 */
 
 		public function match($id, $username, $status)
 		{
@@ -144,6 +239,13 @@
 			$step->execute();
 			return $step->fetchColumn();
 		}
+
+		/**
+		 * Fetch a user client according to his client code 
+		 *
+		 * @param string $clientCode
+		 * @return ClientUser
+		 */
 
 		public function getClientUser($clientCode)
 		{
@@ -165,6 +267,12 @@
 			else
 				return NULL;
 		}
+
+		/**
+		 * Fetch all user client
+		 *
+		 * @return array of object ClientUser
+		 */
 
 		public function getAllClientUser()
 		{
@@ -193,6 +301,12 @@
 			
 			return $clientUsers;
 		}
+
+		/**
+		 * Fetch all admin client
+		 *
+		 * @return array of object AdminUser
+		 */
 
 		public function getAllAdminUser()
 		{
@@ -223,6 +337,13 @@
 			return $adminUsers;
 		}
 
+		/**
+		 * Fetch the last id according the status
+		 *
+		 * @param string $status
+		 * @return integer that correspond to the id
+		 */
+
 		public function getLastId($status)
 		{
 			$query = "SELECT MAX(id) AS id FROM {$status}Users";
@@ -230,6 +351,14 @@
 			$step->execute();
 			return $step->fetchColumn();
 		}
+
+		/**
+		 * Fetch an user according his status and his id
+		 *
+		 * @param integer $id
+		 * @param string $status
+		 * @return User
+		 */
 
 		public function getUser($id, $status)
 		{
@@ -252,6 +381,14 @@
 			}
 		}
 
+		/**
+		 * Fetch an id according an username and status
+		 *
+		 * @param string $username
+		 * @param string $status
+		 * @return integer that correspond to the id
+		 */
+
 		public function getId($username, $status)
 		{
 			$query = "SELECT id FROM {$status}Users WHERE username = :username";
@@ -260,6 +397,14 @@
 			$step->execute();
 			return $step->fetchColumn();
 		}
+
+		/**
+		 * Fetch an password according an id and status
+		 *
+		 * @param integer $id
+		 * @param string $status
+		 * @return string that correspond to the password
+		 */
 
 		public function getPassword($id, $status)
 		{
@@ -270,6 +415,15 @@
 			$row = $step->fetch(PDO::FETCH_ASSOC);
 			return utf8_encode($row['password']);
 		}
+
+		/**
+		 * Fetch a secret id according an id and status
+		 *
+		 * @param integer $id
+		 * @param string $status
+		 * @return integer that correspond to the secret id
+		 */
+
 
 		public function getSecretId($id, $status)
 		{

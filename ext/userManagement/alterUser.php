@@ -1,3 +1,6 @@
+<!-- EXT THAT ALTER AN USER -->
+
+
 <?php 
 	$availableAdminUsers =  !is_null($adminUsers);
 	$availableClientUsers =  !is_null($clientUsers);

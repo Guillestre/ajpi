@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY LINES FROM AN INVOICE -->
+
 <?php
 
 if(!$emptyResult){
@@ -28,12 +30,12 @@ if(!$emptyResult){
 	foreach($lines as $line)
 	{ 
 
-		$articleCode = htmlspecialchars($line->getArticleCode());
+		$articleCode = $line->getArticleCode();
 		$designation = $line->getDesignation();
-		$amount = htmlspecialchars($line->getAmount());
-		$unitPrice = htmlspecialchars($line->getUnitPrice());
-		$discount = htmlspecialchars($line->getDiscount());
-		$totalPrice = htmlspecialchars($line->getTotalPrice());
+		$amount = $line->getAmount();
+		$unitPrice = $line->getUnitPrice();
+		$discount = $line->getDiscount();
+		$totalPrice = $line->getTotalPrice();
 		$description = $line->getDescription();
 
 		print("

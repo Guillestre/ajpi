@@ -1,0 +1,18 @@
+******* COMPTE UTILISATEUR PAR DEFAUT *******
+
+	- nom utilisateur : ajpi
+	- mot de passe : ajpi
+	- cle AJPI : EIBZKCD6IFOZETPNLC7RYRNQL6NNFOBPDS37TFMFG4I6OMO6HIIXMH5G33V3Q47DSWX7ZNRULQPS3MMU7MERFLN2RVOEYJAYD24UXAY
+
+******* COMMENT SE CONNECTER *******
+
+1) 	En premier, rentrer votre nom d'utilisateur et mot de passe sur la page de connexion.
+
+2) 	Il faut ensuite télécharger une application telles que authy ou google authentificator 
+	afin de connaitre le code secret de la clès.
+
+3)	Une fois l'application téléchargée, ouvrez la. Rentrer ensuite la clé manuellement ou bien scanner son QR CODE.
+
+4)	Une fois cette opération effectuée, le code secret devrais apparaitre et se renoulever toute les trentes secondes.
+
+5)	Rentrer le code secret et vous devriez être connecté.

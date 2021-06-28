@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY INFO FROM AN INVOICE -->
+
 <?php
 	$invoiceCode = $invoice->getCode();
 	$date = $invoice->getDate();
@@ -27,15 +29,23 @@
 
 <?php
 
+	/* LOOKING FOR THE CORRECT INVOICE FILE */
+
+	//Get selected number
 	$number = substr($invoiceCode, 2);
+
+	//Folder invoices
 	$log_directory = 'AJPI_invoices';
 
+	//If folder exist
 	if (is_dir($log_directory))
 	{
+
         if ($handle = opendir($log_directory))
         {
             while(($file = readdir($handle)) !== FALSE)
             {
+            	//Check if current file pdf is the correct one
             	$pattern = "/([\D])${number}([\D])/";
 				if(preg_match($pattern, $file) == 1)
 			   		$url = "AJPI_invoices/" . $file;

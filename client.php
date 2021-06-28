@@ -1,3 +1,5 @@
+<!-- CLIENT PAGE THAT DISPLAY INFO FROM SELECTED CLIENT -->
+
 <?php include "ext/common.php"; ?>
 <?php include 'ext/search/fetchData.php'?>
 
@@ -12,9 +14,11 @@
 		
 		<?php include 'ext/menu.php';?>
 
-		<!-- CLIENT INFO -->
+		<!-- LEFT PART -->
 
 		<div class='leftPart'>
+
+			<!-- CLIENT INFO -->
 
 			<div class="infoArea">
 				<?php include 'ext/info/clientInfo.php';?>
@@ -22,7 +26,7 @@
 
 		</div>
 
-		<!-- RESULT -->
+		<!-- RESULT TABLE -->
 
 		<?php include 'ext/table/client.php';?>
 

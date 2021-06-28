@@ -12,6 +12,7 @@
 
 	//Choose which database to bring repairs
 	//(Create result tables into ajpi database)
+	//DO NOT PUT TRUE ALL AT ONCE BUT ONE BY ONE
 	$sage2016 = false;
 	$sage2019 = false;
 	$ebp = false;

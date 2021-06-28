@@ -1,3 +1,5 @@
+<!-- EXT THAT SHOW INFO OF THE CONNECTED USER -->
+
 <?php
 	$username = htmlspecialchars($user->getUsername());
 	$status = htmlspecialchars($user->getStatus());

@@ -1,8 +1,12 @@
+<!-- EXT THAT ADD AN USER -->
+
 <h2>Ajouter un utilisateur : </h2>
 
 <form action="processForm.php" method="post">
 	
 	<div class="grid-container-userForm">
+
+		<!-- USERNAME -->
 
 		<label class="grid-item-label" for="inputAddUsername">Nom utilisateur : </label>
 
@@ -10,15 +14,21 @@
 			<input type="text" id="inputAddUsername" name="username" required />
 		</div>
 
+		<!-- PASSWORD -->
+
 		<label  class="grid-item-label" for="inputAddPassword" >Mot de passe : </label>
 
 		<div>
 			<input type="password" id="inputAddPassword" name="password" required />
 		</div>
 
+		<!-- STATUS -->
+
 		<label  class="grid-item-label">Statut : </label>
 
 		<div>
+
+			<!-- CLIENT -->
 
 			<input 
 			type="radio" id="radioAddClient" name="status" value="client" 
@@ -37,6 +47,8 @@
 
 			<label for="radioAddClient">Client</label>
 
+			<!-- ADMIN -->
+
 			<input type="radio" id="radioAddAdmin" name="status"  value="admin" 
 			onclick="displayClientHandler()"
 
@@ -54,6 +66,8 @@
 			
 		</div>
 		
+		<!-- LABEL -->
+
 		<label class="grid-item-label" for="selectAddSecret">Clé (A2F) : </label>
 
 		<div>
@@ -83,6 +97,8 @@
 				?>
 			</select>
 		</div>
+
+		<!-- CLIENT -->
 
 		<label class="grid-item-label" for="selectAddClient" id="labelClient">
 			Nom Client : 
@@ -123,6 +139,7 @@
 			</button>
 		</div>
 
+		<!-- ALERT MESSAGES -->
 	
 		<?php
 			if(isset($_GET['addUserSuccess']))

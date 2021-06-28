@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY INVOICE OR PROSPECT TABLE -->
+
 <table>
 
 <?php
@@ -154,8 +156,8 @@ if(strcmp($searchType, "prospect") == 0){
 		//Fetch each prospect and display them
 		foreach($prospects as $prospect)
 		{
-			$code = htmlspecialchars($prospect->getCode());
-			$name = htmlspecialchars($clientDao->getClient($code)->getName());
+			$code = $prospect->getCode();
+			$name = $clientDao->getClient($code)->getName();
 
 			$refClientCode = "client.php?clientCode={$code}";
 
@@ -187,12 +189,12 @@ if(strcmp($searchType, "prospect") == 0){
 		//Fetch each invoice and display them
 		foreach($invoices as $invoice)
 		{
-			$code = htmlspecialchars($invoice->getCode());
-			$clientCode = htmlspecialchars($invoice->getClientCode());
-			$clientName = htmlspecialchars($clientDao->getClient($clientCode)->getName());
-			$date = htmlspecialchars($invoice->getDate());
-			$totalExcludingTaxes = htmlspecialchars($invoice->getTotalExcludingTaxes());
-			$totalIncludingTaxes = htmlspecialchars($invoice->getTotalIncludingTaxes());
+			$code = $invoice->getCode();
+			$clientCode = $invoice->getClientCode();
+			$clientName = $clientDao->getClient($clientCode)->getName();
+			$date = $invoice->getDate();
+			$totalExcludingTaxes = $invoice->getTotalExcludingTaxes();
+			$totalIncludingTaxes = $invoice->getTotalIncludingTaxes();
 
 			$refInvoiceline = "invoice.php?invoiceCode={$code}";
 			$refClientCode = "client.php?clientCode={$clientCode}";

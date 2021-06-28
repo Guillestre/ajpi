@@ -1,3 +1,5 @@
+<!-- DASHBOARD PAGE THAT DISPLAY INVOICES AND PROSPECTS -->
+
 <?php include "ext/common.php"; ?>
 <?php include 'ext/search/fetchData.php';?>
 
@@ -10,9 +12,11 @@
 
 		<?php include 'ext/menu.php';?>
 
-		<!-- FILTER ----------------------->
+		<!-- LEFT PART -->
 
 		<div class='leftPart'>
+
+			<!-- FILTER -->
 
 			<div class="infoArea">
 				<?php include 'ext/search/searchFilter.php';?>
@@ -28,11 +32,15 @@
 
 		</div>
 
-		<!-- RESULT ----------------------->
+		<!-- FORM -->
 		
 		<form action="dashboard.php" method="get" id="invoiceTableForm">
 
+			<!-- RESULT TABLE -->
+
 			<?php include 'ext/table/dashboard.php';?>
+
+			<!-- SET VARIABLES INTO URL -->
 
 			<?php 
 
@@ -60,42 +68,42 @@
 				//Set invoiceCode as input if exist
 				if(isset($_GET['invoiceCode']))
 				{
-					$invoiceCode = $_GET['invoiceCode'];
+					$invoiceCode = htmlspecialchars($_GET['invoiceCode']);
 					print("<input type='text' name='invoiceCode' value='${invoiceCode}' hidden/>");
 				}
 				
 				//Set client as input if exist
 				if(isset($_GET['client']))
 				{
-					$client = $_GET['client'];
+					$client = htmlspecialchars($_GET['client']);
 					print("<input type='text' name='client' value='${client}' hidden/>");
 				}
 
 				//Set article as input if exist
 				if(isset($_GET['article']))
 				{
-					$client = $_GET['article'];
+					$client = htmlspecialchars($_GET['article']);
 					print("<input type='text' name='article' value='${article}' hidden/>");
 				}
 
 				//Set startPeriod as input if exist
 				if(isset($_GET['startPeriod']))
 				{
-					$startPeriod = $_GET['startPeriod'];
+					$startPeriod = htmlspecialchars($_GET['startPeriod']);
 					print("<input type='text' name='startPeriod' value='${startPeriod}' hidden/>");
 				}
 
 				//Set endPeriod as input if exist
 				if(isset($_GET['endPeriod']))
 				{
-					$endPeriod = $_GET['endPeriod'];
+					$endPeriod = htmlspecialchars($_GET['endPeriod']);
 					print("<input type='text' name='endPeriod' value='${endPeriod}' hidden/>");
 				}
 
 				//Set prospect name as input if exist
 				if(isset($_GET['prospect']))
 				{
-					$prospect = $_GET['prospect'];
+					$prospect = htmlspecialchars($_GET['prospect']);
 					print("<input type='text' name='prospect' value='${prospect}' hidden/>");
 				}
 

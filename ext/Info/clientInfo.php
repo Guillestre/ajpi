@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY INFO FROM AN USER CLIENT -->
+
 <?php 
 
 $code = $client->getCode();
@@ -6,8 +8,8 @@ print("<h1>Client numéro {$code} </h1>");
 
 if(isset($clientUser))
 {
-	$username = $clientUser->getUsername();
-	$label = $secretDao->getLabel($clientUser->getSecretId());
+	$username = htmlspecialchars($clientUser->getUsername());
+	$label = htmlspecialchars($secretDao->getLabel($clientUser->getSecretId()));
 	print("<h2>Compte utilisateur : </h2>");
 	print("<p>Nom utilisateur : {$username}</p>");
 	print("<p>Clé : {$label}</p>");

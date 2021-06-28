@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY SECRET INFO ABOUT THE CONNECTED USER -->
+
 <?php
 
 	//Get owner data
@@ -31,6 +33,8 @@
 
 <div class="grid-container-userForm">
 
+	<!-- LABEL -->
+
 	<div class="grid-item-label" >
 		<label for="ownerLabel">Votre clé actuelle : </label>
 	</div>
@@ -38,6 +42,8 @@
 	<div class="grid-item-text" id="ownerLabel">
 		<?php print($label); ?>
 	</div>
+
+	<!-- QR CODE -->
 
 	<div class="grid-item-label">
 		<label for="ownerQRCode">QR CODE de la clé : </label>

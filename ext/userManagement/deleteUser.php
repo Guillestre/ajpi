@@ -1,3 +1,5 @@
+<!-- EXT THAT DELETE AN USER -->
+
 <?php 
 	$availableAdminUsers =  !is_null($adminUsers);
 	$availableClientUsers =  !is_null($clientUsers);
@@ -7,7 +9,11 @@
 
 <form action="processForm.php" method="post">
 
+		<!-- RADIO -->
+
 		<div>
+
+			<!-- USER CLIENT -->
 
 			<input 
 			type="radio" id="radioDeleteClient" name="status" value="client" 
@@ -25,6 +31,8 @@
 
 			<label for="radioDeleteClient">Client</label>
 
+			<!-- ADMIN -->
+
 			<input type="radio" id="radioDeleteAdmin" name="status"  value="admin" 
 			onclick="deleteUser()" 
 			<?php 
@@ -41,10 +49,14 @@
 		
 		</div>
 
+		<!-- ADMIN BLOCK -->
+
 		<div id="deleteBlockAdmin" hidden>
 			<?php if($availableAdminUsers){ ?>
 
 				<div class="grid-container-userForm">
+
+					<!-- USERNAME ADMIN -->
 
 					<div class="grid-item-label">
 						<label for="selectDeleteAdmin">Choisir utilisateur admin : </label>
@@ -93,10 +105,14 @@
 			?>
 		</div>
 
+		<!-- USER CLIENT BLOCK -->
+
 		<div id="deleteBlockClient" >
 			<?php if($availableClientUsers){ ?>
 				
 				<div class="grid-container-userForm">
+
+					<!-- USER CLIENT ADMIN -->
 
 					<div class="grid-item-label">
 						<label for="selectDeleteClient">Choisir utilisateur client : </label>
@@ -134,6 +150,8 @@
 		</div>
 
 </form>
+
+<!-- ALERT MESSAGES -->
 
 <?php
 	if(isset($_GET['deleteUserSuccess']))

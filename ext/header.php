@@ -10,7 +10,7 @@
 				break;
 			
 			case 'dashboard.php':
-				$title = "Factures clients";
+				$title = "Tableau de bord";
 				break;
 
 			case 'client.php':
@@ -29,11 +29,6 @@
 
 			case 'secretManagement.php':
 				$title = "Clés";
-				break;
-
-			case 'alterUser.php':
-				$username = $_GET['username'];
-				$title = "Modification utilisateur ${username}";
 				break;
 
 			case 'secret.php':

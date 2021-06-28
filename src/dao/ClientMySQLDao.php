@@ -1,16 +1,33 @@
 <?php
 
-/* CLASS THAT RETRIEVE DATA OF CLIENTS FROM MYSQL DATABASE */
+/**
+ * CLASS THAT RETRIEVE DATA OF CLIENTS FROM MYSQL DATABASE 
+ */
 
 class ClientMySQLDao
 {
 
 	private $database;
 
+	/**
+	 * Constructor that set database
+	 */ 
+
 	function __construct() {
 		//Get database instance
 		$this->database = MySQLConnection::getInstance()->getConnection();
 	}
+
+	/**
+	 * Fetch prospects into database according to the filters
+	 *
+	 * @param array $filters array of filters
+	 * @param integer $start Beginning where we have to start into database
+ 	 * @param string $column where sort is applied
+ 	 * @param string $direction the sort has to be ordered
+ 	 * @param integer $pageOffset that correspond to how many lines have to be read
+	 * @return array of objects Client or NULL if no result
+	 */ 
 
 	public function fetchProspects($filters, $start, $column, $direction, $pageOffset)
 	{
@@ -61,7 +78,7 @@ class ClientMySQLDao
 		$step=$this->database->prepare($query);
 
 		if(isset($filters['prospect'])){
-			$prospect = $filters['prospect'];
+			$prospect = utf8_decode($filters['prospect']);
 			$step->bindValue(":prospect", "%{$prospect}%");
 		} 
 	
@@ -99,6 +116,15 @@ class ClientMySQLDao
 		return $clients;
 	}
 
+	/**
+	 * Count prospects into database according to the filters
+	 *
+	 * @param array $filters array of filters
+	 * @param integer $start Beginning where we have to start into database
+ 	 * @param integer $pageOffset that correspond to how many lines have to be read
+	 * @return The number of result
+	 */ 
+
 	public function countFetchProspects($filters, $start, $pageOffset)
 	{
 
@@ -118,7 +144,7 @@ class ClientMySQLDao
 		$step = $this->database->prepare($query);
 
 		if(isset($filters['prospect'])){
-			$prospect = $filters['prospect'];
+			$prospect = utf8_decode($filters['prospect']);
 			$step->bindValue(":prospect", "%{$prospect}%");
 		} 
 
@@ -127,6 +153,13 @@ class ClientMySQLDao
 		$nbResult = $step->rowCount();
 		return $nbResult;
 	}
+
+	/**
+	 * Get a client according to his clientCode
+	 *
+	 * @param string $clientCode that correspond to the user we are looking for
+	 * @return Client
+	 */ 
 
 	public function getClient($clientCode)
 	{
@@ -162,6 +195,11 @@ class ClientMySQLDao
 		return $client;
 	}
 
+	/**
+	 * Get all clients from the database
+	 * @return array of objects Client
+	 */ 
+
 	public function getAllClient()
 	{
 		$query = "SELECT * FROM clients ORDER BY name ASC";
@@ -188,6 +226,13 @@ class ClientMySQLDao
 
 		return $clients;
 	}
+
+	/**
+	 * Get the client name according a clientCode
+	 *
+	 * @param string $clientCode that correspond to the name we are looking for
+	 * @return string
+	 */ 
 
 	public function getClientName($clientCode)
 	{

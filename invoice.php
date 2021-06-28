@@ -16,9 +16,11 @@
 
 		<?php include 'ext/menu.php';?>
 
-		<!-- INVOICE INFO LEFT PART -->
+		<!-- LEFT PART -->
 
 		<div class='leftPart'>
+
+			<!-- INVOICE INFO -->
 
 			<div class="infoArea">
 				<?php include 'ext/info/invoiceInfo.php';?>

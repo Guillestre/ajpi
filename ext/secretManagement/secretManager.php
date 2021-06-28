@@ -1,7 +1,7 @@
+<!-- EXT THAT MANAGE SECRETS  -->
+
+<!-- ADD KEY -->
 <h2>Ajouter une nouvelle clé : </h2>
-
-
-<!-- ADD KEY ------------------------------------->
 
 <form action="processForm.php" method="post">
 	
@@ -34,21 +34,21 @@
 
 </form>
 
-<!-- DELETE KEY ------------------------------------->
-
-
+<!-- REGISTERED KEYS -->
 <h2>Clés enregistrées : </h2>
 
 <form action="processForm.php" method="post">
 	
 	<div class="grid-container-userForm">
 
+		<!-- RADIO LABEL -->
+
 		<div class="grid-item-label">
-			<label for="deleteLabel">Choisir clé :</label>
+			<label for="selectSecret">Choisir clé :</label>
 		</div>
 
 		<div>
-		 	<select id="deleteSecret" name="secretId">
+		 	<select id="selectSecret" name="secretId">
 				<?php
 					foreach($secrets as $secret){
 						$label = htmlspecialchars($secret->getLabel());
@@ -85,6 +85,8 @@
 	</div>
 
 </form>
+
+<!-- ALERT MESSAGE -->
 
 <?php
 	if(isset($_GET['deleteSecretSuccess']))

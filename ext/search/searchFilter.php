@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY FILTERS -->
+
 <h1>Filtres</h1>
 
 <form action="dashboard.php" method="get" id="filterForm">
@@ -8,7 +10,7 @@
 	?>
 
 	<?php
-		//Just admin have access on it
+		//Just admin has access on it
 		if($isAdmin){
 	?>
 
@@ -56,7 +58,7 @@
 
 		<div class="filter">
 			<label for="invoiceCode">Numéro de facture :</label><br/>
-			<input type="search" name="invoiceCode" 
+			<input type="search" id="invoiceCode" name="invoiceCode" 
 			<?php
 			if(isset($_GET['invoiceCode']))
 			{
@@ -111,12 +113,12 @@
 
 		<div class="filter">
 			<label for="startPeriod">A partir du :</label><br/>
-			<input type="date" name="startPeriod" 
+			<input type="date" id="startPeriod" name="startPeriod" 
 			<?php
 
 			if(isset($_GET['startPeriod']))
 			{
-				$startPeriod = $_GET['startPeriod'];
+				$startPeriod = htmlspecialchars($_GET['startPeriod']);
 				print("value='${startPeriod}'");
 			}
 
@@ -128,12 +130,12 @@
 
 		<div class="filter">
 			<label for="endPeriod">Au :</label><br/>
-			<input type="date" name="endPeriod" 
+			<input type="date" id="endPeriod" name="endPeriod" 
 			<?php
 
 			if(isset($_GET['endPeriod']))
 			{
-				$endPeriod = $_GET['endPeriod'];
+				$endPeriod = htmlspecialchars($_GET['endPeriod']);
 				print("value='${endPeriod}'");
 			}
 

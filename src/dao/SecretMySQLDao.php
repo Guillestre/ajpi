@@ -1,16 +1,29 @@
 <?php
 
-	/* CLASS THAT RETRIEVE DATA OF SECRETS FROM MYSQL DATABASE */
+	/**
+	 * CLASS THAT RETRIEVE DATA OF SECRETS FROM MYSQL DATABASE 
+	 */
 
 	class SecretMySQLDao
 	{
 
 		private $database;
 
+		/**
+		 * Constructor that set database
+		 */
+
 		function __construct() {
 			//Get database instance
 			$this->database = MySQLConnection::getInstance()->getConnection();
 		}
+
+		/**
+		 * Fetch secret id into database according to his label 
+		 *
+		 * @param string $label
+		 * @return integer that correspond to the id or NULL if no result
+		 */
 
 		public function getId($label)
 		{
@@ -26,6 +39,13 @@
 				return NULL;
 		}
 
+		/**
+		 * Fetch secret code according to the secret id
+		 *
+		 * @param integer $id
+		 * @return string that correspond to the secret code or NULL if no result
+		 */
+
 		public function getCode($id)
 		{
 			$query = "SELECT code FROM secrets WHERE id = :id";
@@ -40,6 +60,13 @@
 				return NULL;
 		}
 
+		/**
+		 * Fetch label according to his secret id
+		 *
+		 * @param integer $id
+		 * @return string that correspond to the label or NULL if no result
+		 */
+
 		public function getLabel($id)
 		{
 			$query = "SELECT label FROM secrets WHERE id = :id";
@@ -53,6 +80,12 @@
 			else 
 				return NULL;
 		}
+
+		/**
+		 * Fetch all secret
+		 *
+		 * @return array of objects Secret
+		 */
 
 		public function getAllSecret()
 		{
@@ -76,6 +109,13 @@
 			return $secrets;
 		}
 
+		/**
+		 * Verify if a given label exist
+		 *
+		 * @param string $label
+		 * @return boolean : true if label exist, false otherwise
+		 */
+
 		public function exist($label)
 		{
 			$query = "SELECT * FROM secrets WHERE label = :label";
@@ -86,6 +126,12 @@
 			return $nbResult != 0 ;
 		}
 
+		/**
+		 * Fetch last id
+		 *
+		 * @return integer that correspond to the id
+		 */
+
 		public function getLastId()
 		{
 			$query = "SELECT MAX(id) AS id FROM secrets";
@@ -93,6 +139,13 @@
 			$step->execute();
 			return $step->fetchColumn();
 		}
+
+		/**
+		 * Insert a secret into database
+		 *
+		 * @param string $secret
+		 * @return integer that correspond to the number of row inserted
+		 */
 
 		public function insertSecret($secret)
 		{
@@ -104,6 +157,13 @@
 			$step->execute();
 			return $step->rowCount();
 		}
+
+		/**
+		 * Verify if a secret belong to user(s)
+		 *
+		 * @param string $id
+		 * @return integer that correspond to the number of rows returned
+		 */
 
 		public function secretToken($id)
 		{
@@ -123,6 +183,13 @@
 			$step->execute();
 			return $step->rowCount();
 		}
+
+		/**
+		 * Delete a secret accoridng to the given id
+		 *
+		 * @param string $id
+		 * @return integer that correspond to the number of rows deleted
+		 */
 
 		public function deleteSecret($id)
 		{

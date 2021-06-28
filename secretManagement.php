@@ -1,3 +1,5 @@
+<!-- PAGE THAT HANDLE USER SECRETS  -->
+
 <?php include "ext/common.php"; ?>
 <?php include 'ext/search/fetchData.php';?>
 
@@ -14,7 +16,7 @@
 
 		<div class="grid-container-userBoxGroup">	
 
-			<!-- SECRET OWNER -->
+			<!-- SECRET OWNER INFO -->
 
 			<div class="userBox">
 				<?php include "ext/secretManagement/secretOwner.php"; ?>

@@ -1,3 +1,5 @@
+<!-- EXT THAT DISPLAY CLIENT TABLE -->
+
 <?php
 
 if(!$emptyResult){
@@ -19,14 +21,14 @@ if(!$emptyResult){
 		</thead>
 	");
 
-	$code = htmlspecialchars($client->getCode());
-	$name = htmlspecialchars($client->getName());
-	$title = htmlspecialchars($client->getTitle());
-	$address = htmlspecialchars($client->getAddress());
-	$capital = htmlspecialchars($client->getCapital());
-	$city = htmlspecialchars($client->getCity());
-	$number = htmlspecialchars($client->getNumber());
-	$mail = htmlspecialchars($client->getMail());
+	$code = $client->getCode();
+	$name = $client->getName();
+	$title = $client->getTitle();
+	$address = $client->getAddress();
+	$capital = $client->getCapital();
+	$city = $client->getCity();
+	$number = $client->getNumber();
+	$mail = $client->getMail();
 
 	print("
 		<tr>

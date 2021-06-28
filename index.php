@@ -1,12 +1,12 @@
 <!-- WELCOME PAGE WHERE USER LOG IN --> 
 
 <?php include "ext/common.php"; ?>
+<?php include 'script/scriptHandler.php'; ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 
 	<?php include 'ext/header.php'; ?>
-	<?php include 'script/scriptHandler.php'; ?>
 	
 	<body>
 
@@ -57,6 +57,8 @@
 
 				<div class="grid-container-userForm">
 
+					<!-- USERNAME -->
+
 					<div class="grid-item-label">
 						<label for="username">Nom d'utilisateur : </label>
 					</div>
@@ -64,6 +66,8 @@
 					<div class="grid-item-input-text">
 						<input type="text" id="username" name="username" required />
 					</div>
+
+					<!-- PASSWORD -->
 
 					<div class="grid-item-label">
 						<label for="password">Mot de passe : </label>
@@ -73,8 +77,10 @@
 						<input type="password" id="password" name="password" required />
 					</div>
 
+					<!-- SECRET CODE -->
+
 					<div class="grid-item-label">
-						<label for="password">Code secret : </label>
+						<label for="otp">Code secret : </label>
 					</div>
 
 					<div class="grid-item-input-text">
@@ -86,6 +92,8 @@
 							Se connecter
 						</button>
 					</div>
+
+					<!-- ERROR MESSAGES -->
 
 					<?php
 						if(isset($_GET['errorConnection'])){

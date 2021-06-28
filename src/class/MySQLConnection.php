@@ -1,6 +1,8 @@
-<!-- SINGLETON CLASS THAT ALLOW CONNECTION TO MYSQL DATABASE -->
-
 <?php
+
+/**
+ * SINGLETON CLASS THAT ALLOW CONNECTION TO MYSQL DATABASE
+ * */
 
 class MySQLConnection
 {
@@ -9,10 +11,21 @@ class MySQLConnection
 
   private $connection = null;
 
+  //Username
   const USER = 'root';
+
+  //Host
   const HOST = 'localhost';
+
+  //Password
   const PASSWORD = 'root';
+
+  //Database
   const DATABASE = 'ajpi_dev';
+
+  /**
+   * Construct
+   * */
 
   private function __construct()
   {
@@ -23,6 +36,12 @@ class MySQLConnection
       );
   }
 
+  /**
+   * Get database instance
+   * 
+   * @return instance
+   * */
+
   public static function getInstance()
   {  
     if(is_null(self::$instance))
@@ -31,6 +50,12 @@ class MySQLConnection
     }
     return self::$instance;
   }
+
+  /**
+   * Get database connection
+   * 
+   * @return connection
+   * */
 
   public function getConnection()
   {

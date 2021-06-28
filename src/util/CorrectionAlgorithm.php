@@ -1,7 +1,8 @@
 <?php
 
-	/*
-	 *Class that bring correction to the database
+	/**
+	 * Class that bring correction to the database from raw tables
+	 * These correction are added into result tables
 	 * algo_1 and algo_2 are used to fix EBP and SAGE invoiceline tables
 	 * algo_3 is used to fix ODOO invoiceline tables
 	 */
@@ -12,17 +13,22 @@
 		private $database;
 		private $table_name;
 
+		/**
+		 * @param string $table_name
+		 * @param instance $database
+		 * */
+
 		function __construct($table_name, $database) {
 			$this->database = $database;
 			$this->table_name = $table_name;
 		}
 
+		/**
+		 * This algo will differentiate article code if there are on several lines with different * total price not equal to zero
+		 * */
+
 		public function algo_1()
 		{
-
-			/*
-			*This algo will differentiate article code if there are on several lines with different total price not equal to zero
-			*/
 
 			//Get all invoiceCode
 			$query = "SELECT DISTINCT invoiceCode FROM $this->table_name";
@@ -70,11 +76,12 @@
 
 		}
 
+		/**
+		 * This algo will link each lines with totalPrice = 0 to their respective article code for * each invoice
+		 * */
+
 		public function algo_2()
 		{
-			/*
-			*This algo will link each lines with totalPrice = 0 to their respective article code for each invoice
-			*/
 
 			//Get all invoiceCode
 			$query = "SELECT DISTINCT invoiceCode FROM $this->table_name";
@@ -126,6 +133,10 @@
 			}
 
 		}
+
+		/**
+		 * This algo fill all cells from the column invoiceCode
+		 * */
 
 		public function algo_3()
 		{
